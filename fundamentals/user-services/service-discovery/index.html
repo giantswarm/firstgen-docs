@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Service Discovery &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Details on how containers on Giant Swarm find each other through service discovery">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/fundamentals/user-services/service-discovery/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_fundamentals_user-services_service-discovery_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#service-discovery">Service Discovery</a>
+<ul>
+<li><a href="#making-the-service-discovery-reliable">Making the Service Discovery Reliable</a></li>
+<li><a href="#finding-the-service-discovery-itself">Finding the service discovery itself</a></li>
+<li><a href="#domain-registration">Domain Registration</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified November 13, 2015</p>
+
+      
+
+<ol class="breadcrumb">
+  <li><a href="/">Docs Home</a></li>
+  <li><a href="/fundamentals/">Fundamentals</a></li>
+  <li><a href="/fundamentals/user-services/">User Services Behind the Scenes</a></li>
+</ol>
+
+<h1 id="service-discovery">Service Discovery</h1>
+
+<p>One of the problems in the dynamic environment of the cloud is how to find other services that a service needs to work together with. Even if you have found it once, you can&rsquo;t rely on it always being there - it could be rescheduled to another host for example. With (auto)scaling and failover the complexity of this problem increases  even more.</p>
+
+<p><a href="/img/service_discovery.png" target="_blank"><img src="/img/service_discovery.png" class="img-responsive" alt="Service discovery visualization"></a></p>
+
+<p>Existing Service Discovery tools like Consul or Zookeeper require the application to be customized for the specific technology used. To avoid a major lock-in for customers, Giant Swarm utilizes the sidekick concept instead (more about this in the <a href="/fundamentals/user-services/container-injection/">Container Injection chapter</a>).</p>
+
+<p>Any container that should be available to other containers gets a <code>presence</code> sidekick container which checks with the docker daemon under which <code>IP:Port</code> a container is available and pushes this information into our service discovery. For latter we utilize a redis cluster with a master-slave setup.</p>
+
+<p>To make it easier to find related containers, the keys in redis are composed of following information:</p>
+
+<ul>
+<li>A static <code>services</code> prefix</li>
+<li>A scope which is currently a hash of the organization, environment, and service name.</li>
+<li>A context (a string identifier, e.g. the component UUID)</li>
+<li>A port</li>
+<li>A protocol (currently <code>tcp</code> only)</li>
+<li>A version (currently <code>1</code>)</li>
+</ul>
+
+<p>All parts are joined with a <code>:</code>, so the end result looks something like this: <code>services:aIx9l0MKjmpm1ZjlrfthS73qOPsI-ubWzabK0eblKx8=:b7a7d2e0-81b2-4230-8bd4-110fcdcce92d:15672:tcp:1</code>.</p>
+
+<p>The values are added via <a href="http://redis.io/commands/ZADD"><code>ZADD</code></a>. The value itself is a tuple (<code>|</code> separated) of 3 parts:</p>
+
+<pre><code class="language-nohighlight">container-name|host:ip|set-key
+</code></pre>
+
+<p>On the other end, any container that wants to connect to another container via the service discovery creates an ambassador, which acts as a reverse proxy. It gets started with the key that should get looked up in the service discovery as well as a port to listen on locally. The user container then connects to the local ambassador on the known port. The ambassador uses the list of known upstream services (fetched from redis) to pick a backend in a round-robin fashion. A connection is then established to the backend and the traffic is forwarded in both directions.</p>
+
+<p>In case of a failure of the backend (machine failed, container itself failed etc.) the <code>presence</code> sidekick is stopped by systemd and no more updates are published. The ambassador fetches only the most recent updates by utilizing the sorted sets of redis. Each published value by the <code>presence</code> sidekick is weighted with the current time. The ambassador uses the current time minus 5 seconds to fetch only the ones recently updated. This relies on the time between machines to be in sync.</p>
+
+<h2 id="making-the-service-discovery-reliable">Making the Service Discovery Reliable</h2>
+
+<p>To achieve reliability for the service discovery against failover (machine died), the service discovery is composed of three redis containers configured in a master-slave setup. A <code>redisd</code> sidekick is used to perform a leader election via <code>etcd</code>.</p>
+
+<p>As we have also experienced etcd connectivity issues, which lead to regular leader changes, we are also using a <a href="https://github.com/hashicorp/memberlist">gossip library</a> to double check leadership changes.</p>
+
+<h2 id="finding-the-service-discovery-itself">Finding the service discovery itself</h2>
+
+<p>Since the redis cluster acting as the service discovery is also executed as containers that can be run anywhere in the cluster, there is the chicken-egg problem of how to find the service discovery itself. We solve this with following approach:</p>
+
+<p>Each machine runs a <code>services-lb</code> container that uses the local <code>etcd</code> to identify the service discovery leader (the same key that is used for the initial leader election). That <code>services-lb</code> then listens on the local port <code>6379</code> and forwards all traffic to the leader.</p>
+
+<h2 id="domain-registration">Domain Registration</h2>
+
+<p>The sidekick concept is also used to map domain names to internal containers. Again, a sidekick is employed to push the <code>host:port</code> information, but the keys are composed differently:</p>
+
+<ul>
+<li>Static prefix <code>example.com</code></li>
+<li>A cluster name, e.g. <code>compute</code></li>
+<li>A scope, either <code>lb-public</code> or <code>lb-private</code></li>
+</ul>
+
+<p>These parts are again joined by <code>:</code> to build the redis key. Instead of the <code>presence</code> sidekick, an <code>lb-register</code> is utilized which replaces the <code>set-key</code> in the value tuple with the domain to be mapped to this container.</p>
+
+<p>Instead of the reverse proxy, these keys are read by the Giant Swarm Routing Layer. It polls the keys in a static interval, builds a HAProxy configuration file and restarts the HAProxy gracefully.</p>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

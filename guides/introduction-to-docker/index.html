@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Introduction to Docker &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This guide gives an introduction on how to use Docker locally as well as with Giant Swarm.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/introduction-to-docker/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_introduction-to-docker_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#introduction-to-docker">Introduction to Docker</a>
+<ul>
+<li><a href="#what-is-docker-and-why-should-i-care">What is Docker and why should I care?</a></li>
+<li><a href="#getting-started-with-docker">Getting started with Docker</a></li>
+<li><a href="#running-containers">Running Containers</a></li>
+<li><a href="#working-with-containers">Working with Containers</a></li>
+<li><a href="#working-with-images">Working with Images</a></li>
+<li><a href="#creating-your-own-images">Creating your Own Images</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified July 25, 2015</p>
+
+      
+
+<h1 id="introduction-to-docker">Introduction to Docker</h1>
+
+<h2 id="what-is-docker-and-why-should-i-care">What is Docker and why should I care?</h2>
+
+<blockquote>
+<p>&ldquo;Self-sufficient linux containers.&rdquo; - Docker Inc.</p>
+</blockquote>
+
+<p>Docker is the most popular application container format. It lets you package your own stack in lightweight, portable, and self-sufficient manner. Some call it therefor &ldquo;lightweight VM&rdquo;. In contrast to traditional VM&rsquo;s it&rsquo;s an order of magnitude faster, lighter, and more fun. ;-)</p>
+
+<p>Docker makes a great tool for developers since it allows you to package different parts of your applications in their own containers. These containers can run on different environments like your and your colleagues’ notebook as well as different server environments like Giant Swarm.</p>
+
+<p>Another great aspect of Docker is that there are lots of predefined containers available. From different languages from JavaScript to Golang over different web stacks demo Spring to Rails down to databases like Redis or MySQL. In addition defining your own Docker container is very easy.</p>
+
+<p>Docker together with Giant Swarm will make your life a lot easier. You will use the <code>docker</code> client to build and push containers and <code>swarm</code> to deploy, start, and manage your applications.</p>
+
+<h2 id="getting-started-with-docker">Getting started with Docker</h2>
+
+<p>In this section we will give you a hands-on introduction to working with Docker. If you already know how to work with Docker you can skip this. If not you should at least have a look and get used to working with containers and images, as you will need these for working with Giant Swarm.</p>
+
+<p>Before we start let’s make sure that your have <a href="https://docs.docker.com/installation/">Docker installed on your development environment</a>. On Linux this should be pretty straight forward. As Docker uses Linux containers the installation is slightly more complex on a Mac. The easiest and for beginners recommended version is installing Boot2Docker. It has an easy installer and installs Virtualbox and a Boot2Docker virtual machine to host your Docker daemon and containers. There’s easy <a href="https://docs.docker.com/installation/mac/">installation instructions in the Docker Documentation</a>, however, we also created our own very detailed <a href="https://github.com/kordless/boot2docker-ing">guide to installing Boot2Docker</a>, which even includes a <a href="https://vimeo.com/120645766">video tutorial</a>.</p>
+
+<p>After that you should have the docker command available. You can run a first Hello World like follows (keep in mind that if you’re running the docker daemon directly on your system, i.e. on Linux, then you need to put <code>sudo</code> in front of every docker command):</p>
+
+<pre><code class="language-nohighlight">$ docker run hello-world
+</code></pre>
+
+<p>This will pull the Docker hello-world image (and all underlying images) and run them on your Docker daemon. So, let’s get started and familiarize ourselves with running containers.</p>
+
+<h2 id="running-containers">Running Containers</h2>
+
+<p>We start with a deeper look into what we can do with <code>docker run</code></p>
+
+<pre><code class="language-nohighlight">$ docker run debian:wheezy /bin/echo 'Hello world'
+</code></pre>
+
+<p>What this does, is download and run the Debian container in its <code>wheezy</code> version (we call these tags, but more on that later) and run <code>/bin/echo 'Hello world'</code> inside that container. What happens after that, is that the container stops again. Docker runs the container only as long as the command you specify is active, so if you want your container to stay, give it a command that stays active. A lot of containers come pre-built like this, e.g. the standard Redis container:</p>
+
+<pre><code class="language-nohighlight">$ docker run redis
+</code></pre>
+
+<p>Note that this image uses debian:wheezy as its base image, so the download is a lot faster this time, as we only need the additional layers on top of that now (more on that later). However, now you’re stuck inside the container, which wouldn’t be what you want, if you usually start a Redis. Thus, we need a way to start a container in the background:</p>
+
+<pre><code class="language-nohighlight">$ docker run -d redis
+</code></pre>
+
+<p>Now we have a daemonized Redis and could connect to it from outside or from other containers. We do this by connecting to the IP of our docker daemon, which in boot2docker we get with:</p>
+
+<pre><code class="language-nohighlight">$ boot2docker ip
+</code></pre>
+
+<p>However, we have not specified a port, so let’s do this again, this time with a port. Let’s stop our container. For this we need the container ID, so first:</p>
+
+<pre><code class="language-nohighlight">$ docker ps
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS               NAMES
+113f2a688eb2        redis:latest        &quot;/entrypoint.sh redi   30 minutes ago      Up 5 seconds        6379/tcp            goofy_wozniak
+</code></pre>
+
+<p>Now that we have the Container ID: <code>113f2a688eb2</code> (note this will be different every time you run an image), we can stop the container:</p>
+
+<pre><code class="language-nohighlight">$ docker stop 113f2a688eb2
+</code></pre>
+
+<p>To make this easier we can assign a name to a container, let’s combine that with assigning ports:</p>
+
+<pre><code class="language-nohighlight">$ docker run -d -p 9736:6379 --name redis_container redis
+</code></pre>
+
+<p>We just started a Redis container in the background, which is called redis_container. It exposes the host port 9736, which it connects to port 6379 (the standard Redis port) inside the container. So now, let&rsquo;s work with it.</p>
+
+<h2 id="working-with-containers">Working with Containers</h2>
+
+<p>Now that we know how to run containers, let’s see how we can work with them.</p>
+
+<p>To see which containers are currently running we can use the <code>docker ps</code> command. AS this does not show any stopped containers we can use <code>docker ps -a</code> to show all containers that we have.</p>
+
+<p>To look at our application’s logs we can use <code>docker logs</code> like following:</p>
+
+<pre><code class="language-nohighlight">$ docker logs -f redis_container
+</code></pre>
+
+<p>The <code>-f</code> flag makes the command work like <code>tail -f</code> and watch the standard output of the container.</p>
+
+<p>If we want to go deeper into the container we can also let Docker show us the processes running inside a container:</p>
+
+<pre><code class="language-nohighlight">$ docker top redis_container
+</code></pre>
+
+<p>Going even deeper we can let Docker give us an overview of configuration and status information for a given container:</p>
+
+<pre><code class="language-nohighlight">$ docker inspect redis_container
+</code></pre>
+
+<p>Stopping and restarting a container is simple, too:</p>
+
+<pre><code class="language-nohighlight">$ docker stop redis_container
+$ docker start redis_container
+</code></pre>
+
+<p>In case we don’t want the application anymore we can also remove it completely. Keep in mind that for removing a container you need to stop it first:</p>
+
+<pre><code class="language-nohighlight">$ docker stop redis_container
+$ docker rm redis_container
+</code></pre>
+
+<p>Now <code>docker ps -a</code> shouldn’t show our container anymore.</p>
+
+<h2 id="working-with-images">Working with Images</h2>
+
+<p>Images are the basis of containers in Docker and as you will see also in Giant Swarm. We have worked with images already in the previous sections of this guide, but let’s go into a bit more detail here. We’ll start with simply listing all images on our host:</p>
+
+<pre><code class="language-nohighlight">$ docker images
+</code></pre>
+
+<p>You should see the image we used in the previous sections and some crucial information about them, incl. their repository, tags, the image ID and the size.</p>
+
+<p>If you want to just download a new image without (or usually in preparation for) running it. You can use <code>docker pull</code>:</p>
+
+<pre><code class="language-nohighlight">$ docker pull hello-world
+</code></pre>
+
+<p>You can see that docker downloads all layers that this image consists of. In case you have a different image on your host that already uses some of these layers, docker just keeps that and skips downloading that part of the image. This makes the process of running new instances or variations of your stack extremely fast.</p>
+
+<p>If you want to find public images the Docker Hub has a nice searchable interface with many standard images, incl. some basic images that are officially maintained supported from Docker. If you want to search for images on the command line you can use the <code>docker search</code> command:</p>
+
+<pre><code class="language-nohighlight">$ docker search redis
+</code></pre>
+
+<h2 id="creating-your-own-images">Creating your Own Images</h2>
+
+<p>There’s two ways to create your own images:</p>
+
+<ol>
+<li>You change a container that is based on an existing image and commit it to a new image.</li>
+<li>You build a new image from a Dockerfile</li>
+</ol>
+
+<p>Note, we recommend always trying to build an image from a Dockerfile, as this allows for better reproduction of and iteration on your image.</p>
+
+<p>However, let’s see what we have to do to change an existing container. For changing a container you have to first run it:</p>
+
+<pre><code class="language-nohighlight">$ docker run -t -i --name changing_container ubuntu:14.04 /bin/bash
+</code></pre>
+
+<p>Now when you’re inside the container, you can change it to your liking, e.g.:</p>
+
+<pre><code class="language-nohighlight">$ apt-get update
+$ apt-get install default-jdk
+</code></pre>
+
+<p>Once you’re done, you need to exit your container using the <code>exit</code> command.</p>
+
+<p>Now that we have a new container, we can “save” it by committing it to a new image. This can either be a new version of an existing image, or a completely new image.</p>
+
+<pre><code class="language-nohighlight">$ docker commit -m &quot;Added OpenJDK 7&quot; -a &quot;Mr. Smith&quot; changing_container yourusername/java:7
+</code></pre>
+
+<p>Here we used the <code>-m</code> flag to add a commit message and the <code>-a</code> flag to specify an author. Further, we specified a target <code>yourusername/java:7</code>, which consists of a user <code>yourusername</code>, an image name <code>java</code> and a tag <code>7</code>.</p>
+
+<p>This image will now be available to us locally, so we can run it like any other image:</p>
+
+<pre><code class="language-nohighlight">$ docker run -t -i yourusername/java:7 /bin/bash
+</code></pre>
+
+<p>Like mentioned above, the better way to create an image is to build it from a Dockerfile. For this we have create a Dockerfile in our projects directory and open it with the editor of our choice. A Dockerfile that recreates the image we created manually above would look like following:</p>
+
+<pre><code>FROM ubuntu:14.04
+MAINTAINER Mr Smith &lt;mr@smith.com&gt;
+RUN apt-get update &amp;&amp; apt-get install -y default-jdk
+ENTRYPOINT /bin/bash
+</code></pre>
+
+<p>Dockerfiles always consist of <code>INSTRUCTIONS</code> and <code>statements</code>. They always start with defining a base image using <code>FROM</code>. Here we chose the official Ubuntu 14.04 image. We can optionally add a <code>MAINTAINER</code> to specify who’s maintaining this image. After defining the base image we execute <code>RUN</code> commands, which usually install and/or setup packages. In the above Dockerfile we additionally defined an <code>ENTRYPOINT</code>, which specifies a command that gets run once the image has started. This way we won’t have to include this in the <code>docker run</code> command. Note, that the container only runs as long as this command is running, so if this command is only short-lived the container will stop automatically.</p>
+
+<p>Now let’s build our image:</p>
+
+<pre><code class="language-nohighlight">$ docker build -t yourusername/java:7 .
+</code></pre>
+
+<p>This will result in a similar image as the above, only that we don’t need the <code>/bin/bash</code> now anymore to run it:</p>
+
+<pre><code class="language-nohighlight">$ docker run -t -i --name our_java yourusername/java:7
+</code></pre>
+
+<p>Again use the <code>exit</code> command to exit the container. Additionally, you can add tags to an image after you have commited or built it.</p>
+
+<pre><code class="language-nohighlight">$ docker tag yourusername/java:7 yourusername/java:seven
+</code></pre>
+
+<p>Looking at our images we can see that there’s two tags representing the same image now:</p>
+
+<pre><code class="language-nohighlight">$ docker images
+REPOSITORY                                              TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+yourusername/java                                            7                   0e5da60a9318        16 minutes ago      572.1 MB
+yourusername/java                                            seven               0e5da60a9318        16 minutes ago      572.1 MB
+</code></pre>
+
+<p>The <code>:7</code> and <code>:seven</code> tags both point to the same image and will stay like that even with further updates of this image.</p>
+
+<p>Finally, we can push an image to the Docker Hub, so we can share it with others or use it on other hosts (or in Giant Swarm).</p>
+
+<pre><code class="language-nohighlight">$ docker push yourusername/java
+</code></pre>
+
+<p>This will push the whole repository of <code>yourusername/java</code>, incl. all tags and changes to the Docker Hub. If you want to keep your images private, you can use our <a href="/reference/registry/">private registry</a>. This also creates a new <code>:latest</code> tag, which always points to the last image under the same name, even if the last one has a lower “version number”, e.g. <code>:6</code> (, which can happen e.g. when you fix an old version after already having a new one).</p>
+
+<p>If you want to remove an image from your host, you can use the <code>docker rmi</code> command.</p>
+
+<pre><code class="language-nohighlight">$ docker rmi yourusername/java
+</code></pre>
+
+<p>Note that this does only delete the local images on your host, not the images that you have already pushed to a Registry.</p>
+
+<p>You should now be equipped to use Docker enough, to get started and running with Giant Swarm in most use-cases. If you want to go a bit deeper, the Docker Documentation is a good place to start.</p>
+
+<p>When using Giant Swarm you usually need to use the Docker client mainly for building and pushing images to either the public Docker Hub (as described above) or our private registry. For the latter you can consult our <a href="/reference/registry/">registry reference page</a>.</p>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

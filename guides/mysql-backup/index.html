@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MySQL with Backups &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This guide shows you how you can create periodic backups of your MySQL database with a very simple, additional component running in your service.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/mysql-backup/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_mysql-backup_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#mysql-with-backups">MySQL with Backups</a>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#aws-s3-setup-overview">AWS S3 setup overview</a></li>
+<li><a href="#a-local-mysql-database-for-testing">A local MySQL database for testing</a></li>
+<li><a href="#building-our-archiver-docker-image">Building our archiver Docker image</a></li>
+<li><a href="#bringing-it-to-giant-swarm">Bringing it to Giant Swarm</a>
+<ul>
+<li><a href="#uploading-to-the-registry">Uploading to the registry</a></li>
+<li><a href="#defining-your-service">Defining your service</a></li>
+<li><a href="#starting-your-service">Starting your service</a></li>
+</ul></li>
+<li><a href="#running-the-archiver-component-on-demand">Running the archiver component on demand</a></li>
+<li><a href="#further-reading">Further reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified August 10, 2015</p>
+
+      
+
+<h1 id="mysql-with-backups">MySQL with Backups</h1>
+
+<p class="lead">In this guide we show you how a specialized component running inside your Giant Swarm service can be used to create periodic backups of your MySQL database</p>
+
+<p>Setting up a MySQL database on Giant Swarm is simple. The Docker Hub provides a <a href="https://hub.docker.com/_/mysql/">standard image</a> in various flavors. But what happens as soon as your application creates actual data? Servers can break any time, data can be lost. So you need a backup system.</p>
+
+<p>In this guide we show you how you can add a component to your Giant Swarm service that accomplishes one thing only: Create a database dump and store it to Amazon S3. This way you don&rsquo;t have to touch your existing components. Each function has it&rsquo;s place. Truly microservistic. :-) However, be aware that this is only one possible solution and might not be ideal for you.</p>
+
+<p>This guide proposes Amazon S3 as a means to store backups, because it&rsquo;s well-known. And it has the advantage that it is possible to create user accounts with very specific permissions. You might adapt this guide to use different cloud storage services or your own (S)FTP server. If you write this up, let us know. We&rsquo;re happy to learn.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>To follow this guide, you will need the following:</p>
+
+<ul>
+<li>The <code>swarm</code> and <code>docker</code> utilities and some basic knowledge on how to use them. If you followed our <a href="/guides/your-first-service/">Your first service</a> tutorial, you&rsquo;ll be fine.</li>
+<li>An S3 bucket and a dedicated AWS user account with permission to upload files into the bucket</li>
+<li>The source code used in this guide from <a href="https://github.com/giantswarm/giantswarm-mysql-archiver">GitHub</a>. We recommend to quickly clone it:</li>
+</ul>
+
+<pre><code class="language-nohighlight">$ git clone git@github.com:giantswarm/giantswarm-mysql-archiver.git
+$ cd giantswarm-mysql-archiver
+</code></pre>
+
+<p>A hint for the impatient: There is a <code>Makefile</code> in that repository which allows you to call most commands described in this tutorial in a reproducible way.</p>
+
+<h2 id="aws-s3-setup-overview">AWS S3 setup overview</h2>
+
+<p>Setting up everything on AWS involves a few steps which are outlined here. We don&rsquo;t go into all the details, since there should be plenty of tutorials for that elsewhere.</p>
+
+<p>Note that we explicitly recommend to create a dedicated AWS identity exclusively for this backup service. This way you can easily revoke permissions in the case that the according credentials get in the wrong hands. And you can easily restrict the S3 permissions to uploading into a specific bucket.</p>
+
+<p>Here is our recipe for your permission setup:</p>
+
+<ol>
+<li>Create an AWS user group</li>
+<li>Create an S3 bucket</li>
+<li>Create a policy with write permission for this group and bucket</li>
+<li>Add the policy to the bucket</li>
+<li>Create a user</li>
+<li>Store the credentials for this user, as you will need them in a moment</li>
+<li>Add the user to the group</li>
+</ol>
+
+<p>Here is the <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/using-iam-policies.html">AWS documentation on identities and bucket policies</a>. Also very helpful: The <a href="http://awspolicygen.s3.amazonaws.com/policygen.html">AWS Policy Generator</a>.</p>
+
+<h2 id="a-local-mysql-database-for-testing">A local MySQL database for testing</h2>
+
+<p>Before deploying things to Giant Swarm, we want to test our backup component locally. So we need a MySQL database to backup.</p>
+
+<p>If you don&rsquo;t already have a database available for that purpose, the easiest thing you can do is run one using a standard MySQL docker image.</p>
+
+<p>Here is an example command:</p>
+
+<pre><code class="language-nohighlight">$ docker run -d --name=mysql \
+    -e MYSQL_DATABASE=mydb \
+    -e MYSQL_ROOT_PASSWORD=some-password \
+    mysql:5.5
+</code></pre>
+
+<p>With the command above, you start MySQL in the background with one database called <code>mydb</code>. The password for the MySQL user <code>root</code> is set to <code>some-password</code>. You can change this to whatever you want.</p>
+
+<h2 id="building-our-archiver-docker-image">Building our archiver Docker image</h2>
+
+<p>Let&rsquo;s build the Docker image for our archiver. It will be based on this Dockerfile:</p>
+
+<pre><code class="language-Dockerfile">FROM debian:jessie
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update -y -q &amp;&amp; \
+  apt-get install -y mysql-client-5.5 python-pip &amp;&amp; \
+  apt-get clean &amp;&amp; \
+  rm -rf /var/lib/apt/lists/*
+
+RUN pip install awscli
+
+ADD backup.sh /backup.sh
+RUN chmod 0755 /backup.sh
+
+ENTRYPOINT [&quot;/backup.sh&quot;]
+</code></pre>
+
+<p>What does it do? The image we build with this Dockerfile will be based on an official Debian image. We install the package <code>python-pip</code> so we can install and run the AWS command line interface (<code>awscli</code>), which is written in Python. In addition, the <code>mysql-client-5.5</code> package is installed, which provides the <code>mysqldump</code> command line utility we need to create our SQL dumps.</p>
+
+<p>Last but not least, we add a shell script called <code>backup.sh</code> to our image, which is executed by default when the container is started. Let&rsquo;s have a look at that script.</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+# interval between backups in seconds
+interval=$BACKUP_INTERVAL
+
+# MySQL configuration
+dbhost=$MYSQL_PORT_3306_TCP_ADDR
+dbport=$MYSQL_PORT_3306_TCP_PORT
+dbname=$DB_NAME
+dbuser=$DB_USER
+dbpass=$DB_PASSWORD
+
+# Amazon S3 target bucket
+bucket=$S3_BUCKET
+
+# pattern to create subdirectories from date elements,
+# e. g. '%Y/%m/%d' or '%Y/%Y-%m-%d'
+pathpattern=$PATH_DATEPATTERN
+
+count=1
+
+while [ 1 ]
+do
+    # set date-dependent path element
+    datepath=`date +&quot;$pathpattern&quot;`
+    
+    # determine file name
+    datetime=`date +&quot;%Y-%m-%d_%H-%M&quot;`
+    filename=$dbname_$datetime.sql
+    
+    echo &quot;Writing backup No. $count for $dbhost:$dbport/$dbname to s3://$bucket/$datepath/$filename.gz&quot;
+    
+    mysqldump -h $dbhost -P $dbport -u $dbuser --password=&quot;$dbpass&quot; $dbname &gt; $filename
+
+    gzip $filename
+    aws s3 cp $filename.gz s3://$bucket/$datepath/$filename.gz &amp;&amp; echo &quot;Backup No. $count finished&quot;
+    rm $filename.gz
+    
+    # increment counter and for the time to pass by...
+    count=`expr $count + 1`
+    sleep $interval
+done
+</code></pre>
+
+<p>The script provides a generic way to</p>
+
+<ul>
+<li>Dump a mysql database to an SQL file</li>
+<li>Compress the SQL file using GZip</li>
+<li>Upload the compressed file to some S3 bucket</li>
+</ul>
+
+<p>All configuration is provided via environment variables, which means that the Docker image we create can be used for various databases.</p>
+
+<p>Let&rsquo;s build the Docker image now. Be sure to replace <code>yourusername</code> with your actual Giant Swarm username in this command:</p>
+
+<pre><code class="language-nohighlight">$ docker build -t registry.giantswarm.io/yourusername/mysql-archiver ./
+</code></pre>
+
+<p>When this is done, we can run a container from this image locally to test if things work as they should. As said, all configuration for the <code>backup.sh</code> is taken from environment variables, so we have to pass them all to the container. Here is how we do it locally:</p>
+
+<pre><code class="language-nohighlight">docker run --rm -ti \
+  -e &quot;S3_BUCKET=your-bucket-name/your-path-to-mysql-backups/&quot; \
+  -e &quot;AWS_ACCESS_KEY_ID=your-aws-access-key-id&quot; \
+  -e &quot;AWS_SECRET_ACCESS_KEY=your-aws-secret-access-key&quot; \
+  -e &quot;AWS_DEFAULT_REGION=eu-central-1&quot; \
+  -e &quot;BACKUP_INTERVAL=3600&quot; \
+  -e &quot;DB_NAME=mydb&quot; \
+  -e &quot;DB_USER=root&quot; \
+  -e &quot;DB_PASSWORD=some-password&quot; \
+  -e &quot;PATH_DATEPATTERN=%Y/%m&quot; \
+  --link mysql:mysql \
+  registry.giantswarm.io/yourusername/mysql-archiver
+</code></pre>
+
+<p>What these environment variables mean:</p>
+
+<ul>
+<li><code>S3_BUCKET</code>: Name of the bucket you want to put backups in. May include additional path elements. Do not prepend <code>s3://</code>!</li>
+<li><code>AWS_ACCESS_KEY_ID</code>: The access key ID of the AWS account you configured to write to your target bucket.</li>
+<li><code>AWS_SECRET_ACCESS_KEY</code>: The secret access key of the AWS account you configured to write to your target bucket.</li>
+<li><code>AWS_DEFAULT_REGION</code> (<em>optional</em>): This will be needed in some cases to indicate the location of the S3 bucket. We needed them when testing with buckets created in the Frankfurt location (<code>eu-central-1</code>). Might not be required with some other locations.</li>
+<li><code>BACKUP_INTERVAL</code>: Number of seconds to wait between backups. 3600 is one hour.</li>
+<li><code>DB_NAME</code>: Name of the database you want to backup.</li>
+<li><code>DB_USER</code>: Database user to use for the backup.</li>
+<li><code>DB_PASSWORD</code>: Password for the database user to be used.</li>
+<li><code>PATH_DATEPATTERN</code>: To store you backup in a nice folder hierarchy with folders named after the current date, define a date pattern. Unix <code>date</code> format placeholders like <code>%Y</code> (year), <code>%m</code> (month) and <code>%d</code> (day) can be used. For example, <code>%Y/%m</code> creates one folder per year with one sub folder per month. Note that the backup file itself is also datestamped.</li>
+</ul>
+
+<p>Except for <code>AWS_DEFAULT_REGION</code>, all these variables are in fact required.</p>
+
+<p>If you have looked at the <code>backup.sh</code> script really closely, you may have noticed that uses two variables which we do not pass here: <code>MYSQL_PORT_3306_TCP_ADDR</code> and <code>MYSQL_PORT_3306_TCP_PORT</code>. These are automatically set by &ldquo;container links&rdquo;, which are enabled by naming the MySQL container <code>mysql</code> and referring to that name in the <code>--link</code> flag when running the <code>mysql-archiver</code> container.</p>
+
+<p>Now, adapt the <code>docker run</code> command above to match your requirements and give it a try. Hint: Set a low <code>BACKUP_INTERVAL</code>, for example <code>10</code> seconds, when testing so you don&rsquo;t have to wait too long for a second and third backup to be made.</p>
+
+<p>Execute the adapted <code>docker run</code> command. You should see a log output like this:</p>
+
+<pre><code class="language-nohighlight">Writing backup No. 1 for 192.168.59.103:3306/mysql to s3://my-bucket/backup/mysql/2015/01/2015-01-13_17-48.sql.gz
+upload: ./2015-01-13_17-48.sql.gz to s3://my-bucket/backup/mysql/2015/01/2015-01-13_17-48.sql.gz
+Writing backup No. 1 finished.
+Writing backup No. 2 for 192.168.59.103:3306/mysql to s3://my-bucket/backup/mysql/2015/01/2015-01-13_17-49.sql.gz
+upload: ./2015-01-13_17-49.sql.gz to s3://my-bucket/backup/mysql/2015/01/2015-01-13_17-49.sql.gz
+Writing backup No. 2 finished.
+</code></pre>
+
+<p>When you get this kind of output, congratulations! You have just written database backups to Amazon S3.</p>
+
+<p>You can stop the process using <code>Ctrl + C</code>.</p>
+
+<h2 id="bringing-it-to-giant-swarm">Bringing it to Giant Swarm</h2>
+
+<p>After your Docker image is proven locally, let&rsquo;s make it ready for use in the cloud. On Giant Swarm, that is.</p>
+
+<h3 id="uploading-to-the-registry">Uploading to the registry</h3>
+
+<p>To run your Docker image on Giant Swarm you have to upload it to a Docker registry. Giant Swarm already provides you with a private registry. Your Giant Swarm account is also used to access this registry. So let&rsquo;s use this one.</p>
+
+<p>First, make sure you are logged in with the <code>docker</code> command line tool and our registry. Use your Giant Swarm username and the according password when prompted.</p>
+
+<pre><code class="language-nohighlight">$ docker login https://registry.giantswarm.io
+</code></pre>
+
+<p>Now push your image to the registry.</p>
+
+<pre><code class="language-nohighlight">$ docker push registry.giantswarm.io/yourusername/mysql-archiver
+</code></pre>
+
+<h3 id="defining-your-service">Defining your service</h3>
+
+<p>You might already have a service with a MySQL component ready. If not, you can easily create one from the example <code>swarm.json</code> below. Keep in mind that the example won&rsquo;t do anything meaningful. It only contains an empty database to be backed up.</p>
+
+<p>With an existing service, add a new component for your MySQL archiver. You can use the <code>mysql-archiver</code> component in the example below as a template.</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;mysql-archiver-test&quot;,
+  &quot;components&quot;: {
+    &quot;mysql&quot;: {
+      &quot;image&quot;: &quot;mysql:5.5&quot;,
+      &quot;ports&quot;: 3306,
+      &quot;env&quot;: {
+        &quot;MYSQL_ROOT_PASSWORD&quot;: &quot;$mysqlpasswd&quot;,
+        &quot;MYSQL_DATABASE&quot;: &quot;$mysqldb&quot;
+      },
+      &quot;volumes&quot;: [
+        {
+          &quot;path&quot;: &quot;/var/lib/mysql&quot;,
+          &quot;size&quot;: &quot;2 GB&quot;
+        }
+      ]
+    },
+    &quot;mysql-archiver&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/yourusername/mysql-archiver:latest&quot;,
+      &quot;env&quot;: {
+        &quot;DB_NAME&quot;: &quot;$mysqldb&quot;,
+        &quot;DB_USER&quot;: &quot;root&quot;,
+        &quot;DB_PASSWORD&quot;: &quot;$mysqlpasswd&quot;,
+        &quot;S3_BUCKET&quot;: &quot;your-bucket-name/your-path-to-mysql-backups/&quot;,
+        &quot;AWS_ACCESS_KEY_ID&quot;: &quot;your-aws-access-key-id&quot;,
+        &quot;AWS_SECRET_ACCESS_KEY&quot;: &quot;your-aws-secret-access-key&quot;,
+        &quot;AWS_DEFAULT_REGION&quot;: &quot;eu-central-1&quot;,
+        &quot;BACKUP_INTERVAL&quot;: &quot;60&quot;,
+        &quot;PATH_DATEPATTERN&quot;: &quot;%Y/%m&quot;
+      },
+      &quot;links&quot;: [
+        {
+          &quot;component&quot;: &quot;mysql&quot;,
+          &quot;target_port&quot;: 3306
+        }
+      ],
+      &quot;ports&quot;: 3000
+    }
+  }
+}
+</code></pre>
+
+<p>The example shows how the Docker image you created, tested locally and pushed to the registry is now used as a component inside a service definition. You are of course free to set the component name as you like. The <code>image</code> key needs as a value the complete image name you used when pushing your Docker image to the registry.</p>
+
+<p>The <code>env</code> key of the component definition gets the familiar environment variable definitions that are needed for the backup script working in the container.</p>
+
+<p>Worth a special note: We use two variables in the service definition file, <code>$mysqldb</code> and <code>$mysqlpass</code> which you can detect by the <code>$</code> prefix. These help you to prevent repeating yourself in the config and also save you from setting a password in a file which you might want to upload into a version control system. We show you how to replace these variables in a minute.</p>
+
+<p>Pay special attention to the <code>links</code> definition. The <code>mysql-archiver</code> component is made to link to the <code>mysql</code> component with exposed port 3306. As a result, the environment variables named <code>MYSQL_PORT_3306_TCP_ADDR</code> and <code>MYSQL_PORT_3306_TCP_PORT</code>, which we already talked about above, are declared when the component is started.</p>
+
+<h3 id="starting-your-service">Starting your service</h3>
+
+<p>If you already had the service created on Giant Swarm and you now modified it to contain the archiver component, you will have to delete this service using <code>swarm delete &lt;service_name&gt;</code>. Note that this results in the <strong>loss of all data</strong> in your containers and volumes of that service (that&rsquo;s why we do all this in the first place, isn&rsquo;t it?).</p>
+
+<p>If you just created the service definition for a new service (or you deleted the old one), you can now create and start it on Giant Swarm in one step:</p>
+
+<pre><code class="language-nohighlight">$ swarm up --var=mysqldb=mydb --var=mysqlpass=rootpasswd
+</code></pre>
+
+<p>This will create the service and start its component instances. When the service is launched, you can inspect the logs of the <code>mysql-archiver</code> component to find out if everything works as expected. Use the <code>swarm status &lt;service_name&gt;</code> command to list all components first. Your output should look similar to this:</p>
+
+<pre><code class="language-nohighlight">Service your-service is up
+
+component       instanceid    created              status
+mysql           g8GFvBVLj36t  2015-01-13 18:02:37  up
+mysql-archiver  AfeLfIT1SeYy  2015-01-13 18:02:37  up
+</code></pre>
+
+<p>Using the instance ID of the <code>mysql-archiver</code> component, you can now access the logs:</p>
+
+<pre><code class="language-nohighlight">$ swarm logs AfeLfIT1SeYy
+</code></pre>
+
+<p>If everything works fine, they look pretty similar to what you saw when running the container locally.</p>
+
+<h2 id="running-the-archiver-component-on-demand">Running the archiver component on demand</h2>
+
+<p>With the archiver running in it&rsquo;s own component, you can stop and start it independently of the database component. To stop it when running, use <code>swarm stop your-service/mysql-archiver</code>. To start again, use <code>swarm start your-app/mysql-archiver</code>.</p>
+
+<p>This way you could also use the archiver component as an on-demand backup tool. Just start it when you want to create a backup and stop it manually when that backup is finished (checking the logs or looking for the file to appear on S3).</p>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+<li><a href="/reference/registry/">Using the registry</a> - to find out more about using our Docker registry.</li>
+<li><a href="http://dev.mysql.com/doc/refman/5.5/en/mysqldump.html">mysqldump reference</a> - to learn about other ways to call <code>mysqldump</code> and how this would affect your backup</li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

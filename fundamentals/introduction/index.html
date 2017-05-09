@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Introduction to Giant Swarm &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="A general introduction into what Giant Swarm is and does. Start here if you are interested in using our service.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/fundamentals/introduction/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_fundamentals_introduction_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#introduction-to-giant-swarm">Introduction to Giant Swarm</a>
+<ul>
+<li><a href="#what-is-docker">What is Docker?</a></li>
+<li><a href="#anatomy">The Anatomy of a Giant Swarm Service</a></li>
+<li><a href="#the-service-definition">The Service Definition</a></li>
+<li><a href="#controlling-giant-swarm-services">Controlling Giant Swarm Services</a></li>
+<li><a href="#next-in-fundamentals">Next in Fundamentals</a></li>
+<li><a href="#further-reading">Further Reading</a>
+<ul>
+<li>
+<ul>
+<li><a href="#docker">Docker</a></li>
+<li><a href="#microservices">Microservices</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#get-started-with-giant-swarm">Get Started With Giant Swarm</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified November 12, 2015</p>
+
+      
+
+<ol class="breadcrumb">
+  <li><a href="/">Docs Home</a></li>
+  <li><a href="/fundamentals/">Fundamentals</a></li>
+</ol>
+
+<h1 id="introduction-to-giant-swarm">Introduction to Giant Swarm</h1>
+
+<p>With Giant Swarm you can build, deploy and manage your containerized server applications. There are no restrictions regarding programming languages, frameworks, or databases. We are especially optimized for applications that are built in a microservices style. We offer an opinionated solution, but maintain the flexibility to change the tooling to your own liking and needs.</p>
+
+<p>Services you run on Giant Swarm are defined in a <em>service definition</em> file. In this definition you assemble any number of Docker images, each forming a <em>component</em>, according to your needs. To deploy a service, first, you use a Docker client or a <abbr title="Continuous Integration">CI</abbr>/<abbr title="Continuous Deployment">CD</abbr> pipeline to create and deploy Docker images. Then you use Giant Swarm&rsquo;s client software or our API to start the creation and orchestration of your Docker containers on the cluster, based on your service defintition and images.</p>
+
+<p><img src="/img/introduction_overview.png" alt="Overview" />
+</p>
+
+<p><strong>Read on:</strong></p>
+
+<ul>
+<li><a href="https://giantswarm.io/microservices/">What are microservices?</a></li>
+</ul>
+
+<h2 id="what-is-docker">What is Docker?</h2>
+
+<p>Docker is the most popular application container format. It lets you package your own stack in lightweight, portable, and self-sufficient manner. Some call it therefor <em>lightweight virtual machine</em>. In contrast to traditional virtual machines, Docker is usually an order of magnitudes faster to work with, due to the lack of overhead.</p>
+
+<p class="quote">&quot;Docker means self-sufficient linux containers&quot;</p>
+
+<p>Docker is a great tool for microservice developers, since it allows you to package different parts of your service in separate images. These images can be executed as containers on different environments like a personal laptop as well as different server environments, like Giant Swarm&rsquo;s clusters.</p>
+
+<p>Docker benefits from a large, ever growing ecosystem with lots of predefined images for all sorts of tasks. From different languages like JavaScript to Golang over different stacks like Spring to Rails down to databases like Redis or MySQL. This makes defining individual images, based on templates from the ecosystem, very easy.</p>
+
+<p><strong>Read on:</strong></p>
+
+<ul>
+<li><a href="/guides/introduction-to-docker/">Introduction to Docker</a></li>
+</ul>
+
+<h2 id="anatomy">The Anatomy of a Giant Swarm Service</h2>
+
+<p>A <em>service</em> on Giant Swarm is a named grouping of any number of <em>service components</em> (or briefly <em>components</em>), where each component usually represents a Docker image. As a Giant Swarm user, you can define any number of services and it is up to you to decide how big or small your service(s) should be.</p>
+
+<p>Service components can be linked to each other, so that connections can be made easily, for example from an application server component to a cache component. These links work analog to Docker links. Each component can have multiple Docker containers running it, which we call <em>component instances</em> (or just <em>instances</em> for short). Giant Swarm&rsquo;s orchestration automation takes care for you that load is distributed between instances. You can use Giant Swarm&rsquo;s software or API to monitor the activity and resource usage of your instances and scale components to cope with fluctuating loads.</p>
+
+<p>A rather simple real-life example for a service on Giant Swarm would be a web application that consists of a caching proxy component, a webserver component, a web application component, caches, data stores, and a search engine.</p>
+
+<p>Or, if you&rsquo;d like to follow a domain-driven approach, you could define e. g. a product catalog service next to a shopping cart service. Both could consists of similar components like web application servers, caches, and databases. Both services could have connections to each other.</p>
+
+<p><img src="/img/introduction_anatomy.png" alt="Anatomy Illustration" />
+</p>
+
+<h2 id="the-service-definition">The Service Definition</h2>
+
+<p>For Giant Swarm, services are defined in a JSON-based definition format. The typical service definition file is called <code>swarm.json</code> and consists of two main elements: A <em>name</em> and a set of <em>components</em>. The components are the building blocks of services on Giant Swarm.</p>
+
+<p>Let&rsquo;s look at an example. The following service named <code>shop</code> consists of three components: A main application server (called <code>main</code>), a Redis data store (<code>redis</code>) and an Elasticsearch server (<code>elasticsearch</code>). The <code>main</code> component is publicly accessible via a domain, and it is connected internally to the other components via links.</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;shop&quot;,
+  &quot;components&quot;: {
+    &quot;main&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/acme/shop-main&quot;,
+      &quot;ports&quot;: 8000,
+      &quot;domains&quot;: {
+        &quot;8000&quot;: &quot;acme-shop.com&quot;
+      },
+      &quot;links&quot;: [
+        {&quot;component&quot;: &quot;redis&quot;, &quot;target_port&quot;: 6379},
+        {&quot;component&quot;: &quot;elasticsearch&quot;, &quot;target_port&quot;: 9200}
+      ]
+    },
+    &quot;redis&quot;: {
+      &quot;image&quot;: &quot;redis:2.6&quot;,
+      &quot;ports&quot;: 6379
+    },
+    &quot;elasticsearch&quot;: {
+      &quot;image&quot;: &quot;elasticsearch:1.7&quot;,
+      &quot;ports&quot;: 9200
+    }
+  }
+}
+</code></pre>
+
+<p><strong>Read on:</strong></p>
+
+<ul>
+<li><a href="/reference/swarm-json/">Service Definition Reference</a></li>
+<li><a href="/guides/introduction-to-docker/">Introduction to Docker</a> - our overview on Docker</li>
+<li><a href="/guides/your-first-application/">Your First Service</a> - our getting started tutorials with examples using different stacks</li>
+</ul>
+
+<h2 id="controlling-giant-swarm-services">Controlling Giant Swarm Services</h2>
+
+<p>Your main interface to Giant Swarm is a command line interface (CLI) called <code>swarm</code>. It allows you to deploy services based on a service definition, start, stop and scale components, fetch status information, statistics, and logs.</p>
+
+<pre><code class="language-nohighlight">$ swarm ls
+2 services available:
+
+service         environment  created              status
+currentweather  luebken/dev  2014-11-28 14:01:35  up
+helloworld      luebken/dev  2014-11-28 14:01:43  up
+</code></pre>
+
+<p>In addition, we are working on a complementing web user interface, allowing for simple and fast status checks, log access, and statistics monitoring.</p>
+
+<p>For deeper integration into custom-built tool chains, the Giant Swarm API, which is used by the CLI and web UI software, is open to all users.</p>
+
+<p>To facilitate team collaboration, Giant Swarm makes all services belong to an <em>organization</em>. Users can add and remove users to organizations to form teams with access to all services within the respective organization.</p>
+
+<p><strong>Read on:</strong></p>
+
+<ul>
+<li><a href="/reference/cli/">swarm CLI reference</a></li>
+<li><a href="/reference/api/">API reference</a></li>
+<li><a href="/guides/team-collaboration/">Collaborating as a team</a></li>
+</ul>
+
+<h2 id="next-in-fundamentals">Next in Fundamentals</h2>
+
+<ul>
+<li><a href="/fundamentals/architecture/">Architecture Overview</a> - Here we give an overview of the building blocks of the Giant Swarm infrastructure stack.</li>
+</ul>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<p>If you like to read (hear or watch) some more about Docker and Microservices, here are some recommendations from our side.</p>
+
+<h4 id="docker">Docker</h4>
+
+<ul>
+<li><p><a href="/guides/introduction-to-docker/">Introduction to Docker</a> - our own introductory Docker tutorial</p></li>
+
+<li><p><a href="https://docs.docker.com/">Docker Documentation</a> - The official Docker docs</p></li>
+
+<li><p><a href="http://www.dockerbook.com/">The Docker Book</a> - For book lovers, by James Turnbull</p></li>
+</ul>
+
+<h4 id="microservices">Microservices</h4>
+
+<ul>
+<li><p><a href="https://giantswarm.io/microservices/">Introduction to Microservice Architectures</a> - Our own short introduction to microservices</p></li>
+
+<li><p><a href="http://martinfowler.com/articles/microservices.html">Microservices</a> - The widely-shared introduction article by Martin Fowler and James Lewis</p></li>
+
+<li><p><a href="http://shop.oreilly.com/product/0636920033158.do">Building Microservices</a> - For book lovers, by Sam Newman</p></li>
+
+<li><p><a href="https://www.youtube.com/watch?v=nMTaS07i3jk">State of the Art in Microservices</a> - Presentation on DockerCon 14|EU by Adrian Cockcroft (Video)</p></li>
+
+<li><p><a href="https://www.innoq.com/de/links/microservices-se-radio/">Architecture and Micro Services</a> - Software Engineering Radio Podcast with Stefan Tilkov</p></li>
+</ul>
+
+<h2 id="get-started-with-giant-swarm">Get Started With Giant Swarm</h2>
+
+<ul>
+<li><p>If you don&rsquo;t have an account for Giant Swarm yet, <a href="https://giantswarm.io/">request an invite</a> now. We have a waiting list and the sooner you get on the list, the sooner you will be able to start using Giant Swarm.</p></li>
+
+<li><p>Once you have an account, check that everything is working fine using the Quick Start on the <a href="/">documentation start page</a>.</p></li>
+
+<li><p>Then we recommend to create <a href="/guides/your-first-service/">Your first service </a> on Giant Swarm, using one of many stacks we provide examples for.</p></li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

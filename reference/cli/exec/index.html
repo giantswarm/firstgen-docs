@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Execute a command in an instance &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This is the reference page for the &#39;swarm exec&#39; command, which allows you to call a command inside an instance of a component or open a shell.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/cli/exec/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_cli_exec_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#swarm-exec-run-command-on-instance"><code>swarm exec</code>: Run Command on Instance</a>
+<ul>
+<li><a href="#command-syntax">Command Syntax</a>
+<ul>
+<li><a href="#detach-from-running-processes">Detach from Running Processes</a></li>
+<li><a href="#running-commands-with-flags-arguments">Running Commands with Flags/Arguments</a></li>
+</ul></li>
+<li><a href="#considerations-and-limitations">Considerations and Limitations</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified November 10, 2015</p>
+
+      
+
+<h1 id="swarm-exec-run-command-on-instance"><code>swarm exec</code>: Run Command on Instance</h1>
+
+<p>The <code>swarm exec</code> command allows to execute a command inside an existing instance. The command run by <code>swarm exec</code> needs to be available inside the instance and can include an interactive shell. The instance needs to be in <code>up</code> state.</p>
+
+<h2 id="command-syntax">Command Syntax</h2>
+
+<p>The <code>swarm exec</code> command is called using the instance&rsquo;s unique ID:</p>
+
+<pre><code class="language-nohighlight">swarm exec &lt;instance_id&gt;
+</code></pre>
+
+<p>By default, the command will call <code>/bin/sh</code> to start an interactive shell:</p>
+
+<p><strong>Example with Response</strong></p>
+
+<pre><code class="language-nohighlight">$ swarm ls
+1 service available in environment 'bant/prod':
+
+service         created              status
+swacker         2015-07-18 19:51:34  up
+$ swarm status swacker
+Service swacker is up
+
+component  image                 instanceid    created              status
+flask      /bant/swacker:latest  wzchj2n3od47  2015-07-18 19:51:34  up
+$ swarm exec wzchj2n3od47
+# ls
+bin   dev  flask  lib    media  opt       proc    root  sbin  sys  usr
+boot  etc  home   lib64  mnt    pipeline  report  run   srv   tmp  var
+# exit
+</code></pre>
+
+<p><strong>Note:</strong> The use of <code>ls</code> requires the <code>ls</code> binary be available on the instance. If it fails, try shelling into the instance to debug!</p>
+
+<h3 id="detach-from-running-processes">Detach from Running Processes</h3>
+
+<p>The <code>swarm exec</code> command may optionally be used with the <code>-d</code> or <code>--detach</code> flags to detach the CLI from the running process specified by <code>&lt;command&gt;</code>:</p>
+
+<pre><code class="language-nohighlight">swarm exec &lt;instance-id&gt; -d &lt;command&gt;
+</code></pre>
+
+<p><strong>Example with Response</strong></p>
+
+<pre><code class="language-nohighlight">$ swarm exec hvuos3dhlgha --detach -- /opt/bin/backup_db.sh --location aws
+Command executed, no output has been generated.
+</code></pre>
+
+<h3 id="running-commands-with-flags-arguments">Running Commands with Flags/Arguments</h3>
+
+<p>The <code>swarm exec</code> command requires the use of the <code>--</code> separator when a <code>&lt;command&gt;</code> contains flags:</p>
+
+<p><strong>Example with Response</strong></p>
+
+<pre><code class="language-nohighlight">$ swarm exec wzchj2 -- ps -ax
+  PID TTY      STAT   TIME COMMAND
+    1 ?        Ss     0:00 /bin/bash /pipeline/source/entrypoint.sh
+   32 ?        S      0:02 python server.py
+   35 ?        Ss+    0:00 /bin/sh
+   79 ?        Rs+    0:00 ps -ax
+</code></pre>
+
+<p><strong>Note:</strong> The <code>&lt;instance_id&gt;</code> used in the command line may be referenced by using a variable number of characters, starting with the first character. The string used for matching instances must be unique across all instance IDs for the selected account and enviroment namespace for this to work properly.</p>
+
+<h2 id="considerations-and-limitations">Considerations and Limitations</h2>
+
+<p>When utilizing the <code>swarm exec</code> function the following considerations and limitations should be considered:</p>
+
+<ul>
+<li>Best practices suggest containers should only run a single process.</li>
+<li>The <code>swarm exec</code> function is best suited for short running processes.</li>
+<li>Long running processes should use the <code>-d</code> or <code>--detach</code> options.</li>
+<li>STDOUT and STDERR for commands will be outputted to terminal unless the command is detached.</li>
+<li>Processes are typically started using the <code>ENTRYPOINT</code> or <code>CMD</code> directives in the container&rsquo;s Dockerfile.</li>
+<li>Giant Swarm&rsquo;s software stack assumes a container should be restarted <em>only</em> when the main process in the container dies.</li>
+<li>Extra processes started outside the main process will not be monitored for restart or have their output visible in the instance logs.</li>
+<li>The return values of executed commands and their exit codes are not returned by <code>swarm exec</code>. Do <em>NOT</em> rely on exit codes from running a <code>swarm exec</code>!</li>
+</ul>
+
+<p><strong>Note:</strong> Use your best judgement when adding extra processes to a container. With microservices, less is always more!</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+<li><a href="/reference/cli/status/">View Service and Component Status</a></li>
+<li><a href="/reference/cli/stats/">View Instance Stats</a></li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

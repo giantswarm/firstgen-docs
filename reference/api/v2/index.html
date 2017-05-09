@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Giant Swarm API v2 Reference &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Detailed description of the Giant Swarm API v2.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/api/v2/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_api_v2_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#api-v2-reference">API v2 Reference</a>
+<ul>
+<li><a href="#basics">The Basics</a>
+<ul>
+<li><a href="#sections">Sections</a></li>
+</ul></li>
+<li><a href="#endpoint">Endpoint</a></li>
+<li><a href="#method-overview">Method Overview</a></li>
+<li><a href="#taskmethods">Task Methods</a>
+<ul>
+<li><a href="#ListTasks">List Tasks</a></li>
+<li><a href="#GetTask">Get Information on a Task</a></li>
+<li><a href="#WaitForTask">Wait For Task to Finish</a></li>
+</ul></li>
+<li><a href="#servicemethods">Service Methods</a>
+<ul>
+<li><a href="#StartService">Start a Service</a></li>
+<li><a href="#StopService">Stop a Service</a></li>
+<li><a href="#DeleteService">Delete a Service</a></li>
+</ul></li>
+<li><a href="#componentmethods">Component Methods</a>
+<ul>
+<li><a href="#StartComponent">Start a Component</a></li>
+<li><a href="#StopComponent">Stop a Component</a></li>
+<li><a href="#ScaleUpComponent">Scale Up a Component</a></li>
+<li><a href="#ScaleDownComponent">Scale Down a Component</a></li>
+<li><a href="#additional-information">Additional Information</a>
+<ul>
+<li><a href="#date-value-0001-01-01t00-00-00z">Date value <code>0001-01-01T00:00:00Z</code></a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified October 9, 2015</p>
+
+      
+
+<h1 id="api-v2-reference">API v2 Reference</h1>
+
+<p>This is the latest version of our API, adding some new functionality and some changes from <a href="/reference/api/v1/"><code>v1</code></a>.</p>
+
+<p>In a first step, the API v2 introduces asynchronous <a href="#taskmethods">tasks</a> and provides new methods where the new task concept is already applied.</p>
+
+<p>We will add all methods currently available in <code>v1</code> to <code>v2</code> at some point, likely modifiying certain details.</p>
+
+<p>In the long run, support for API v1 will be terminated. We will give notice to all account owners with plenty of time in advance once we decide on a deadline for <code>v1</code>.</p>
+
+<p>Follow the <a href="/reference/api/changelog/">API changelog</a> for information on added functionality.</p>
+
+<hr />
+
+<h2 id="basics">The Basics</h2>
+
+<h3 id="sections">Sections</h3>
+
+<p>API methods are structured by topic. Here is the overview, including shortcuts:</p>
+
+<ul>
+<li><a href="#taskmethods">Tasks</a></li>
+<li><a href="#servicemethods">Services</a></li>
+<li><a href="#componentmethods">Components</a></li>
+</ul>
+
+<hr />
+
+<h2 id="endpoint">Endpoint</h2>
+
+<p>The default API endpoint is</p>
+
+<p><code>https://api.giantswarm.io</code></p>
+
+<p>For certain customers, this may vary.</p>
+
+<hr />
+
+<h2 id="method-overview">Method Overview</h2>
+
+<p>A brief overview of all API v2 methods:</p>
+
+<ul>
+<li><a href="#taskmethods">Task Methods</a>
+
+<ul>
+<li><a href="#ListTasks"><code>GET /v2/org/{org}/env/{env}/task/</code></a></li>
+<li><a href="#GetTask"><code>GET /v2/org/{org}/env/{env}/task/{task}</code></a></li>
+<li><a href="#WaitForTask"><code>GET /v2/org/{org}/env/{env}/task/{task}/waitfor</code></a></li>
+</ul></li>
+<li><a href="#servicemethods">Service Methods</a>
+
+<ul>
+<li><a href="#StartService"><code>POST /v2/org/{org}/env/{env}/service/{service}/start</code></a></li>
+<li><a href="#StopService"><code>POST /v2/org/{org}/env/{env}/service/{service}/stop</code></a></li>
+<li><a href="#DeleteService"><code>DELETE /v2/org/{org}/env/{env}/service/{service}</code></a></li>
+</ul></li>
+<li><a href="#componentmethods">Component Methods</a>
+
+<ul>
+<li><a href="#StartComponent"><code>POST /v2/org/{org}/env/{env}/service/{service}/component/start</code></a></li>
+<li><a href="#StopComponent"><code>POST /v2/org/{org}/env/{env}/service/{service}/component/stop</code></a></li>
+<li><a href="#ScaleUpComponent"><code>POST /v2/org/{org}/env/{env}/service/{service}/component/scaleup</code></a></li>
+<li><a href="#ScaleDownComponent"><code>POST /v2/org/{org}/env/{env}/service/{service}/component/scaledown</code></a></li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h2 id="taskmethods">Task Methods</h2>
+
+<p>The task concept allows to manage asynchronous actions on Giant Swarm that can take some time to finish. Many method calls in the API v2, like for example starting a service, will return information on a task. This information can be used to track the progress of this task and wait for it to be finished.</p>
+
+<p>Tasks are identified by a unique ID. Tasks can have parent and child tasks, which is indicated through references to the according IDs. It is also possible to fetch a task including all child tasks recursively.</p>
+
+<p>The following task-related methods are available:</p>
+
+<ul>
+<li><a href="#ListTasks">List tasks</a></li>
+<li><a href="#GetTask">Get Information on a Task</a></li>
+<li><a href="#WaitForTask">Wait For Task to Finish</a></li>
+</ul>
+
+<h3 id="ListTasks">List Tasks</h3>
+
+<p><span class="label label-info">GET</span> <code>/v2/org/{org}/env/{env}/task/</code></p>
+
+<p>This method allows to list all tasks within a specific environment.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+</ul>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;gz0txjays0flmbc1&quot;,
+      &quot;description&quot;: &quot;Start service bant/prod/myservice&quot;,
+      &quot;action&quot;: &quot;start&quot;,
+      &quot;status&quot;: &quot;finished&quot;,
+      &quot;meta&quot;: {
+        &quot;org&quot;: &quot;tester&quot;,
+        &quot;env&quot;: &quot;dev&quot;,
+        &quot;service&quot;: &quot;busywait&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;bqvyckci4wsvhlqe&quot;,
+      &quot;description&quot;: &quot;Delete bant/prod/myservice&quot;,
+      &quot;action&quot;: &quot;delete&quot;,
+      &quot;status&quot;: &quot;finished&quot;,
+      &quot;meta&quot;: {
+        &quot;org&quot;: &quot;tester&quot;,
+        &quot;env&quot;: &quot;dev&quot;,
+        &quot;service&quot;: &quot;busywait&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+
+<h3 id="GetTask">Get Information on a Task</h3>
+
+<p><span class="label label-info">GET</span> <code>/v2/org/{org}/env/{env}/task/{task}</code></p>
+
+<p>This method allows to fetch information on a single tasks and optionally all child-tasks recursively.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{task}</code>: Task ID</li>
+</ul>
+
+<p>This method supports the <code>recursive=1</code> URL parameter to activate recursive retrieval of all subordinate tasks.</p>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;r4qgmbkglmyoidoq&quot;,
+    &quot;description&quot;: &quot;Delete bant/prod/myservice&quot;,
+    &quot;next_id&quot;: &quot;dhrlks191uuu97yg&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;dhrlks191uuu97yg&quot;,
+      &quot;xvq5w0d3bbunft01&quot;,
+      &quot;eg5fyk5rtc8a422i&quot;
+    ],
+    &quot;action&quot;: &quot;delete&quot;,
+    &quot;created_at&quot;: &quot;2015-10-08T09:01:13.698360034Z&quot;,
+    &quot;finished_at&quot;: &quot;2015-10-08T09:01:13.88043361Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;tester&quot;,
+      &quot;env&quot;: &quot;dev&quot;,
+      &quot;service&quot;: &quot;myservice&quot;
+    },
+    &quot;status&quot;: &quot;finished&quot;
+  }
+}
+</code></pre>
+
+<p><strong>Example output with <code>recursive=1</code> (truncated):</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;r4qgmbkglmyoidoq&quot;,
+    &quot;description&quot;: &quot;Delete bant/prod/myservice&quot;,
+    &quot;next_id&quot;: &quot;dhrlks191uuu97yg&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;dhrlks191uuu97yg&quot;,
+      &quot;xvq5w0d3bbunft01&quot;,
+      &quot;eg5fyk5rtc8a422i&quot;
+    ],
+    &quot;child_tasks&quot;: [
+      {
+        &quot;id&quot;: &quot;dhrlks191uuu97yg&quot;,
+        &quot;description&quot;: &quot;Marking bant/prod/myservice for deletion&quot;,
+        &quot;parent_id&quot;: &quot;r4qgmbkglmyoidoq&quot;,
+        &quot;next_id&quot;: &quot;xvq5w0d3bbunft01&quot;,
+        &quot;action&quot;: &quot;set-in-delete-state&quot;,
+        &quot;created_at&quot;: &quot;2015-10-08T09:01:13.698364564Z&quot;,
+        &quot;finished_at&quot;: &quot;2015-10-08T09:01:13.801924151Z&quot;,
+        &quot;metadata&quot;: {
+          &quot;org&quot;: &quot;tester&quot;,
+          &quot;env&quot;: &quot;dev&quot;,
+          &quot;service&quot;: &quot;myservice&quot;
+        },
+        &quot;status&quot;: &quot;finished&quot;
+      },
+      {...},
+      {...}
+    ],
+    &quot;action&quot;: &quot;delete&quot;,
+    &quot;created_at&quot;: &quot;2015-10-08T09:01:13.698360034Z&quot;,
+    &quot;finished_at&quot;: &quot;2015-10-08T09:01:13.88043361Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;tester&quot;,
+      &quot;env&quot;: &quot;dev&quot;,
+      &quot;service&quot;: &quot;myservice&quot;
+    },
+    &quot;status&quot;: &quot;finished&quot;
+  }
+}
+</code></pre>
+
+<h3 id="WaitForTask">Wait For Task to Finish</h3>
+
+<p><span class="label label-info">GET</span> <code>/v2/org/{org}/env/{env}/task/{task}/waitfor</code></p>
+
+<p>With this method, you can fetch the result of a task. A response will only be sent once the task is finished. If the task takes a longer time to finish, this can result in the connection being closed in the meantime. In that case, the same request should simply be retried until a response with the expected JSON output is delivered (<code>status_code</code> equals <code>10000</code>, <code>data</code> key contains a task object).</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{task}</code>: Task ID</li>
+</ul>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;0gfpijs1ghln3zdj&quot;,
+    &quot;description&quot;: &quot;Start component redis&quot;,
+    &quot;next_id&quot;: &quot;1owcueok4z0th1xu&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;1owcueok4z0th1xu&quot;
+    ],
+    &quot;action&quot;: &quot;start&quot;,
+    &quot;created_at&quot;: &quot;2015-10-09T08:17:28.651621247Z&quot;,
+    &quot;finished_at&quot;: &quot;2015-10-09T08:17:40.604687774Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;bant&quot;,
+      &quot;env&quot;: &quot;prod&quot;,
+      &quot;service&quot;: &quot;myservice&quot;
+    },
+    &quot;status&quot;: &quot;finished&quot;
+  }
+}
+</code></pre>
+
+<hr />
+
+<h2 id="servicemethods">Service Methods</h2>
+
+<p>The following service-related methods are available:</p>
+
+<ul>
+<li><a href="#StartService">Start a Service</a></li>
+<li><a href="#StopService">Stop a Service</a></li>
+<li><a href="#DeleteService">Delete a Service</a></li>
+</ul>
+
+<h3 id="StartService">Start a Service</h3>
+
+<p><span class="label label-info">POST</span> <code>/v2/org/{org}/env/{env}/service/{service}/start</code></p>
+
+<p>This method issues a task to start a service asynchronously. The task details are returned as a result.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{service}</code>: Service name</li>
+</ul>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;56d854wetdafsx40&quot;,
+    &quot;description&quot;: &quot;Start service bant/prod/myservice&quot;,
+    &quot;next_id&quot;: &quot;abx3glgursu2qh2r&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;abx3glgursu2qh2r&quot;
+    ],
+    &quot;action&quot;: &quot;start&quot;,
+    &quot;created_at&quot;: &quot;2015-10-08T09:13:31.866183031Z&quot;,
+    &quot;finished_at&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;tester&quot;,
+      &quot;env&quot;: &quot;dev&quot;,
+      &quot;service&quot;: &quot;busywait&quot;
+    },
+    &quot;status&quot;: &quot;pending&quot;
+  }
+}
+</code></pre>
+
+<h3 id="StopService">Stop a Service</h3>
+
+<p><span class="label label-info">POST</span> <code>/v2/org/{org}/env/{env}/service/{service}/stop</code></p>
+
+<p>This method issues a task to stop a service asynchronously. The task details are returned as a result.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{service}</code>: Service name</li>
+</ul>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;:{
+    &quot;id&quot;: &quot;dpaidf0t7r9vegqa&quot;,
+    &quot;description&quot;: &quot;Stop service bant/prod/myservice&quot;,
+    &quot;next_id&quot;: &quot;79m3ombhd9ehuuf9&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;79m3ombhd9ehuuf9&quot;,
+      &quot;nl40qpatrxk0ofy4&quot;
+    ],
+    &quot;action&quot;: &quot;stop&quot;,
+    &quot;created_at&quot;: &quot;2015-10-09T08:09:26.17216939Z&quot;,
+    &quot;finished_at&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;bant&quot;,
+      &quot;env&quot;: &quot;prod&quot;,
+      &quot;service&quot;: &quot;myservice&quot;
+    },
+    &quot;status&quot;:&quot;pending&quot;
+  }
+}
+</code></pre>
+
+<h3 id="DeleteService">Delete a Service</h3>
+
+<p><span class="label label-info">DELETE</span> <code>/v2/org/{org}/env/{env}/service/{service}</code></p>
+
+<p>This method issues a task to delete a service asynchronously. The task details are returned as a result.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{service}</code>: Service name</li>
+</ul>
+
+<hr />
+
+<h2 id="componentmethods">Component Methods</h2>
+
+<p>The following component-related methods are available:</p>
+
+<ul>
+<li><a href="#StartComponent">Start a Component</a></li>
+<li><a href="#StopComponent">Stop a Component</a></li>
+<li><a href="#ScaleUpComponent">Scale Up a Component</a></li>
+<li><a href="#ScaleDownComponent">Scale Down a Component</a></li>
+</ul>
+
+<h3 id="StartComponent">Start a Component</h3>
+
+<p><span class="label label-info">POST</span> <code>/v2/org/{org}/env/{env}/service/{service}/component/start</code></p>
+
+<p>This method issues a task to start a component asynchronously. The task details are returned as a result.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{service}</code>: Service name</li>
+</ul>
+
+<p>The request must be sent with the <code>Content-Type: application/json</code> header. The request body must contain a JSON object in the following format, to indicate which component to start (replace <code>&lt;component_name&gt;</code> with the actual name of the component):</p>
+
+<pre><code class="language-json">{&quot;component&quot;: &quot;&lt;component_name&gt;&quot;}
+</code></pre>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;0gfpijs1ghln3zdj&quot;,
+    &quot;description&quot;: &quot;Start component redis&quot;,
+    &quot;next_id&quot;: &quot;1owcueok4z0th1xu&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;1owcueok4z0th1xu&quot;
+    ],
+    &quot;action&quot;: &quot;start&quot;,
+    &quot;created_at&quot;: &quot;2015-10-09T08:17:28.651621247Z&quot;,
+    &quot;finished_at&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;bant&quot;,
+      &quot;env&quot;: &quot;prod&quot;,
+      &quot;service&quot;: &quot;myservice&quot;
+    },
+    &quot;status&quot;: &quot;pending&quot;
+  }
+}
+</code></pre>
+
+<h3 id="StopComponent">Stop a Component</h3>
+
+<p><span class="label label-info">POST</span> <code>/v2/org/{org}/env/{env}/service/{service}/component/stop</code></p>
+
+<p>This method issues a task to stop a component asynchronously. The task details are returned as a result.</p>
+
+<p>This method works exactly like starting a component, as described above in <a href="#StartComponent">Start a component</a>.</p>
+
+<h3 id="ScaleUpComponent">Scale Up a Component</h3>
+
+<p><span class="label label-info">POST</span> <code>/v2/org/{org}/env/{env}/service/{service}/component/scaleup</code></p>
+
+<p>This method issues a task to scale up a component asynchronously. The task details are returned as a result.</p>
+
+<p><strong>URL components:</strong></p>
+
+<ul>
+<li><code>{org}</code>: Name of the organization</li>
+<li><code>{env}</code>: Name of the environment</li>
+<li><code>{service}</code>: Service name</li>
+</ul>
+
+<p>The request must be sent with the <code>Content-Type: application/json</code> header. The request body must contain a JSON object in the following format, to indicate which component to start:</p>
+
+<pre><code class="language-json">{
+  &quot;component&quot;: &quot;&lt;component_name&gt;&quot;,
+  &quot;scale&quot;: &lt;numberof_instances_to_add&gt;
+}
+</code></pre>
+
+<p>The <code>&lt;component_name&gt;</code> parameter must be the full name of the component, <code>&lt;numberof_instances_to_add&gt;</code> specifies how many instances should be added for the component.</p>
+
+<p><strong>Example output:</strong></p>
+
+<pre><code class="language-json">{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;:{
+    &quot;id&quot;: &quot;4jz3dlt6xuyovx0l&quot;,
+    &quot;description&quot;: &quot;Scale up redis&quot;,
+    &quot;next_id&quot;: &quot;crdb5yd6rd452r5b&quot;,
+    &quot;child_task_ids&quot;: [
+      &quot;crdb5yd6rd452r5b&quot;,
+      &quot;zliily2xrhdn4ot4&quot;
+    ],
+    &quot;action&quot;: &quot;nop&quot;,
+    &quot;created_at&quot;: &quot;2015-10-09T09:39:38.042266868Z&quot;,
+    &quot;finished_at&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+    &quot;metadata&quot;: {
+      &quot;org&quot;: &quot;bant&quot;,
+      &quot;env&quot;: &quot;prod&quot;,
+      &quot;service&quot;: &quot;myservice&quot;,
+      &quot;component&quot;: &quot;redis&quot;
+    },
+    &quot;status&quot;: &quot;pending&quot;
+  }
+}
+</code></pre>
+
+<h3 id="ScaleDownComponent">Scale Down a Component</h3>
+
+<p><span class="label label-info">POST</span> <code>/v2/org/{org}/env/{env}/service/{service}/component/scaledown</code></p>
+
+<p>This method issues a task to scale down a component asynchronously. The task details are returned as a result.</p>
+
+<p>This method works pretty much like the one for <a href="#ScaleUpComponent">scaling up a component</a> described above. Here, the <code>scale</code> parameter in the JSON payload specifies how many instances are to be removed.</p>
+
+<pre><code class="language-json">{
+  &quot;component&quot;: &quot;&lt;component_name&gt;&quot;,
+  &quot;scale&quot;: &lt;numberof_instances_to_remove&gt;
+}
+</code></pre>
+
+<hr />
+
+<h3 id="additional-information">Additional Information</h3>
+
+<h4 id="date-value-0001-01-01t00-00-00z">Date value <code>0001-01-01T00:00:00Z</code></h4>
+
+<p>When encountering a date/time value of <code>0001-01-01T00:00:00Z</code>, regard it as an unset date field. For example, <code>&quot;finished_at&quot;: &quot;0001-01-01T00:00:00Z&quot;</code> in task details means that there is no <code>finished_at</code> date set, yet.</p>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

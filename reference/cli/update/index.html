@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Updating a service or component &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This is the reference page for the &#39;swarm update&#39; command, used to update a service definition or the image used by a component.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/cli/update/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_cli_update_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#swarm-update-update-a-service-definition-or-component"><code>swarm update</code>: Update a Service Definition or Component</a>
+<ul>
+<li><a href="#update-service">Updating a Service Definition</a>
+<ul>
+<li><a href="#command-syntax">Command Syntax</a>
+<ul>
+<li><a href="#arguments-and-options">Arguments and Options</a></li>
+</ul></li>
+<li><a href="#example">Example</a></li>
+</ul></li>
+<li><a href="#update-component">Updating the Image Used by a Component</a>
+<ul>
+<li><a href="#strategies">Update Strategies</a></li>
+<li><a href="#command-syntax-1">Command Syntax</a>
+<ul>
+<li><a href="#arguments-and-options-1">Arguments and Options</a></li>
+</ul></li>
+<li><a href="#examples">Examples</a></li>
+</ul></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified October 7, 2015</p>
+
+      
+
+<h1 id="swarm-update-update-a-service-definition-or-component"><code>swarm update</code>: Update a Service Definition or Component</h1>
+
+<p>This command allows you to</p>
+
+<ul>
+<li>update the service definition of a service after it has been created</li>
+<li>update the image used by a component</li>
+</ul>
+
+<p>Both functions allow for slightly different arguments. We therefore explain both seperately here.</p>
+
+<h2 id="update-service">Updating a Service Definition</h2>
+
+<p>This function allows you to apply changes to the <a href="/reference/swarm-json/">service definition</a> of a service, like the change or addition of components, environment variables, domains etc.</p>
+
+<p>The general process is that you first edit the service definition file or any according variables file locally and then submit the changes using the CLI. You will be presented with an update plan including all steps of the update. Each step can be one of three actions:</p>
+
+<ul>
+<li>Adding a component</li>
+<li>Modifying a component</li>
+<li>Removing a component</li>
+</ul>
+
+<p><strong>Note:</strong> It is currently not possible to change a service name, since the detection of changes to a service requires the service name to remain unchanged.</p>
+
+<p>Modifying a component means that all existing instances of that component will be replaced by new instances (see <code>hot-swap</code> strategy in <a href="#strategies">update strategies</a> below). This means that data stored in containers will be lost. If the component has volumes, these will be recreated, which results in data from existing volumes being lost. The CLI will present according information and warnings if this is the case.</p>
+
+<h3 id="command-syntax">Command Syntax</h3>
+
+<pre><code class="language-nohighlight">swarm update [service_definition_file] [-y|--yes]
+</code></pre>
+
+<h4 id="arguments-and-options">Arguments and Options</h4>
+
+<ul>
+<li><p><code>service_definition_file</code>: Name of the service definition file to be used for the update. In case this argument is not given, the default (<code>swarm.json</code> in your working directory) will be assumed. As usual, if present, a <code>swarmvars.json</code> file will also be parsed for variables to be applied to the definition.</p></li>
+
+<li><p><code>-y</code>/<code>--yes</code>: This flag can be added to suppress the interactive confirmation. This means you won&rsquo;t get any time to reconsider your update activities.</p></li>
+</ul>
+
+<p><strong>Note:</strong> The service definition file used must have a <code>name</code> key to set the service name.</p>
+
+<h3 id="example">Example</h3>
+
+<pre><code class="language-nohighlight">$ swarm update
+Updating service 'myservice' according to 'swarm.json' will apply the following changes:
+
+--------------------------------------------------------------------------------
+
+Add 1 component
+  redis
+
+--------------------------------------------------------------------------------
+
+Modify 2 components
+  monitor
+    Definition changes
+      ports    value will change to    [&quot;3000/tcp&quot;]
+
+  frontend
+    Definition changes
+      domains  value will change to    {&quot;8000/tcp&quot;: [&quot;admin.myservice.gigantic.io&quot;]}
+
+--------------------------------------------------------------------------------
+
+Are you sure you want to proceed with the update as described above? [y|n] y
+Updated service 'myservice'.
+</code></pre>
+
+<h2 id="update-component">Updating the Image Used by a Component</h2>
+
+<p>To deploy a new version of a Docker image that is used by a component, <code>swarm update</code> provides a shortcut. This way it is not necessary to modify the service definition as described above.</p>
+
+<p>This method of updating a component gives you control over the way in which the update is performed (we call this the &ldquo;update strategy&rdquo;). This is relevant when there is more than one instance of a component, which is recommended in general.</p>
+
+<p>To be updated, a component doesn&rsquo;t have to be running. However it will be started during the update, independent of the state before.</p>
+
+<h3 id="strategies">Update Strategies</h3>
+
+<ul>
+<li><p><code>one-by-one</code> (Default): Instances are updated one after the other by selecting an instance, stopping it, starting a new instance with the new image version, then moving on to stop the next instance, if multiple instances are running. This is the default update strategy when updating a component. It ensures that no downtime occurs, as long as the component is scaled to more than one instance.</p></li>
+
+<li><p><code>all-at-once</code>: This update strategy updates all instances in parallel by simultaneously stopping all instances and then starting them using the new image version. This will result in a downtime for the component most likely.</p></li>
+
+<li><p><code>hot-swap</code>: This strategy updates all instances in parallel by simultaneously creating new instances to replace each existing instance using the new updated image. The replacement takes place when a new instance is ready, so that no downtime may occur - even when there was only one instance for the component.</p></li>
+</ul>
+
+<p><strong>Note:</strong> If a component uses volumes, the <code>hot-swap</code> strategy will cause volumes to be re-created in the process and data from existing volumes will be lost. You won&rsquo;t get a warning about that from the CLI, so please double-check for which of your components this strategy is useful.</p>
+
+<h3 id="command-syntax-1">Command Syntax</h3>
+
+<pre><code class="language-nohighlight">swarm update &lt;service_name/component_name&gt; [version_tag] [-s|--strategy &lt;one-by-one|all-at-once|hot-swap&gt;]
+</code></pre>
+
+<h4 id="arguments-and-options-1">Arguments and Options</h4>
+
+<ul>
+<li><p><code>service_name/component_name</code>: To specify which component in which service should be updated, place the service name, followed by a forward slash and the full component name here.</p></li>
+
+<li><p><code>version_tag</code>: This optional argument allows you to specify a particular version of your image to be used. If this argument isn&rsquo;t given, the default <code>latest</code> is assumed.</p></li>
+
+<li><p><code>-s</code>/<code>--strategy</code>: This allows you to select a specific <a href="#strategies">update strategy</a> to be applied for this update.</p></li>
+</ul>
+
+<h3 id="examples">Examples</h3>
+
+<p><strong>Example using the default version &lsquo;latest&rsquo;</strong></p>
+
+<p>We first push the according image version to the registry:</p>
+
+<pre><code class="language-nohighlight">$ sudo docker push registry.giantswarm.io/bant/currentweather-python:latest
+…
+4b8d5ad81a18: Image successfully pushed
+Pushing tag for rev [4b8d5ad81a18] on {https://registry.giantswarm.io/v1/repositories/bant/currentweather-python/tags/latest}
+</code></pre>
+
+<p>After the push is completed, we update the <code>flask</code> component in our <code>currentweather</code> service to the latest version:</p>
+
+<pre><code class="language-nohighlight">$ swarm update currentweather/flask
+Updating component 'currentweather/flask' with version 'latest' and strategy 'one-by-one'…
+</code></pre>
+
+<p><strong>Example using a specific version tag</strong></p>
+
+<p>Here we first push an image to the registry using the version tag <code>2.7.3</code>.</p>
+
+<pre><code class="language-nohighlight">$ sudo docker push registry.giantswarm.io/bant/currentweather-python:2.7.3
+…
+55bf9745b7af: Image successfully pushed
+Pushing tag for rev [55bf9745b7af] on {https://registry.giantswarm.io/v1/repositories/bant/currentweather-python/tags/2.7.3}
+</code></pre>
+
+<p>Once this is finished, we issue the <code>swarm update</code> command, giving the mandatory servicename/component argument plus the version tag argument:</p>
+
+<pre><code class="language-nohighlight">$ swarm update currentweather/flask 2.7.3
+Updating component 'currentweather/flask' with version '2.7.3' and strategy 'one-by-one'…
+\ &lt;--- spinner
+</code></pre>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+<li><a href="/reference/registry/">Using the Registry</a></li>
+<li><a href="/reference/swarm-json/">Service definition references (<code>swarm.json</code>)</a></li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

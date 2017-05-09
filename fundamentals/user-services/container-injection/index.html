@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Container Injection: About Sidekicks and Unit Chains &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Details on how containers run internally on Giant Swarm and how they get configured by assisting containers">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/fundamentals/user-services/container-injection/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_fundamentals_user-services_container-injection_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#container-injection-about-sidekicks-and-unit-chains">Container Injection: About Sidekicks and Unit Chains</a>
+<ul>
+<li><a href="#types-of-sidekicks">Types of Sidekicks</a>
+<ul>
+<li><a href="#service-discovery-and-domain-registration">Service Discovery And Domain Registration</a></li>
+<li><a href="#storage">Storage</a></li>
+<li><a href="#networking-for-pods-weave">Networking (for Pods, Weave)</a></li>
+<li><a href="#instance-api">Instance API</a></li>
+</ul></li>
+<li><a href="#next-in-fundamentals">Next in Fundamentals</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified November 13, 2015</p>
+
+      
+
+<ol class="breadcrumb">
+  <li><a href="/">Docs Home</a></li>
+  <li><a href="/fundamentals/">Fundamentals</a></li>
+  <li><a href="/fundamentals/user-services/">User Services Behind the Scenes</a></li>
+</ol>
+
+<h1 id="container-injection-about-sidekicks-and-unit-chains">Container Injection: About Sidekicks and Unit Chains</h1>
+
+<p>The core goal of Giant Swarm is to run a container and provide it with the environment to fulfill its goal. In the context of Docker and Microservices the requirements on the environment mainly consist of storage and networking. Everything else is packaged inside the image. Docker containers themselves are mainly defined by their image, arguments, and environment variables.</p>
+
+<p>To avoid having to customize the user application code for Giant Swarm a concept called Container Injection is used. Before starting the actual user container, <em>sidekicks</em> are started to provide certain features like storage and networking to the user container, e.g. an ambassador is started to act as a reverse proxy to dependencies. We also start other containers after the user-container is started to announce its presence.</p>
+
+<p><a href="/img/unit_chain.png" target="_blank"><img src="/img/unit_chain.png" class="img-responsive" alt="Unit chain visualization"></a></p>
+
+<p>The list of sidekicks (plus the user container(s)) depends on the configuration but is generally referred to as a Unit Chain or Instance Group. The picture above depicts an exemplary unit chain with one user container and three sidekicks. Since units further in the chain rely on other units earlier in the chain to be running, two systemd attributes are used:</p>
+
+<ul>
+<li><code>Requires=</code> (both directions)</li>
+<li><code>After=</code> (the previous unit in the chain)</li>
+</ul>
+
+<p>This ensures that on startup, units are started in the correct order. On shutdown or failures the whole chain is stopped before being started again with the first unit.</p>
+
+<h2 id="types-of-sidekicks">Types of Sidekicks</h2>
+
+<h3 id="service-discovery-and-domain-registration">Service Discovery And Domain Registration</h3>
+
+<p>As described in the <a href="/fundamentals/user-services/service-discovery/">Service Discovery chapter</a>, there are three sidekicks to enable a container to interact with other containers and be available to the Internet:</p>
+
+<ul>
+<li><em>ambassador</em>: A reverse proxy</li>
+<li><em>presence</em>: Pushes network address to service-discovery</li>
+<li><em>lb-register</em>: Pushes network address for domain to service-discovery</li>
+</ul>
+
+<h3 id="storage">Storage</h3>
+
+<p>The storage sidekicks ensure that the volume data that the container requires is available under a well known path (normally <code>/media/state/volumes/</code>). Based on the cluster configuration it can utilize the AWS EC2 API to create and mount an EBS Volume to the local machine and mount it or use the Flocker DataSet API to do the same with different underlying storage types, e.g. EMC.</p>
+
+<h3 id="networking-for-pods-weave">Networking (for Pods, Weave)</h3>
+
+<p>As one unit chain can contain multiple user containers (in case of a pod), they need to share a single network namespace. This is set up in the network sidekick. This sidekick also allows for further customization, e.g. join a Weave network (to enable multicast and DNS), allow wider network access by whitelisting the container via iptable rules, etc..</p>
+
+<h3 id="instance-api">Instance API</h3>
+
+<p>In case the container utilizes socket-activation (i.e. the container signals the chain that it is ready instead of just assuming it running as soon as the container is up), an Instance API sidekick is added. The container is then provided with an HTTP endpoint to signal readiness. See the <a href="/reference/swarm-json/#signal-ready">Service Definition Reference</a> for details.</p>
+
+<hr>
+
+<h2 id="next-in-fundamentals">Next in Fundamentals</h2>
+
+<ul>
+<li><a href="/fundamentals/user-services/service-discovery/">Service Discovery</a>: Details on how containers on Giant Swarm find each other through service discovery.</li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

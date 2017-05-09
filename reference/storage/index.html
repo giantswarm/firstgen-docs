@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Storage and Volumes on Giant Swarm &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="In-depth documentation on the storage concepts on Giant Swarm">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/storage/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_storage_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#storage-and-volumes">Storage and Volumes</a>
+<ul>
+<li><a href="#simple-container-storage">Simple Container Storage</a></li>
+<li><a href="#introduction-to-volumes">Introduction to Volumes</a></li>
+<li><a href="#scaling">Volumes and Scaling</a></li>
+<li><a href="#update">Volumes and Image Updates</a></li>
+<li><a href="#size">Volume Size</a></li>
+<li><a href="#setting-the-path">Setting the Path</a></li>
+<li><a href="#filesystem">Filesystem and Settings</a></li>
+<li><a href="#permissions">Permissions</a></li>
+<li><a href="#backup">Backup</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified March 31, 2016</p>
+
+      
+
+<h1 id="storage-and-volumes">Storage and Volumes</h1>
+
+<p>Data can be written into generally available storage inside Docker containers (see <em>Simple Container Storage</em> below, but this option doesn&rsquo;t ensure data persistance throughout container restarts and updates.</p>
+
+<p>To persist files, Giant Swarm provides the ability to define volumes of the size and with the mount point you need.</p>
+
+<h2 id="simple-container-storage">Simple Container Storage</h2>
+
+<p>Storing data inside running containers is in general simple and requires no configuration. However, it is not recommended, for a simple reason:</p>
+
+<p>Data stored in the container itself is not persisted. If the container is restarted, which happens to update the image used or re-schedule it to a different machine in the cluster, the data is lost.</p>
+
+<p>In addition, container storage doesn&rsquo;t benefit from the same redundancy the volume storage has. Read on to find out more.</p>
+
+<p>The rest of this page elaborates on Volume storage, unless indicated otherwise.</p>
+
+<h2 id="introduction-to-volumes">Introduction to Volumes</h2>
+
+<p>Volumes are your method of choice to add persistent storage to your services. Think of them as partitions you can add to your system and mount at the point where you need the space, but without the space limit of physical hard drives.</p>
+
+<p>Volumes are defined within the <a href="/reference/swarm-json/">service definition</a> that defines the entire service you are running. Each service can define as many volumes as needed, with sizes starting at 1 GB. You can freely chose the path under which a volume will become available.</p>
+
+<p>Normally, a volume is defined in the service definition as belonging to a specific component. Multiple components can share a volume when they belong to a common <a href="/reference/swarm-json/#pod">pod</a>.</p>
+
+<p>When a component defines a volume, each instance of the component gets it&rsquo;s own independent volume. More about that below in <a href="#scaling">Volumes and Scaling</a>.</p>
+
+<p>Volume storage, in contrast to simple container storage, has built-in redundancy to minimize the risk of data loss through a single device failure.</p>
+
+<h2 id="scaling">Volumes and Scaling</h2>
+
+<p>It is important to understand that by default, each instance of a component has its own volumes, independent of other instances of the same component.</p>
+
+<p>If, for example, a component defines a 2 GB volume with the path <code>/data</code>, and there is one instance for this component, one volume is created with 2 GB storage total. Once the component is scaled to two instance, two independent volumes exist with 2 GB storage size each, resulting in a total of 4 GB storage space used.</p>
+
+<p>This behaviour changes once a volume is defined to be shared (using the <code>&quot;shared&quot;: true</code> setting in the service definition). A shared volume is shared between all instances of the same component. Here, the total storage space used doesn&rsquo;t change when scaling a component up or down. When using shared volumes, make sure to implement mechanisms to prevent race conditions with several processes trying to write or delete the same file concurrently.</p>
+
+<h2 id="update">Volumes and Image Updates</h2>
+
+<p>As said before, volumes are normally persisted throughout updates of components. That means: When you use <a href="/reference/cli/update/"><code>swarm update</code></a> to update the image used by a component, when using the default behaviour, the volumes are not affected. The container is stopped, the volume is detached from the old container, then a new container is created and the volume is attached to the new container.</p>
+
+<p>There is currently one important exception: Performing <code>swarm update</code> with the <code>hot-swap</code> strategy results in a different behaviour. This strategy enforces the creation and start of a new instance before any old instance is removed. During this process, new volumes are created for the new instance. The volumes from the old instance are removed, which results in data loss. Therefore we only recommend the <code>hot-swap</code> strategy for stateless components that don&rsquo;t use volumes.</p>
+
+<p><strong>Important:</strong> When updating a component that has volumes, use the <code>one-by-one</code> strategy. This ensures that your volumes are re-used and existing data is kept safe.</p>
+
+<h2 id="size">Volume Size</h2>
+
+<p>The storage space provided by a volume can be defined in gigabytes (GB), starting at 1 GB and up to 100 GB (where the upper limit might vary based on per-customer settings).</p>
+
+<p>Note that once a volume is created, you can&rsquo;t change the size of the volume. Changing the volume settings in the service definition, followed by the according <code>swarm update</code> to apply the definition change, will result in the recreation of the according instance(s) and volume(s). This means that any old volume will be removed (and current data will be lost!) and a new volume with the adjusted size will be created.</p>
+
+<h2 id="setting-the-path">Setting the Path</h2>
+
+<p>You can define a volume using an arbitrary file system path. The path must start with a forward slash and the path can&rsquo;t be <code>/</code>.</p>
+
+<p>Within each component, the paths defined by volumes must be distinct, so no two volumes can use the same path.</p>
+
+<p><strong>Note:</strong> If your component&rsquo;s Docker image has content in a certain path, and you also use this path for a volume, the content of the image under this path becomes inaccessible. The volume takes precedence over the container&rsquo;s file system and &ldquo;masks&rdquo; any existing folder with the same path.</p>
+
+<h2 id="filesystem">Filesystem and Settings</h2>
+
+<p>Volumes are provided formatted and mounted ready to use as Filesystem in Userspace (FUSE). The filesystem is mounted using the following options:</p>
+
+<ul>
+<li><code>rw</code>: Mount the filesystem read/write</li>
+<li><code>nosuid</code>: Do not allow set-user-identifier or set-group-identifier bits to take effect</li>
+<li><code>nodev</code>: Do not interpret character or block special devices on the file system</li>
+<li><code>noatime</code>: Access timestamps are not updated when a file is read</li>
+<li><code>default_permissions</code>: By default FUSE doesn&rsquo;t check file access permissions, the filesystem is free to implement its access policy or leave it to the underlying file access mechanism (e.g. in case of network filesystems). This option enables permission checking, restricting access based on file mode.</li>
+<li><code>allow_other</code>: This option overrides the security measure restricting file access to the user mounting the filesystem.</li>
+<li><code>user_id=0</code>: The numeric user id of the mount owner, in this case 0</li>
+<li><code>group_id=0</code>: The numeric group id of the mount owner, in this case 0</li>
+<li><code>user_xattr</code>: Extended attributes are supported</li>
+</ul>
+
+<h2 id="permissions">Permissions</h2>
+
+<p>The volume&rsquo;s mount point (the path the volume is mounted to) is created using the permission mask <code>drwxr-xr-x</code> (755 in octal notation), so only the owner has write permission for this volume. The owner&rsquo;s user ID is 0 (zero), which translates to <code>root</code> on most systems. The owning group&rsquo;s ID is 0 (zero), likewise.</p>
+
+<h2 id="backup">Backup</h2>
+
+<p>Be aware that we currently do not provide a backup mechanism for the data stored in your volumes. However there are several general ways to automate the generation of backups:</p>
+
+<ul>
+<li>Create a specialized companion component with access to a volume (within the same pod as the component owning the volume) and let the main process of this component created backups and store them in some third party storage system.</li>
+<li>Provide a backup script in the component owning the volume and use <code>swarm exec</code> to execute the backup script.</li>
+<li>For databases, periodically create a data dump from a specialized component that has access ot the database component. Then upload this dump to some external service.</li>
+</ul>
+
+<p>For the latter concept, we have a <a href="/guides/mysql-backup/">guide</a> showing this using MySQL with <code>mysqldump</code> and Amazon S3 as a storage provider.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+<li><a href="/reference/swarm-json/#volumes">Service Definition: The volumes key</a> - How to define a volume in a component</li>
+<li><a href="/reference/swarm-json/#pod">Service Definition: The pod key</a> - Explanation of the pod concept, which allows to share volumes between components</li>
+<li><a href="/guides/mysql-backup/">MySQL with Backups</a> - Example for how to run a backup companion component for MySQL</li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

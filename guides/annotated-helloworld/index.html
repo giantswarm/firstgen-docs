@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Annotated Hello World Example &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="A first practical introduction into using Giant Swarm. This will take you to a simple Hello World example.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/annotated-helloworld/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_annotated-helloworld_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#the-annotated-hello-world-example">The Annotated Hello World Example</a>
+<ul>
+<li><a href="#what-you-need">What you need</a></li>
+<li><a href="#installing-swarm">Installing <code>swarm</code></a></li>
+<li><a href="#logging-in">Logging in</a></li>
+<li><a href="#getting-the-code">Getting the code</a></li>
+<li><a href="#checking-the-service-definition">Checking the service definition</a></li>
+<li><a href="#deploying-the-service">Deploying the service</a></li>
+<li><a href="#next-steps">Next steps</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified June 2, 2016</p>
+
+      
+
+<h1 id="the-annotated-hello-world-example">The Annotated Hello World Example</h1>
+
+<p class="lead">This should be your first step with Giant Swarm, a quick check that everything is working just fine.</p>
+
+<p>If you already followed the <strong>Quick Start</strong> on the <a href="/">documentation home page</a> without any trouble, you can skip this guide in favor of creating <a href="/guides/your-first-service/">your first real service</a>, unless you want some more explanation of what you just accomplished.</p>
+
+<h2 id="what-you-need">What you need</h2>
+
+<p>In order to run services on Giant Swarm, you need a Giant Swarm account. If you don&rsquo;t have one yet, <a href="https://giantswarm.io/">request an invite</a> first. Please note that we currently have a waiting list.</p>
+
+<p>Besides that, you should be on a Linux (64 bit) or Mac OS machine and be a little bit comfortable with using the command line.</p>
+
+<h2 id="installing-swarm">Installing <code>swarm</code></h2>
+
+<p>The Giant Swarm command line interface (CLI) is called <code>swarm</code>. For <strong>Mac users</strong> it&rsquo;s recommended to install it via Homebrew using</p>
+
+<pre><code class="language-nohighlight">$ brew tap giantswarm/giantswarm
+$ brew install swarm-client
+</code></pre>
+
+<p><strong>Linux users</strong> take the manual approach and download and unpack manually and move the binary to a place in their PATH, for example <code>/usr/local/bin</code>.</p>
+
+<pre><code class="language-nohighlight">$ curl -O https://downloads.giantswarm.io/swarm/clients/0.27.0/swarm-0.27.0-linux-amd64.tar.gz
+$ tar xzf swarm-0.27.0-linux-amd64.tar.gz
+$ sudo cp swarm /usr/local/bin/
+</code></pre>
+
+<p>Check our <a href="/reference/cli/installation/">installation reference page</a> for details.</p>
+
+<h2 id="logging-in">Logging in</h2>
+
+<p>Before you can do anything useful with <code>swarm</code>, you have to log in once. This is done by calling the <code>swarm login</code> command with your username as argument:</p>
+
+<pre><code class="language-nohighlight">$ swarm login yourusername
+</code></pre>
+
+<p>You will be prompted to enter your Giant Swarm password. Note that the password won&rsquo;t be displayed while you type.</p>
+
+<h2 id="getting-the-code">Getting the code</h2>
+
+<p>We provide the source for our Hello World example on <a href="https://github.com/giantswarm/helloworld">GitHub</a>. To checkout the source via git, do</p>
+
+<pre><code class="language-nohighlight">$ git clone https://github.com/giantswarm/helloworld.git
+$ cd helloworld
+</code></pre>
+
+<p>Alternatively you can <a href="https://github.com/giantswarm/helloworld/archive/master.zip">download a ZIP file</a>, so you don&rsquo;t even need <code>git</code> installed.</p>
+
+<p>When looking at the contents, you&rsquo;ll find there is a file called <code>swarm.json</code>, which is really all we need for now.</p>
+
+<h2 id="checking-the-service-definition">Checking the service definition</h2>
+
+<p>In case you want to understand what your service is doing, let&rsquo;s have a look at the <code>swarm.json</code> file.</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;helloworld&quot;,
+  &quot;components&quot;: {
+    &quot;webserver&quot;: {
+      &quot;image&quot;: &quot;giantswarm/helloworld&quot;,
+      &quot;ports&quot;: 8080,
+      &quot;domains&quot;: {
+        &quot;8080&quot;: &quot;$domain&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>The file defines a service called <code>helloworld</code> with a single component, which is called <code>webserver</code>. This component uses a <a href="https://hub.docker.com/r/giantswarm/helloworld/">Docker image</a> from the public Docker registry. The image is a simple HTTP server written in Go, delivering a simple HTML page. If you are interested in the implementation details, have a look at the source code in our <a href="https://github.com/giantswarm/helloworld">GitHub repository</a>. The <code>ports</code> definition exposes port 8080 of the component, which is finally exposed via the <code>domains</code> entry <strong>via standard HTTP port 80</strong> (Note: Access to the component from the outside is only possible via port 80 currently. Port <code>8080</code> in the domains definition refers to the exposed port of the component).</p>
+
+<p>There is a nifty thing: We use a variable <code>$domain</code> in this file, so that you can set a domain name via the command line, so there is no need to edit that <code>swarm.json</code> file.</p>
+
+<h2 id="deploying-the-service">Deploying the service</h2>
+
+<p>We create and start the service in one step, using the <code>swarm up</code> command. See how we now set the <code>$domain</code> variable with a custom domain name using your swarm username.</p>
+
+<pre><code class="language-nohighlight">$ swarm up --var=domain=helloworld-$(swarm user).gigantic.io
+</code></pre>
+
+<p>Now your service is created on Giant Swarm. The image you are using in your component is loaded from the Docker registry and started as a container on a machine on our cluster. Access to the service is done via the domain used in the definition.</p>
+
+<p>Once everything is done, you get a success notice on the terminal.</p>
+
+<pre><code class="language-nohighlight">Creating 'helloworld' in the 'yourusername/dev' environment...
+Service created successfully!
+Starting service helloworld...
+Service helloworld is up.
+You can see all components using this command:
+
+    swarm status helloworld
+
+</code></pre>
+
+<p>The service should be running, so let&rsquo;s check it in a browser. Note that the URL contains your Giant Swarm username and looks like <code>helloworld-yourusername.gigantic.io</code>. If everything went fine, you&rsquo;ll see a blue page with some pleasantly positive content.</p>
+
+<p>Cool. Take a breath and enjoy your achievement, before it&rsquo;s time to clean up.</p>
+
+<p>The following two commands will stop and delete the service to free resources on the cluster.</p>
+
+<pre><code class="language-nohighlight">$ swarm stop helloworld
+$ swarm delete helloworld
+</code></pre>
+
+<p>Note that the <code>delete</code> command requires confirmation to actually delete the service.</p>
+
+<p>Congratulations! You are now prepared for greater achievements.</p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>Get real! Check out <a href="/guides/your-first-service/">Your First Service - in your language</a> and learn to create your first real Giant Swarm service.</p>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Your First Service — in Ruby &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Your first Ruby service on Giant Swarm, using your own Docker container and connecting multiple components.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/your-first-service/ruby/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_your-first-service_ruby_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#your-first-service-in-ruby">Your First Service — in Ruby</a>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#for-the-impatient">For the impatient</a></li>
+<li><a href="#testing-docker-and-getting-some-base-images">Testing Docker and getting some base images</a></li>
+<li><a href="#overview-of-our-service">Overview of our service</a></li>
+<li><a href="#the-ruby-server-component">The Ruby server component</a></li>
+<li><a href="#building-our-docker-image">Building our Docker image</a></li>
+<li><a href="#testing-locally">Testing locally</a></li>
+<li><a href="#bringing-it-to-giant-swarm">Bringing it to Giant Swarm</a>
+<ul>
+<li><a href="#uploading-to-the-registry">Uploading to the registry</a></li>
+<li><a href="#defining-your-service">Defining your service</a></li>
+<li><a href="#starting-the-service">Starting the service</a></li>
+</ul></li>
+<li><a href="#further-reading">Further reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified August 7, 2015</p>
+
+      
+
+<h1 id="your-first-service-in-ruby">Your First Service — in Ruby</h1>
+
+<p>This tutorial guides you through the creation of a service using two interlinked components and a custom Docker image. The core is a Ruby web application. Additionally, a Redis server is used as a temporary data store and we connect to an external API.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+<li><p>You should have done the <a href="/">Quick Start</a> or the <a href="/guides/annotated-helloworld/">Annotated Hello World Example</a> and everything should have worked fine.</p></li>
+
+<li><p>We assume that you have a basic understanding of Docker and you have Docker installed. If you don&rsquo;t have that, yet, check out our <a href="/guides/introduction-to-docker/">Introduction to Docker</a> and come back later.</p></li>
+</ul>
+
+<h2 id="for-the-impatient">For the impatient</h2>
+
+<p>The sources code for this tutorial can be found <a href="https://github.com/giantswarm/giantswarm-firstapp-ruby">on GitHub</a>. To facilitate following this guide, we recommend you clone the repository using this command:</p>
+
+<pre><code class="language-nohighlight">$ git clone https://github.com/giantswarm/giantswarm-firstapp-ruby.git
+$ cd giantswarm-firstapp-ruby
+</code></pre>
+
+<p>If you&rsquo;re not the type who likes to read a lot, we have a <a href="https://github.com/giantswarm/giantswarm-firstapp-ruby/blob/master/Makefile">Makefile</a> in the repository. This file helps you to get everything described below going using these commands:</p>
+
+<pre><code class="language-nohighlight">$ swarm login
+$ make docker-build
+$ make docker-run-redis
+$ make docker-run
+$ make docker-push
+$ swarm up
+</code></pre>
+
+<p>Everybody else, follow the path to wisdom and read on.</p>
+
+<h2 id="testing-docker-and-getting-some-base-images">Testing Docker and getting some base images</h2>
+
+<p>We have a Docker task ahead of us that could be a little time-consuming. The good thing is that we can make things a lot faster with some preparation. As a side effect, you can make sure that <code>docker</code> is working as expected on your system.</p>
+
+<p>We need to pull two images from the public Docker library, namely <code>redis:latest</code> and <code>ruby:2.2-onbuild</code>. Together they can take a few hundred MB of data transfer. Start the prefetching using this command:</p>
+
+<pre><code class="language-nohighlight">$ docker pull redis:latest &amp;&amp; docker pull ruby:2.2-onbuild
+</code></pre>
+
+<p><strong>For Linux users</strong>: You probably have to call the <code>docker</code> binary with root privileges, so please use <code>sudo docker</code> whenever the docker command is required here. For example, initiate the prefetching like this:</p>
+
+<pre><code class="language-nohighlight">$ sudo docker pull redis:latest &amp;&amp; sudo docker pull ruby:2.2-onbuild
+</code></pre>
+
+<p>We won&rsquo;t repeat the <code>sudo</code> note for the sake of readability of the rest of this tutorial. Docker warns you if the privileges aren&rsquo;t okay, so you&rsquo;ll be reminded anyway.</p>
+
+<p>While your terminal and network connection are kept busy with loading Docker images, let&rsquo;s have a look on what exactly we are going to build.</p>
+
+<h2 id="overview-of-our-service">Overview of our service</h2>
+
+<p>This diagram depicts how our service components will be set up.</p>
+
+<p><img src="/img/your-first-service-schema-ruby.png" alt="Application schema diagram" />
+</p>
+
+<p>We have one component which we call <code>ruby</code> as the core piece. It will provide a little HTTP server. When accessed by a user, it should display the current weather at our home town, Cologne/Germany.</p>
+
+<p>We get the weather data from the <a href="http://openweathermap.org/">openweathermap.org</a> API. Since we want to be good citizens and not call that API more often than necessary, we cache the API responses locally for a while. For this we use a Redis cache, which is our second component, called <code>redis</code> in the diagram above.</p>
+
+<h2 id="the-ruby-server-component">The Ruby server component</h2>
+
+<p>Our application server consists of only one little file: A Ruby file called <a href="https://github.com/giantswarm/giantswarm-firstapp-ruby/blob/master/current_weather_service.rb">current_weather_service.rb</a> which contains all our application logic. If you&rsquo;re interested in the internal workings of the server, check it&rsquo;s content. For our tutorial, it&rsquo;s not too important, so we cut the details here.</p>
+
+<h2 id="building-our-docker-image">Building our Docker image</h2>
+
+<p>We now create a Docker image for our Ruby component. Here is the <code>Dockerfile</code> we use for that purpose:</p>
+
+<pre><code class="language-Dockerfile">FROM ruby:2.2-onbuild
+
+EXPOSE 4567
+
+ENTRYPOINT [&quot;bundle&quot;, &quot;exec&quot;, &quot;ruby&quot;, &quot;current_weather_service.rb&quot;]
+</code></pre>
+
+<p>As you can see, we use a <a href="https://hub.docker.com/_/ruby/">ruby base image</a> as a basis. We don&rsquo;t have to add or install anything. The Docker base image takes care that our dependencies and script are bundled into our final image.</p>
+
+<p>The prefetching of Docker images you started a couple of minutes ago should be finished by now. If not, please wait until it&rsquo;s done.</p>
+
+<p>Assuming that your Giant Swarm username is <code>yourusername</code>, to build the image for your Docker container, you then execute:</p>
+
+<pre><code class="language-nohighlight">$ docker build -t registry.giantswarm.io/yourusername/currentweather-ruby ./
+</code></pre>
+
+<h2 id="testing-locally">Testing locally</h2>
+
+<p>To test locally before deploying to Giant Swarm, we also need a Redis server. This is very simple to set up, since we can use a standard image here without any modification. Simply run this to start your local Redis server container:</p>
+
+<pre><code class="language-nohighlight">$ docker run --name=currentweather-redis-container -d redis
+</code></pre>
+
+<p>Now let&rsquo;s start the server container for which we just created the Docker image. Here is the command (replace <code>yourusername</code> with your username):</p>
+
+<pre><code class="language-nohighlight">$ docker run --link currentweather-redis-container:redis -p 4567:4567 -ti --rm registry.giantswarm.io/yourusername/currentweather-ruby
+</code></pre>
+
+<p>It should be running. But we need proof! Let&rsquo;s issue an HTTP request.</p>
+
+<p>Accessing the server in a browser requires knowledge of the IP address your docker host binds to containers. This depends on the operating system.</p>
+
+<p><strong>Mac/Windows</strong>: with <code>boot2docker</code> you can find it out using <code>boot2docker ip</code>. The default here is <code>192.168.59.103</code>.</p>
+
+<p><strong>Linux</strong>: the command <code>ip addr show docker0|grep inet</code> should print out a line containing the correct address. The default in this case is <code>172.17.42.1</code>.</p>
+
+<p>So one of the following two commands will likely work:</p>
+
+<pre><code class="language-nohighlight">$ curl 192.168.59.103:4567
+$ curl 172.17.42.1:4567
+</code></pre>
+
+<p>Your output should look something like this:</p>
+
+<pre><code class="language-nohighlight">Current weather in Cologne: moderate rain, temperature 10 degrees, wind 42 km/h
+</code></pre>
+
+<p>Try at least two requests within 60 seconds to verify your cache is working.</p>
+
+<p>In the server console you will see an output like this:</p>
+
+<pre><code class="language-nohighlight">[2015-02-10 07:13:04] INFO  WEBrick 1.3.1
+[2015-02-10 07:13:04] INFO  ruby 2.2.0 (2014-12-25) [x86_64-linux]
+== Sinatra/1.4.5 has taken the stage on 4567 for development with backup from WEBrick
+[2015-02-10 07:13:04] INFO  WEBrick::HTTPServer#start: pid=1 port=4567
+#&lt;Redis client v3.2.0 for redis://172.17.0.205:6379/0&gt;
+I, [2015-02-10T07:13:09.591611 #1]  INFO -- : Requesting live weather data for Cologne...
+192.168.59.3 - - [10/Feb/2015:07:13:09 +0000] &quot;GET / HTTP/1.1&quot; 200 76 0.1702
+192.168.59.3 - - [10/Feb/2015:07:13:09 UTC] &quot;GET / HTTP/1.1&quot; 200 76
+- -&gt; /
+#&lt;Redis client v3.2.0 for redis://172.17.0.205:6379/0&gt;
+I, [2015-02-10T07:13:16.924905 #1]  INFO -- : Using cached weather data for Cologne...
+192.168.59.3 - - [10/Feb/2015:07:13:16 +0000] &quot;GET / HTTP/1.1&quot; 200 76 0.0020
+192.168.59.3 - - [10/Feb/2015:07:13:16 UTC] &quot;GET / HTTP/1.1&quot; 200 76
+- -&gt; /
+
+</code></pre>
+
+<p>Awesome. Now let&rsquo;s deploy it to the cloud.</p>
+
+<h2 id="bringing-it-to-giant-swarm">Bringing it to Giant Swarm</h2>
+
+<h3 id="uploading-to-the-registry">Uploading to the registry</h3>
+
+<p>To use this Docker image on Giant Swarm it has to be uploaded to a Docker registry. Giant Swarm offers you a such a registry. Here we briefly explain how to use it. For more information on using the Giant Swarm registry, see our <a href="/reference/registry/">registry reference</a>.</p>
+
+<p>Before pushing to the registry, you have to log in with the <code>docker</code> client. Use this command:</p>
+
+<pre><code class="language-nohighlight">$ docker login https://registry.giantswarm.io
+</code></pre>
+
+<p>You will be prompted for username, password and email. Use your Giant Swarm account credentials here.</p>
+
+<p>Still assuming that your username is <code>yourusername</code>, you can now push the image like this:</p>
+
+<pre><code class="language-nohighlight">$ docker push registry.giantswarm.io/yourusername/currentweather-ruby
+</code></pre>
+
+<h3 id="defining-your-service">Defining your service</h3>
+
+<p>Services in Giant Swarm are <a href="/reference/swarm-json/">defined using a JSON file</a> that is usually called <code>swarm.json</code>. The service we create in this tutorial consists of two components.</p>
+
+<p>Pay close attention to how we create a link between our two components by defining a link in the <code>ruby</code> component pointing to the <code>redis</code> component.</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;currentweather&quot;,
+  &quot;components&quot;: {
+    &quot;ruby&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/$GIANTSWARM_LOGIN_NAME/currentweather-ruby:latest&quot;,
+      &quot;ports&quot;: [4567],
+      &quot;links&quot;: [
+        {
+          &quot;component&quot;: &quot;redis&quot;,
+          &quot;target_port&quot;: 6379
+        }
+      ],
+      &quot;domains&quot;: {
+        &quot;4567&quot;: &quot;currentweather-$GIANTSWARM_LOGIN_NAME.gigantic.io&quot;
+      }
+    },
+    &quot;redis&quot;: {
+      &quot;image&quot;: &quot;redis:latest&quot;,
+      &quot;ports&quot;: [6379]
+    }
+  }
+}
+</code></pre>
+
+<h3 id="starting-the-service">Starting the service</h3>
+
+<p>With the above definition saved as <code>swarm.json</code> in your current directory you can now create and start the service using the <code>swarm up</code> command below. As always, replace <code>yourusername</code> with your actual username. The flag <code>--var=username=yourusername</code> will take care of placing your username in the positions where the <code>$username</code> variable is used in <code>swarm.json</code>.</p>
+
+<pre><code class="language-nohighlight">$ swarm up --var=username=yourusername
+</code></pre>
+
+<p>You will see some progress output during creation and startup of your service:</p>
+
+<pre><code class="language-nohighlight">Creating 'currentweather' in the 'yourusername/dev' environment...
+Service created successfully!
+Starting service currentweather...
+Service currentweather is up.
+You can see all components using this command:
+
+    swarm status currentweather
+
+</code></pre>
+
+<p>Seeing is believing, they say. So let&rsquo;s do the final test that your service is actually doing what it should. Open the URL (with your username in the right place) in the browser:</p>
+
+<p><a href="http://currentweather-yourusername.gigantic.io/">http://currentweather-yourusername.gigantic.io/</a></p>
+
+<p>If you watched closely, after starting our service we got the recommendation to check it&rsquo;s status using</p>
+
+<pre><code class="language-nohighlight">$ swarm status currentweather
+</code></pre>
+
+<p>So here is what we get when doing so (your output will vary slightly):</p>
+
+<pre><code class="language-nohighlight">Service currentweather is up
+
+component  image                                 instanceid    created              status
+ruby       redis:latest                          TdfsdckAwoS3  2015-02-10 07:20:03  up
+redis      reg…/bant/currentweather-ruby:latest  VrvpFsjGOLyq  2015-02-10 07:20:02  up
+</code></pre>
+
+<p>Here you have them, your two components, running on Giant Swarm. If you want to, you can check the logs using the instance IDs you see in the <code>swarm status</code> output. The syntax for the command is <code>swarm logs &lt;instance-id&gt;</code>.</p>
+
+<p>Now if you like, you can stop or even delete the service again.</p>
+
+<pre><code class="language-nohighlight">$ swarm stop currentweather
+$ swarm delete currentweather
+</code></pre>
+
+<p>We hope you enjoyed this tutorial. If yes, feel free to tweet and blog it out to the world. If not, please let us know what bugged you (see chat and support info at the bottom of this page).</p>
+
+<p>If you&rsquo;re still hungry, why not continue with a more advanced tutorial?</p>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+<li><a href="/guides/your-first-service/">Your First Service - in your language</a>: this guide in other languages</li>
+<li><a href="/guides/ruby-on-rails/">Swarmify Ruby on Rails</a> - a simple Rails example involving MySQL</li>
+<li><a href="http://blog.giantswarm.io/getting-started-with-docker-and-meanjs">Getting started with Docker and MeanJS</a> - Easily adaptable to Giant Swarm with the experience you have by now.</li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

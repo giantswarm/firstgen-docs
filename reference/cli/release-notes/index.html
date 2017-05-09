@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Release Notes &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Release notes and changelog for the swarm CLI, showing you what has changed from release to release.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/cli/release-notes/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_cli_release-notes_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#release-notes">Release Notes</a>
+<ul>
+<li><a href="#version-0-27-0">Version 0.27.0</a></li>
+<li><a href="#version-0-26-0">Version 0.26.0</a></li>
+<li><a href="#version-0-25-0">Version 0.25.0</a></li>
+<li><a href="#version-0-24-1">Version 0.24.1</a></li>
+<li><a href="#version-0-24-0">Version 0.24.0</a></li>
+<li><a href="#version-0-23-0">Version 0.23.0</a></li>
+<li><a href="#version-0-22-1">Version 0.22.1</a></li>
+<li><a href="#version-0-22-0">Version 0.22.0</a></li>
+<li><a href="#version-0-21-0">Version 0.21.0</a></li>
+<li><a href="#version-0-20-0">Version 0.20.0</a></li>
+<li><a href="#version-0-19-1">Version 0.19.1</a></li>
+<li><a href="#version-0-19-0">Version 0.19.0</a></li>
+<li><a href="#version-0-18-0">Version 0.18.0</a></li>
+<li><a href="#version-0-17-0">Version 0.17.0</a></li>
+<li><a href="#version-0-16-0">Version 0.16.0</a></li>
+<li><a href="#version-0-15-0">Version 0.15.0</a></li>
+<li><a href="#version-0-12-0">Version 0.12.0</a></li>
+<li><a href="#version-0-10-2">Version 0.10.2</a></li>
+<li><a href="#version-0-10-0">Version 0.10.0</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified April 1, 2016</p>
+
+      
+
+<h1 id="release-notes">Release Notes</h1>
+
+<p>Here we list the more important changes we made between releases. See our <a href="/reference/cli/installation/">installation reference</a> for information on how to update to the latest CLI.</p>
+
+<h2 id="version-0-27-0">Version 0.27.0</h2>
+
+<p>Released 2016-04-01</p>
+
+<ul>
+<li>Added support for shared volumes. See the <code>volumes</code> section in the <a href="/reference/swarm-json/#volumes">Service Definition reference</a> to learn more.</li>
+</ul>
+
+<h2 id="version-0-26-0">Version 0.26.0</h2>
+
+<p>Released 2015-12-21</p>
+
+<ul>
+<li>Added activity tracking, which means that the command line content and an activity name will be send with every API call. Set the environment variable <code>SWARM_DISABLE_CMDLINE_TRACKING</code> to disable sending the command line content. (<a href="https://github.com/giantswarm/cli/pull/534">cli#534</a>)</li>
+<li>Fixed a problem in <code>swarm create</code> where the context variable <code>$GIANTSWARM_ENVIRONMENT</code> was parsed as <code>$GIANTSWARM_ENV</code> (<a href="https://github.com/giantswarm/cli/issues/498">cli#498</a>).</li>
+<li>Fixed a problem where <code>swarm update &lt;service&gt;/&lt;component&gt;</code> didn&rsquo;t work when a file <code>./&lt;service&gt;</code> existed (<a href="https://github.com/giantswarm/cli/issues/527">cli#527</a>)</li>
+<li>Improved feedback for <code>swarm org</code> when trying to add a user to an organisation that either doesn&rsquo;t exist or that the user has no access to (<a href="https://github.com/giantswarm/cli/issues/349">cli#349</a>)</li>
+<li>When calling <code>swarm ls -a</code>, all requests made will have the same request ID (<a href="https://github.com/giantswarm/cli/issues/503">#503</a>)</li>
+<li>More tolerant behavior of <code>swarm update</code> for components, allowing to set the second argument as <code>&lt;image&gt;:&lt;tag&gt;</code> (<a href="https://github.com/giantswarm/cli/issues/378">cli#378</a>)</li>
+<li>Improved output for <code>swarm update</code> when updating a service in the case that the validation yields an error (<a href="https://github.com/giantswarm/cli/issues/481">cli#481</a>)</li>
+</ul>
+
+<h2 id="version-0-25-0">Version 0.25.0</h2>
+
+<p>Released 2015-11-30</p>
+
+<ul>
+<li>If <code>swarm logs</code> returns an empty result, a short message is displayed. This can be suppressed using <code>-q</code> (<a href="https://github.com/giantswarm/cli/issues/41">cli#4</a>)</li>
+<li>Activating the <code>--debug</code> flag will now attempt to print the URL of all API requests made. (<a href="https://github.com/giantswarm/cli/issues/385">cli#385</a>)</li>
+<li>Better feedback in case of an invalid API endpoint setting (<a href="https://github.com/giantswarm/cli/issues/441">cli#441</a>)</li>
+<li>Better feedback when fetching status for a non-existing component (<a href="https://github.com/giantswarm/cli/issues/499">cli#499</a>)</li>
+<li>Better feedback for <code>swarm start</code> and <code>swarm stop</code> when the component does not exist (<a href="https://github.com/giantswarm/cli/pull/502">cli#502</a>)</li>
+<li>Better feedback for <code>swarm up</code> when service already exists (<a href="https://github.com/giantswarm/cli/issues/372">cli#372</a>)</li>
+<li>Better feedback for <code>swarm exec</code> when instance used is down (<a href="https://github.com/giantswarm/cli/issues/476">cli#467</a>)</li>
+<li>Better feedback when service definition contains link using undefined port (<a href="https://github.com/giantswarm/cli/issues/512">cli#512</a>)</li>
+<li>When not in an interactive terminal context, the progress indicator for commands is simpler (<a href="https://github.com/giantswarm/cli/issues/420">cli#420</a>)</li>
+<li>When not in an interactive terminal, the update notification is suppressed (<a href="https://github.com/giantswarm/cli/issues/412">cli#412</a>)</li>
+<li>The CLI is now built using Go verison 1.5.1.</li>
+</ul>
+
+<h2 id="version-0-24-1">Version 0.24.1</h2>
+
+<p>Released 2015-11-24</p>
+
+<ul>
+<li>Fixed invalid link cycle errors when component A links to component B and component B links to another service (<a href="https://github.com/giantswarm/user-config/pull/80">user-config#80</a>)</li>
+</ul>
+
+<h2 id="version-0-24-0">Version 0.24.0</h2>
+
+<p>Released 2015-11-11</p>
+
+<ul>
+<li><code>swarm update</code> for a component should no longer exit with an EOF error. (<a href="https://github.com/giantswarm/cli/issues/366">cli#366</a>)</li>
+<li>Gateway timeout errors breaking long-running tasks should now be avoided (<a href="https://github.com/giantswarm/cli/issues/472">cli#472</a>)</li>
+<li>When asynchronous tasks finish with an error, that error is now returned to the CLI (<a href="https://github.com/giantswarm/cli/issues/454">cli#454</a>)</li>
+<li><code>swarm info</code> now shows the cluster ID if the client has one selected (<a href="https://github.com/giantswarm/cli/issues/436">cli#436</a>)</li>
+<li>More friendly handling of errors and special cases, e. g.
+
+<ul>
+<li>Attempt to start a service in a non-existing environment (<a href="https://github.com/giantswarm/cli/issues/362">cli#362</a>)</li>
+<li>Attempt to execute <code>swarm logs</code> with an argument that is not a valid instance ID (<a href="https://github.com/giantswarm/cli/issues/371">cli#371</a>)</li>
+<li>Attempting to create an organization that already exists (<a href="https://github.com/giantswarm/cli/issues/351">cli#351</a>)</li>
+<li>Attempting <code>swarm update</code> for an unknown/misspelled component name (<a href="https://github.com/giantswarm/cli/issues/399">cli#399</a>)</li>
+<li>Attempting <code>swarm scaleup</code> or <code>swarm scaledown</code> for an unknown/misspelled component name (<a href="https://github.com/giantswarm/cli/issues/455">cli#455</a>)</li>
+</ul></li>
+<li>Enabled the image name truncation in <code>swarm status</code> output again (<a href="https://github.com/giantswarm/cli/issues/377">cli#377</a>)</li>
+</ul>
+
+<h2 id="version-0-23-0">Version 0.23.0</h2>
+
+<p>Released 2015-10-30</p>
+
+<ul>
+<li>The service definition now supports a <code>memory-limit</code> directive per component. This is only applicable on certain clusters, not on the Shared alpha cluster. <a href="/reference/swarm-json/#memory-limit">More details</a></li>
+<li><code>swarm info</code> now also prints the API endpoint. Also the output order has changed. (<a href="https://github.com/giantswarm/cli/pull/442">cli#442</a>)</li>
+<li><code>swarm stop</code> no longer shows text related to <em>starting</em> a service in case of an unknown service name (<a href="https://github.com/giantswarm/cli/issues/443">cli#443</a>)</li>
+</ul>
+
+<h2 id="version-0-22-1">Version 0.22.1</h2>
+
+<p>Released 2015-10-13</p>
+
+<ul>
+<li>Enhanced detection of connection problems, which should result in better robustness when waiting for the result of a long-running task (<a href="https://github.com/giantswarm/client-go/pull/81">client-go#81</a>).</li>
+<li>Fixed a stupid bug were <code>swarm stop</code> on a component would result in the attempt to start the component instead of stopping it (<a href="https://github.com/giantswarm/cli/pull/433">cli#433</a>).</li>
+</ul>
+
+<h2 id="version-0-22-0">Version 0.22.0</h2>
+
+<p>Released 2015-10-09</p>
+
+<ul>
+<li>The commands <code>start</code>, <code>stop</code>, <code>scaleup</code>, <code>scaledown</code>, and <code>delete</code> use new asynchronous API methods, which should prevent connection timeouts (known as EOF errors or unknown server errors) from happening.</li>
+<li>Changes to <a href="/reference/cli/update/"><code>swarm update</code></a>:
+
+<ul>
+<li>When updating a service definition, you will now get a detailed overview of the changes to be applied, including warnings where we think you should be aware of the consequences.</li>
+<li>Updating a service definition no longer allows to add the <code>-s</code>/<code>--strategy</code> flag to select an update strategy, since the update strategy when updating services is always <code>hot-swap</code>.</li>
+</ul></li>
+<li>Changes to <a href="/reference/cli/delete/"><code>swarm delete</code></a>:
+
+<ul>
+<li>While waiting for the deletion to be finished, we now show an activity indicator indicator.</li>
+<li>The command now provides the <code>-d</code> flag to return immediately after issuing the command, not waiting for the result.</li>
+</ul></li>
+<li><code>swarm scaleup</code> now waits for the result of the scaling action and shows an activity indicator in the meantime.</li>
+<li><code>swarm scaledown</code> now also shows an activity indicator while waiting for the result.</li>
+</ul>
+
+<h2 id="version-0-21-0">Version 0.21.0</h2>
+
+<p>Released 2015-09-17</p>
+
+<ul>
+<li>Fixed panics in the CLI when using <a href="/reference/cli/update/"><code>swarm update</code></a> on a service using the expose functionality to link different components together (components without an image field) user-config#65 #406</li>
+<li>Removed <a href="/reference/cli/migrate/"><code>swarm migrate</code></a> command</li>
+</ul>
+
+<h2 id="version-0-20-0">Version 0.20.0</h2>
+
+<p>Released 2015-09-14</p>
+
+<ul>
+<li>The new <code>placement</code> key in <a href="/reference/swarm-json/#scale">scaling policy</a> allows for <code>one-per-machine</code> placement of component instances, e.g. for high availablity setups.</li>
+<li>The new component level key <code>signal-ready</code> allows for <a href="/reference/swarm-json/#signal-ready">manually signaling readiness</a> from components. By setting <code>signal-ready</code> to <code>true</code> you set a component to manual readiness notification. In this case you have to use the environment variable <code>GIANTSWARM_INSTANCE_API</code>, which contains a URL endpoint as a value, to set the status to ready with a simple HTTP POST request in your component.</li>
+<li>Added ability to update services based on changes in the service definition with <code>swarm update</code>. <strong>Note:</strong> This feature is an early iteration and thus not documented, yet. We will release proper documentation of this feature, once it&rsquo;s ready for public usage.</li>
+</ul>
+
+<h2 id="version-0-19-1">Version 0.19.1</h2>
+
+<p>Released 2015-08-14</p>
+
+<ul>
+<li>Added functionality that simplifies the debugging of requests. If you set the environment variable <code>SWARM_REQUEST_ID</code> to some string value, this string is used as the prefix for an automatically generated request ID, which is then sent to the API as an HTTP header.</li>
+</ul>
+
+<h2 id="version-0-19-0">Version 0.19.0</h2>
+
+<p>Released 2015-08-10</p>
+
+<ul>
+<li>What used to be called <em>application</em> is now called <em>service</em>. The way services are defined has been changed heavily. Read more in the <a href="/reference/swarm-json/">Service Definition (<code>swarm.json</code>) Reference</a>. Some background about the motivation behind this move is given in the blog post <a href="https://blog.giantswarm.io/better-way-to-define-services/">Introducing A Better Way To Define Services</a>.</li>
+<li>The commands <code>swarm status</code>, <code>swarm start</code> and <code>swarm stop</code> now support a new flag <code>-r</code> or <code>--recursive</code>, that allows to recursively deal with all components starting at a certain point in the component hierarchy.</li>
+<li><code>swarm start</code> and <code>swarm stop</code> allow to start/stop individual components now.</li>
+<li>The <a href="/reference/cli/up/"><code>swarm up</code></a> and <a href="/reference/cli/create/"><code>swarm create</code></a> commands now allow to set the name of the new service via the command line. This overwrites a name in the service definition, if given.</li>
+<li>The new command <code>swarm migrate</code> has been introduced to migrate old application configuration files (<code>swarm.json</code>) to the new service definition format.</li>
+<li>The service definition now supports the use of predefined variables. For example, <code>$GIANTSWARM_LOGIN_NAME</code> will be translated to the current username. <a href="/reference/swarm-json/#giant-swarm-context-variables">More details</a></li>
+<li>For users running docker 1.7 or later, <code>swarm login</code> will now automatically log users in to our registry (registry.giantswarm.io). <code>swarm logout</code> will correspondingly log users out of our registry too. Authentication tokens are written to ~/.docker/config.json</li>
+<li>The username of the currently authenticated user is now stored to a local file. The default path for this file is <code>~/.swarm/username</code>, which can be modified using the global <code>--config-dir</code> flag.</li>
+<li>The positioning of flags no longer matters, so that <code>swarm -v status</code> will work just as good as <code>swarm status -v</code>.</li>
+<li>The output of <code>swarm status</code> now truncates the image column to make the output more compact. The name of our registry <code>registry.giantswarm.io</code> is truncated to <code>reg…</code>. Use the <code>-v</code> or <code>--verbose</code> flag to show untruncated output.</li>
+</ul>
+
+<h2 id="version-0-18-0">Version 0.18.0</h2>
+
+<p>Released 2015-06-22</p>
+
+<ul>
+<li>There&rsquo;s a new component-level configuration key <code>pod</code>, with which you can group several components for sharing namespaces between them. You can read more about it on the <a href="/reference/swarm-json#pod"><code>swarm.json</code> reference page</a>.</li>
+<li>Above mentioned <code>pod</code> key allows for the new <code>volumes-from</code>and <code>volume-from</code> keys under the <code>volumes</code> key. Read more on the respective <a href="/reference/swarm-json#volumes"><code>swarm.json</code> reference page</a>.</li>
+<li>You can now choose update strategies for <code>swarm update</code> with <code>-s &lt;update-strategy&gt;</code>. Choose between <code>one-by-one</code>, <code>all-at-once</code>, and <code>hot-swap</code>. Read more on the <a href="/reference/cli/update"><code>update</code> reference page</a>.</li>
+<li><code>swarm</code> is now compiled statically, making it possible to run inside boot2docker (e.g. on a Windows machine).</li>
+<li>The new <code>--config-dir</code> option has been introduced, to set custom configuration directories. Read more on the <a href="/reference/cli/global-options">global options reference page</a>.</li>
+</ul>
+
+<h2 id="version-0-17-0">Version 0.17.0</h2>
+
+<p>Released 2015-05-11</p>
+
+<ul>
+<li>The new function <code>swarm exec</code> allows to execute arbitrary commands in a running component instance, including opening a shell. Read more about it on the according <a href="/reference/cli/exec/">reference page</a>.</li>
+<li>For any component that creates log output, log data is now reliably retained for a fixed period (currently 14 days) as long as the source component instance still exists. Deleting a component instance makes the according log data inaccessible.</li>
+<li>This also results in a change in the <code>swarm logs</code> mechanics: the flags <code>-t</code> and <code>-f</code> can no longer be combined. The new implementation of historic log data access makes this difficult to achieve. Once real-time log access is unified, this function might return.</li>
+<li>The new component-level configuration key <code>entrypoint</code> has been introduced, allowing to override a Docker image&rsquo;s <code>ENTRYPOINT</code> directive. Read more in the according <a href="/reference/swarm-json/#entrypoint">Application configuration</a> section.</li>
+<li>Fixed a bug that broke the function of <code>swarm logs &lt;instance-id&gt; -f</code>.</li>
+<li>Fixed a bug that slowed down the execution of calls to <code>swarm status</code> and <code>swarm stats</code>.</li>
+</ul>
+
+<h2 id="version-0-16-0">Version 0.16.0</h2>
+
+<p>Released 2015-04-20</p>
+
+<ul>
+<li>What was called &ldquo;company&rdquo; so far is now called an &ldquo;organization&rdquo;. The <code>swarm company</code> CLI command has been renamed to <code>swarm org</code>.</li>
+<li>The <code>swarm update</code> command is back and allows to update the docker image run by a component. Check the <a href="/reference/cli/update/">reference page</a> for details.</li>
+<li>The <code>swarm stats</code> command now allows showing the stats for more than one instance. it can be called with an application, service or component name as a selector. Check the <a href="/reference/cli/stats/">reference page</a> for details.</li>
+<li>The <code>swarm ls</code> command can now list applications from all organizations and environments accessible for the current user, using the <code>--all</code>/<code>-a</code> flag (<code>swarm ls -a</code>). Also the command executes faster than before due to parallelization.</li>
+<li>Commands which accept an instance ID as argument (<code>swarm logs</code>, <code>swarm stats</code>) now also accept partial instance IDs, as long as this part is not ambigious. If, for example, an instance ID is <code>3nFK77aEF88NnSww</code>, it will in most cases suffice to call its stats using <code>swarm stats 3n</code> or even <code>swarm stats 3</code>.</li>
+<li>The <code>swarm logs</code> command now defaults to showing the 10 latest rows. Use <code>-t &lt;n&gt;</code> to show a specific number of entries or <code>-t all</code> to show all entries. See the <a href="/reference/cli/logs/">reference page</a> for details.</li>
+<li>We now publish SHA1 and MD5 checksums/hashes for our CLI release files. Check the <a href="/reference/cli/installation/">install reference </a> for details.</li>
+</ul>
+
+<h2 id="version-0-15-0">Version 0.15.0</h2>
+
+<p>Released 2015-02-24</p>
+
+<ul>
+<li>We introduced version checks between CLI and API. Deprecated clients now show an error and prompt the user to install an update whenever the CLI is no longer compatible.</li>
+<li>The CLI now checks once per day for a CLI update and informs the users if a newer version is available.</li>
+<li>Password changes now result in the user being logged out.</li>
+<li>Fixed a problem with continuous log output (<code>-f</code> switch in <code>swarm logs</code>).</li>
+</ul>
+
+<h2 id="version-0-12-0">Version 0.12.0</h2>
+
+<p>Released 2015-02-09</p>
+
+<ul>
+<li><code>swarm status</code> now prints the Docker image used by each component.</li>
+<li>When an error occurs during stopping a component (<code>swarm stop</code> or <code>swarm delete</code>), this error is displayed to the end user. A common cause for errors when stopping is the improper handling of the stop signal (<code>SIGTERM</code>). When you see this kind of error, make sure your containers handle this signal properly.</li>
+<li>The parsing of a local application configuration file (<code>swarm.json</code>) has improved so that the use of commands like <code>swarm status</code>, <code>swarm start</code> and <code>swarm stop</code> is possible without using an application name as argument, even when there are variables in the configuration file.</li>
+<li><code>swarm info</code> and <code>swarm version</code> now check whether the current CLI version is the latest. In addition, the CLI now sends the CLI version with every request to the API. With this, we are working towards automatic compatibility checks and warnings.</li>
+<li>Port definitions in the application configuration now accept integer values</li>
+<li>Several fixes and improvements of robustness.</li>
+</ul>
+
+<h2 id="version-0-10-2">Version 0.10.2</h2>
+
+<p>Released 2015-01-13</p>
+
+<ul>
+<li>We added a simpler, more straight-forward way to define environment variables in the application configuration (<code>swarm.json</code>). They can now be set as an object like this: <code>&quot;env&quot;: {&quot;KEY_ONE&quot;: &quot;value_one&quot;, ...}</code>. The old Array format will still work, but all documentation has been updated to use the new format.</li>
+</ul>
+
+<h2 id="version-0-10-0">Version 0.10.0</h2>
+
+<p>Released 2015-01-09</p>
+
+<ul>
+<li><p>The <code>swarm update</code> has been deactivated due to possible problems and side-effects until we come up with a more stable implementation. Updating components requires the use of <code>swarm stop</code> and <code>swarm start</code>.</p></li>
+
+<li><p>The <code>swarm company</code> command has changed in several ways. <code>swarm company -l</code> now lists all companies for the user. <code>swarm company create &lt;companyname&gt;</code> creates a new company.</p></li>
+
+<li><p>The <code>swarm scaleup</code> and <code>swarm scaledown</code> commands have changed. They can now be used with only a component name as argument and the number <code>1</code> will be assumed as default number to scale by. The named argument <code>--count</code> can no longer be used.</p></li>
+
+<li><p><code>swarm status</code> no prints the instance creation date for every instance. (Instances created before the release show <code>n/a</code> here.)</p></li>
+
+<li><p>The output for <code>swarm ls</code> has changed slightly for consistency reasons. The environment is now printed in one column in the common format <code>&lt;company&gt;/&lt;env&gt;</code>.</p></li>
+
+<li><p>Fixed a bug in the client where certain passwords where wrongly passed to the API for authentication.</p></li>
+
+<li><p><code>swarm help &lt;command&gt;</code> now prints documentation URLs in some cases. CLI usage texts have been shortened in some cases.</p></li>
+
+<li><p><code>swarm user</code> without argument now prints the currently logged in user.</p></li>
+
+<li><p>Messages printed by some commands in case of errors has been improved.</p></li>
+
+<li><p>New subcommands have been incorporated into the bash completion configuration.</p></li>
+
+<li><p>Changing the email address via <code>swarm user -u email</code> no longer requires to enter the old email address.</p></li>
+
+<li><p><code>swarm info</code> no longer shows a &ldquo;Current company&rdquo;, since there actually is no such thing. There was and is a &ldquo;Current environment&rdquo; however, which automatically belongs to a company, as indicated by its name.</p></li>
+
+<li><p><code>swarm env &lt;environment-name&gt;</code> now checks access to the environment (company membership) before setting it as the current one.</p></li>
+
+<li><p>Fixed a bug where the progress indicator in commands like <code>swarm up</code> was hidden behind the cursor in some terminals and another bug causing the progress indicator to look &ldquo;unround&rdquo;.</p></li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

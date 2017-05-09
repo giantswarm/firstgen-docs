@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Giant Swarm API v1 Reference &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="The Giant Swarm API allows you to create, control and monitor services running on Giant OS programmatically.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/api/v1/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_api_v1_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#api-v1-reference">API v1 Reference</a>
+<ul>
+<li><a href="#basics">The Basics</a>
+<ul>
+<li><a href="#introduction-video">Introduction Video</a></li>
+<li><a href="#changelog">Changelog</a></li>
+<li><a href="#example-helper">Example Helper</a></li>
+<li><a href="#naming-conventions">Naming Conventions</a></li>
+<li><a href="#resource-urls">Resource URLs</a></li>
+<li><a href="#sdks">SDKs</a></li>
+<li><a href="#response-codes">Response Codes</a></li>
+<li><a href="#viewing-api-methods-via-the-cli">Viewing API Methods via the CLI</a></li>
+<li><a href="#processing-responses-with-bash">Processing Responses with bash</a></li>
+</ul></li>
+<li><a href="#auth">Authentication</a>
+<ul>
+<li><a href="#password-authentication">Password Authentication</a></li>
+<li><a href="#token-authentication">Token Authentication</a></li>
+</ul></li>
+<li><a href="#organization">Organization Methods</a>
+<ul>
+<li><a href="#ListEnvironments">Listing an Organization&rsquo;s Environments</a></li>
+<li><a href="#CreateOrganization">Create a New Organization</a>
+<ul>
+<li><a href="#response-status-codes">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#DeleteOrganization">Remove an Organization</a>
+<ul>
+<li><a href="#response-status-codes-1">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#GetOrganization">Get Information on Organization</a>
+<ul>
+<li><a href="#response-status-codes-2">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#AddOrganizationMember">Add a Member to an Organization</a>
+<ul>
+<li><a href="#response-status-codes-3">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#RemoveOrganizationMember">Remove a Member from an Organization</a>
+<ul>
+<li><a href="#response-status-codes-4">Response Status Codes</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#service">Service Methods</a>
+<ul>
+<li><a href="#ListServices">List Services</a>
+<ul>
+<li><a href="#response-status-codes-5">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#CreateService">Create a New Service</a>
+<ul>
+<li><a href="#a-note-on-service-images">A Note on Service Images</a></li>
+<li><a href="#response-status-codes-6">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#DeleteService">Delete a Service (<em>DEPRECATED</em>)</a>
+<ul>
+<li><a href="#response-status-codes-7">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#StartService">Starting a Service (<em>DEPRECATED</em>)</a>
+<ul>
+<li><a href="#response-status-codes-8">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#StopService">Stop a Service (<em>DEPRECATED</em>)</a>
+<ul>
+<li><a href="#response-status-codes-9">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#StatusService">Get a Service&rsquo;s Status</a>
+<ul>
+<li><a href="#response-status-codes-10">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#DefinitionService">Get a Service&rsquo;s Definition</a></li>
+<li><a href="#UpdateService">Update a Service Definition</a></li>
+<li><a href="#ServiceUpdatePlan">Get a Service Definition Update Plan</a></li>
+</ul></li>
+<li><a href="#component">Component Methods</a>
+<ul>
+<li><a href="#StartComponent">Start an Existing Component</a>
+<ul>
+<li><a href="#response-status-codes-11">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#StopComponent">Stop an Existing Component</a>
+<ul>
+<li><a href="#response-status-codes-12">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#StatusComponent">Query the Status of an Existing Component</a>
+<ul>
+<li><a href="#response-status-codes-13">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#ScaleUpComponent">Add an Instance to a Component</a>
+<ul>
+<li><a href="#response-status-codes-14">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#ScaleDownComponent">Remove Instances from a Component</a>
+<ul>
+<li><a href="#response-status-codes-15">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#UpdateComponent">Update an Existing Component</a>
+<ul>
+<li><a href="#response-status-codes-16">Response Status Codes</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#instance">Instance Methods</a>
+<ul>
+<li>
+<ul>
+<li><a href="#retrieving-an-instance-id-with-curl-and-jq">Retrieving an Instance ID with curl and jq</a></li>
+</ul></li>
+<li><a href="#LogInstance">Get an Instance&rsquo;s Logs</a></li>
+<li><a href="#StatInstance">Get an Instance&rsquo;s Statistics</a></li>
+<li><a href="#ExecInstance">Execute a Remote Command on an Instance</a>
+<ul>
+<li><a href="#upgrading-the-connection-with-your-language-of-choice">Upgrading the Connection with Your Language of Choice</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#connection">Connection Methods</a>
+<ul>
+<li><a href="#Ping">Ping the API Connection</a>
+<ul>
+<li><a href="#response-status-codes-17">Response Status Codes</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#user">User Methods</a>
+<ul>
+<li><a href="#LoginUser">Generate Token</a>
+<ul>
+<li><a href="#response-status-codes-18">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#LogoutUser">Expire Token</a>
+<ul>
+<li><a href="#response-status-codes-19">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#UpdateEmail">Update User&rsquo;s Email Address</a>
+<ul>
+<li><a href="#response-status-codes-20">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#UpdatePassword">Update User&rsquo;s Password</a>
+<ul>
+<li><a href="#response-status-codes-21">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#GetMe">Show User&rsquo;s Status</a>
+<ul>
+<li><a href="#response-status-codes-22">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#GetMemberships">Show User&rsquo;s Memberships</a>
+<ul>
+<li><a href="#response-status-codes-23">Response Status Codes</a></li>
+</ul></li>
+<li><a href="#the-end">The End.</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified April 14, 2016</p>
+
+      
+
+<h1 id="api-v1-reference">API v1 Reference</h1>
+
+<p><strong>Note</strong>: This page describes our API v1, which is in part deprecated since the release of <a href="/reference/api/v2/">API v2</a>. Expect more v1 methods to be deprecated and superseded by v2 methods in the future. Once all functionality is covered by v2, the API v1 is to be deactivated.</p>
+
+<p>The <a href="/reference/api/changelog/">API changelog</a> will keep you informed about methods being superseded by v2 functionality. Account owners will also be informed via email as soon as a timeline for v1 deactivation is decided on.</p>
+
+<h2 id="basics">The Basics</h2>
+
+<p>The following information is intended to familiarize you with the use of the Giant Swarm API. If you have a suggestion on how to improve the documentation or have found an error, <a href="https://github.com/giantswarm/docs-content/issues">please open a ticket</a>.</p>
+
+<p>There are several types of management methods supported by the Giant Swarm API:</p>
+
+<ol>
+<li><a href="#organization">Organization</a></li>
+<li><a href="#service">Service</a></li>
+<li><a href="#component">Component</a></li>
+<li><a href="#instance">Instance</a></li>
+<li><a href="#connection">Connection</a></li>
+<li><a href="#user">User</a></li>
+</ol>
+
+<h3 id="introduction-video">Introduction Video</h3>
+
+<p>The following video gives a quick overview of the Giant Swarm API v1 using simple curl commands provided in this guide.</p>
+
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/rPlHb6gocXU" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<h3 id="changelog">Changelog</h3>
+
+<p>Follow the <a href="/reference/api/changelog/">API changelog</a> for information on new functionality as well as changes and bug fixes to existing methods.</p>
+
+<h3 id="example-helper">Example Helper</h3>
+
+<p>For convenience, this page contains an <a id="link-helper" href="#helper">example helper</a> designed to replace variables used in examples on this page with ones that are valid for your account. The helper can be triggered by clicking on the link above, or hitting the <code>h</code> key while on this page. Please note the helper will not work when viewing this documentation on Github.</p>
+
+<p>You may jump to the <a href="#passwordauth">password authentication</a> section for information on retrieving an authentication token for use with the example helper.</p>
+
+<h3 id="naming-conventions">Naming Conventions</h3>
+
+<p>This document uses brackets <code>&lt; &gt;</code> to identify variables such as organization and service names where they appear in JSON based requests. The remainder of the document uses braces <code>{ }</code> to identify variables where they appear outside JSON requests, such as in paths and request headers.</p>
+
+<h3 id="resource-urls">Resource URLs</h3>
+
+<p>All Giant Swarm API resources live under the following URL:</p>
+
+<pre><code class="language-nohighlight">https://api.giantswarm.io/
+</code></pre>
+
+<p>The API is currently in Version 1.0, indicated by the <code>/v1/</code> path:</p>
+
+<pre><code class="language-nohighlight">https://api.giantswarm.io/v1/
+</code></pre>
+
+<p>The <code>/org/</code>, <code>/env/</code> and <code>/service/</code> path parameters denote the concepts of organizations, environments and services within Giant Swarm. These are respectively combined with their named objects within the system.</p>
+
+<p>Here is an example URL which refers to information about the organization named <code>bantic</code>:</p>
+
+<pre><code class="language-nohighlight">https://api.giantswarm.io/v1/org/bantic/
+</code></pre>
+
+<h3 id="sdks">SDKs</h3>
+
+<p>Driven mainly by the requirements of our own software, we provide the following client libraries for working with the API:</p>
+
+<ul>
+<li><a href="https://github.com/giantswarm/client-go">Golang</a></li>
+<li><a href="https://github.com/giantswarm/giantswarm-js-client">JavaScript</a></li>
+</ul>
+
+<p>Like a lot of our software, these are Open Source and contributions are welcome.</p>
+
+<h3 id="response-codes">Response Codes</h3>
+
+<p>Giant Swarm&rsquo;s API returns the standard <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">HTTP status codes</a>. The API also uses a set of internal response codes which are returned with each request:</p>
+
+<table>
+<thead>
+<tr>
+<th>Response Code</th>
+<th>Response Type</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>10000</td>
+<td>STATUS_CODE_DATA</td>
+</tr>
+
+<tr>
+<td>10001</td>
+<td>STATUS_CODE_RESOURCE_UP</td>
+</tr>
+
+<tr>
+<td>10002</td>
+<td>STATUS_CODE_RESOURCE_DOWN</td>
+</tr>
+
+<tr>
+<td>10003</td>
+<td>STATUS_CODE_RESOURCE_CREATED</td>
+</tr>
+
+<tr>
+<td>10004</td>
+<td>STATUS_CODE_RESOURCE_STARTED</td>
+</tr>
+
+<tr>
+<td>10005</td>
+<td>STATUS_CODE_RESOURCE_STOPPED</td>
+</tr>
+
+<tr>
+<td>10006</td>
+<td>STATUS_CODE_RESOURCE_UPDATED</td>
+</tr>
+
+<tr>
+<td>10007</td>
+<td>STATUS_CODE_RESOURCE_DELETED</td>
+</tr>
+
+<tr>
+<td>10008</td>
+<td>STATUS_CODE_RESOURCE_NOT_FOUND</td>
+</tr>
+
+<tr>
+<td>10009</td>
+<td>STATUS_CODE_RESOURCE_ALREADY_EXISTS</td>
+</tr>
+
+<tr>
+<td>10010</td>
+<td>STATUS_CODE_RESOURCE_INVALID_CREDENTIALS</td>
+</tr>
+
+<tr>
+<td>10011</td>
+<td>STATUS_CODE_CONDITION_TRUE</td>
+</tr>
+
+<tr>
+<td>10012</td>
+<td>STATUS_CODE_CONDITION_FALSE</td>
+</tr>
+
+<tr>
+<td>10013</td>
+<td>STATUS_CODE_WRONG_INPUT</td>
+</tr>
+
+<tr>
+<td>10014</td>
+<td>STATUS_CODE_USER_ERROR</td>
+</tr>
+
+<tr>
+<td>10015</td>
+<td>STATUS_CODE_SERVER_ERROR</td>
+</tr>
+
+<tr>
+<td>10016</td>
+<td>STATUS_CODE_INVALID_VERSION_ERROR</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="viewing-api-methods-via-the-cli">Viewing API Methods via the CLI</h3>
+
+<p>The <a href="/reference/cli/installation/">Giant Swarm CLI</a> can be used with the <code>--debug</code> flag to show the methods it uses when it talks to the API.</p>
+
+<p>Here is an example use of the CLI which lists all services in the <code>bantic</code> organization&rsquo;s <code>dev</code> environment and then queries each one of them for its status:</p>
+
+<pre><code class="language-nohighlight">$ swarm --debug ls
+DEBUG: GET https://api.giantswarm.io/v1/org/bantic/env/dev/service/
+DEBUG: &lt;&lt; 200 OK
+DEBUG: GET https://api.giantswarm.io/v1/org/bantic/env/dev/service/currentweather/status
+DEBUG: &lt;&lt; 200 OK
+1 service available in environment 'terminal/dev':
+
+service         created              status
+currentweather  2015-04-28 17:28:36  up
+</code></pre>
+
+<p>In this example, we can see we should use a <code>GET</code> method on the <code>/v1/org/bantic/env/dev/service/</code> endpoint to get a list of services in our <code>dev</code> environment.</p>
+
+<h3 id="processing-responses-with-bash">Processing Responses with bash</h3>
+
+<p>You may occasionally wish to prototype API calls in <code>bash</code>. Here&rsquo;s an example which uses the <code>jq</code> command to extract the required data from the JSON response data:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/ \
+    | jq '.data.environments[0].name'
+
+&quot;dev&quot;
+</code></pre>
+
+<p><strong>Note</strong>: If you are running on OSX, you may install the <code>jq</code> command by doing a <code>brew install jq</code>. You can find more information about <code>jq</code>, including install information for Linux, <a href="http://stedolan.github.io/jq/">on its website</a>.</p>
+
+<h2 id="auth">Authentication</h2>
+
+<p>The Giant Swarm API requires authentication tokens for most of its URL endpoints. Tokens may be retrieved from the command line if the <code>swarm</code> client is <a href="/reference/cli/installation/">installed</a> and <a href="/reference/cli/login/">authenticated</a>:</p>
+
+<pre><code class="language-nohighlight">$ cat ~/.swarm/token; echo;
+e5239484-2299-41df-b901-d0568db7e3f9
+</code></pre>
+
+<p>Authentication tokens may also be obtained by using the <code>/v1/user/{username}/login</code> endpoint while sending an encoded password via an <code>application/json</code> content type inside the <code>POST</code> request.</p>
+
+<h3 id="password-authentication">Password Authentication</h3>
+
+<p>To authenticate and get a token, call the <code>POST</code> method on the <code>/v1/user/{username}/login</code> method using a JSON object containing a <code>base64</code> encoded password. :</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -H &quot;Content-Type: application/json&quot; \
+    -X POST \
+    -d '{&quot;password&quot;:&quot;&lt;base64_password&gt;&quot;}' \
+    https://api.giantswarm.io/v1/user/{username}/login
+</code></pre>
+
+<p>Here&rsquo;s an example which uses a bash partial using <code>echo</code> with the <code>-n</code> (no line feed) option to populate the password dynamically and uses Python to clean up the output:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -H &quot;Content-Type: application/json&quot; \
+    -X POST \
+    --data '{&quot;password&quot;:&quot;'&quot;$(echo -n f00bar | base64)&quot;'&quot;}' \
+    https://api.giantswarm.io/v1/user/terminal/login \
+    | python -mjson.tool
+
+{
+    &quot;data&quot;: {
+        &quot;Id&quot;: &quot;e5239484-2299-41df-b901-d0568db7e3f9&quot;,
+    },
+    &quot;status_code&quot;: 10000,
+    &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<p><strong>Note</strong>: Be careful when using the <code>base64</code> command to generate encoded data from STDIN. For example, the default behavior of <code>echo foo | base64</code> in bash will result in a line feed <code>'\n'</code> being encoded in the password. Giant Swarm&rsquo;s API will not authorize a password with an appended line feed or carriage return.</p>
+
+<h3 id="token-authentication">Token Authentication</h3>
+
+<p>Tokens for use with API calls may be obtained by requesting the <code>/v1/user/{username}/login</code> endpoint, as shown above. The token is identified by the <code>Id</code> key in the response. In the example above, the token would be:</p>
+
+<pre><code class="language-text">e5239484-2299-41df-b901-d0568db7e3f9
+</code></pre>
+
+<p>This token must be passed in the headers of the API request. In this example <code>curl</code> request, we set the auth request header to <code>Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9</code>. Please note the string <code>giantswarm</code> is always required, and should not be substituted with another string.</p>
+
+<p>Here&rsquo;s an example of using a token to <code>curl</code> the <code>/v1/org/bantic/env/</code> endpoint to list available environments:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/ \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;environments&quot;: [
+      {
+        &quot;name&quot;: &quot;dev&quot;
+      }
+    ]
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<h2 id="organization">Organization Methods</h2>
+
+<p>The organization methods live under the <code>/v1/org/</code> endpoint. The following table lists the available methods for operating on organizations:</p>
+
+<table>
+<thead>
+<tr>
+<th>Resource Path</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/v1/org/{org}/env/</td>
+<td><a href="#ListEnvironments">GET</a></td>
+<td>Get the environments within the given organization that contains services.</td>
+</tr>
+
+<tr>
+<td>/v1/org/</td>
+<td><a href="#CreateOrganization">POST</a></td>
+<td>Create a new organization.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/</td>
+<td><a href="#DeleteOrganization">DELETE</a></td>
+<td>Remove an organization.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}</td>
+<td><a href="#GetOrganization">GET</a></td>
+<td>Get information about an organization.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/members/add</td>
+<td><a href="#AddOrganizationMember">POST</a></td>
+<td>Add a member to an organization.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/members/remove</td>
+<td><a href="#RemoveOrganizationMember">POST</a></td>
+<td>Remove a member from an organization.</td>
+</tr>
+</tbody>
+</table>
+
+<p>In addition to the path parameters shown above, the following JSON POST parameters are used by the organization methods:</p>
+
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value Type</th>
+<th>Description</th>
+<th>Required by related methods?</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>org_id</td>
+<td>string</td>
+<td>The new organization&rsquo;s name.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>username</td>
+<td>string</td>
+<td>The username for the new user.</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="ListEnvironments">Listing an Organization&rsquo;s Environments</h3>
+
+<p>To request a list of an organization&rsquo;s environments which contain services, call the <code>GET</code> method on the <code>/v1/org/{org}/env/</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/ \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;environments&quot;: [
+      {
+        &quot;name&quot;: &quot;dev&quot;
+      },
+      {
+        &quot;name&quot;: &quot;prod&quot;
+      }
+    ]
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<p><strong>Note</strong>: The use of the <code>| python -mjson.tool</code> is optional, and used for formatting purposes only.</p>
+
+<h3 id="CreateOrganization">Create a New Organization</h3>
+
+<p>To create a new organization in an account, call the <code>POST</code> method on the <code>/v1/org/</code> endpoint with JSON data containing the new org&rsquo;s name:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;org_id&quot;:&quot;&lt;org&gt;&quot;}' \
+    https://api.giantswarm.io/v1/org/
+</code></pre>
+
+<p><strong>Note</strong>: The default organization name will initially be the username of the account.</p>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;org_id&quot;:&quot;bantic&quot;}' \
+    https://api.giantswarm.io/v1/org/ \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10003,
+  &quot;status_text&quot;: &quot;resource created&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10003</td>
+<td>The organization was created.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10009</td>
+<td>An organization with the same name already exists.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="DeleteOrganization">Remove an Organization</h3>
+
+<p>To remove an existing organization, call the <code>DELETE</code> method on the <code>/v1/org/{org}/</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X DELETE \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/
+</code></pre>
+
+<p><strong>Note</strong>: You must use a trailing slash on the end of the URL when doing a <code>DELETE</code> on an organization.</p>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X DELETE \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/ \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10007,
+  &quot;status_text&quot;: &quot;resource deleted&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-1">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10007</td>
+<td>The organization was removed.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>The organization does not exist or removal is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="GetOrganization">Get Information on Organization</h3>
+
+<p>To get information on an existing organization, call the <code>GET</code> method on the <code>/v1/org/{org}/</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}
+</code></pre>
+
+<p><strong>Note</strong>: You may NOT use a trailing slash on the end of the URL when doing a <code>GET</code> on an object.</p>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;default_cluster&quot;: &quot;alpha.private.giantswarm.io&quot;,
+    &quot;id&quot;: &quot;bantic&quot;,
+    &quot;members&quot;: [
+      &quot;terminal&quot;
+    ]
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-2">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The organization data was returned.</td>
+</tr>
+
+<tr>
+<td>404</td>
+<td>n/a</td>
+<td>The organization was not found.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="AddOrganizationMember">Add a Member to an Organization</h3>
+
+<p>To add a new user/member to an existing organization, call the <code>POST</code> method on the <code>/v1/org/{org}/members/add</code> endpoint with JSON data containing the new member&rsquo;s username:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;username&quot;:&quot;&lt;username&gt;&quot;}' \
+    https://api.giantswarm.io/v1/org/{org}/members/add
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;username&quot;:&quot;terminal&quot;}' \
+    https://api.giantswarm.io/v1/org/bantic/members/add \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-3">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The user was added.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10013</td>
+<td>The username was not found or has already been added.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>The organization was not found or update is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="RemoveOrganizationMember">Remove a Member from an Organization</h3>
+
+<p>To add a remove a user/member from an existing organization, call the <code>POST</code> method on the <code>/v1/org/{org}/members/remove</code> endpoint with JSON data containing the member&rsquo;s username:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;username&quot;:&quot;&lt;username&gt;&quot;}' \
+    https://api.giantswarm.io/v1/org/{org}/members/remove
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;username&quot;:&quot;terminal&quot;}' \
+    https://api.giantswarm.io/v1/org/bantic/members/remove \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-4">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The resource was updated and the member removed.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10013</td>
+<td>A member with that username was not found or has already been removed.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>The organization was not found or update is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="service">Service Methods</h2>
+
+<p>The service methods live under the <code>/v1/org/{org}/env/{env}/service/</code> endpoint. The following table lists the available methods for operating on services:</p>
+
+<table>
+<thead>
+<tr>
+<th>Resource Path</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/v1/org/{org}/env/{env}/service/</td>
+<td><a href="#ListServices">GET</a></td>
+<td>Return a list of all services running in a specific environment.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/</td>
+<td><a href="#CreateService">POST</a></td>
+<td>Create a new service.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}</td>
+<td><a href="#DeleteService">DELETE</a></td>
+<td>Delete an existing service.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/start</td>
+<td><a href="#StartService">POST</a></td>
+<td>Start a service.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/stop</td>
+<td><a href="#StopService">POST</a></td>
+<td>Stop a service.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/status</td>
+<td><a href="#StatusService">GET</a></td>
+<td>Get the status of an existing service.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/definition</td>
+<td><a href="#DefinitionService">GET</a></td>
+<td>Get a services&rsquo;s JSON definition.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/update</td>
+<td><a href="#UpdateService">POST</a></td>
+<td>Update a service definition.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/update/plan</td>
+<td><a href="#ServiceUpdatePlan">POST</a></td>
+<td>Get a services&rsquo;s JSON definition.</td>
+</tr>
+</tbody>
+</table>
+
+<p>In addition to the path parameters shown above, the following parameters are used inside the JSON <code>POST</code>:</p>
+
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value Type</th>
+<th>Description</th>
+<th>Required by related methods?</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>The service&rsquo;s name.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>args</td>
+<td>array</td>
+<td>A list of arguments passed to the entry point.</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>components</td>
+<td>array</td>
+<td>A list of the service&rsquo;s components.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>component_name</td>
+<td>string</td>
+<td>Name of the component</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>dependencies</td>
+<td>array</td>
+<td>List of dependencies of this component</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>domains</td>
+<td>dict</td>
+<td>A dictionary of domain keys to port numbers.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>entrypoint</td>
+<td>string</td>
+<td>Entrypoint of the Docker image.</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>env</td>
+<td>array</td>
+<td>List of environment variables used by a component.</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>image</td>
+<td>string</td>
+<td>The name or URI for an image.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>pod</td>
+<td>string</td>
+<td>Name of the pod to join.</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>ports</td>
+<td>array</td>
+<td>A list of strings containing port and protocol pairs.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>scaling_policy</td>
+<td>dict</td>
+<td>Scaling settings for a component.</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>volumes</td>
+<td>array</td>
+<td>List of volumes to attach to this component.</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+
+<p>You may refer to the <a href="/reference/swarm-json/">service definition reference</a> for more information about the <code>swarm.json</code> file format.</p>
+
+<h3 id="ListServices">List Services</h3>
+
+<p>To list services for a given organization and environment, call the <code>GET</code> method on the <code>/v1/org/{org}/env/{env}/service/</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/ \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: [
+    {
+      &quot;service&quot;: &quot;ghost-blog&quot;,
+      &quot;created&quot;: &quot;2015-05-07 03:28:18&quot;,
+      &quot;env&quot;: &quot;dev&quot;,
+      &quot;org&quot;: &quot;bantic&quot;
+    },
+    {
+      &quot;service&quot;: &quot;helloworld&quot;,
+      &quot;created&quot;: &quot;2015-05-11 19:51:37&quot;,
+      &quot;env&quot;: &quot;dev&quot;,
+      &quot;org&quot;: &quot;bantic&quot;
+    }
+  ],
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<p><strong>Note</strong>: The <code>company</code> and <code>org</code> object types are equivalent and <code>company</code> will be deprecated in future releases of the Giant Swarm API.</p>
+
+<h4 id="response-status-codes-5">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The resource data was returned.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The organization or environment could not be found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource was denied.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="CreateService">Create a New Service</h3>
+
+<p>To create a new service for a given organization and environment, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/</code> endpoint using a JSON formatted file and the <code>{name}</code> key via a <code>JSON</code> object:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data @{json_file_with_} \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/
+</code></pre>
+
+<p><strong>Note</strong>: Once the service has been created, you will need to start it with the <code>start</code> API method.</p>
+
+<h4 id="a-note-on-service-images">A Note on Service Images</h4>
+
+<p>Giant Swarm services draw from pre-stored images in various container repositories. This example uses a <a href="https://github.com/giantswarm/python-flask-helloworld">sample repository</a> which can be used to build an image and create a service using a <code>JSON</code> formatted service definition file. The repo can be checked out by doing the following:</p>
+
+<pre><code class="language-nohighlight">git clone https://github.com/giantswarm/python-flask-helloworld.git
+</code></pre>
+
+<p>Per the instructions in the repo&rsquo;s <a href="https://github.com/giantswarm/python-flask-helloworld#python-flask-helloworld">README.md file</a>, edit the <code>swarm-api.json</code> and <code>Makefile</code> to match account settings and then run a <code>push</code> to upload the image to the Giant Swarm private repository:</p>
+
+<pre><code class="language-nohighlight">cd python-flask-helloworld
+vi swarm-api.json
+vi Makefile
+make push
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<p>This example creates a new service called <code>helloworld</code> using the definition loaded from the <code>swarm-api.json</code> file:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data @swarm-api.json \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/ \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10003,
+  &quot;status_text&quot;: &quot;resource created&quot;
+}
+</code></pre>
+
+<p><strong>Example JSON File</strong></p>
+
+<p>This JSON should be saved as <code>swarm-api.json</code> for the above example to work:</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;helloworld&quot;,
+  &quot;definition&quot;: {
+    &quot;name&quot;: &quot;helloworld&quot;,
+    &quot;components&quot;: {
+      &quot;webserver&quot;: {
+        &quot;image&quot;: &quot;registry.giantswarm.io/kord/helloworld&quot;,
+        &quot;ports&quot;: [5000],
+        &quot;domains&quot;: {
+          &quot;apidocsdemo.gigantic.io&quot;: 5000
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p><strong>Note</strong>: There is a slight difference between <code>JSON</code> formatted files used by the <code>swarm up</code> CLI command and the <code>JSON</code> formatted files used by an API call using the <code>create</code> method. The APIs require a <code>definition</code> key to be present in the <code>JSON</code> payload!</p>
+
+<h4 id="response-status-codes-6">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10003</td>
+<td>The service was created.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10009</td>
+<td>The service already exists.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="DeleteService">Delete a Service (<em>DEPRECATED</em>)</h3>
+
+<p>To delete an existing service for a given organization and environment, call the <code>DELETE</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X DELETE \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X DELETE \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10007,
+  &quot;status_text&quot;: &quot;resource deleted&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-7">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10007</td>
+<td>The service was deleted.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+
+<tr>
+<td>404</td>
+<td>n/a</td>
+<td>The service was not found.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="StartService">Starting a Service (<em>DEPRECATED</em>)</h3>
+
+<p>To start a service, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/start</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/start
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/start \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10004,
+  &quot;status_text&quot;: &quot;resource started&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-8">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10004</td>
+<td>The service was started.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The service was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="StopService">Stop a Service (<em>DEPRECATED</em>)</h3>
+
+<p>To stop a service, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/stop</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/stop
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/stop \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10004,
+  &quot;status_text&quot;: &quot;resource stopped&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-9">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10004</td>
+<td>The service was stopped.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The service was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="StatusService">Get a Service&rsquo;s Status</h3>
+
+<p>This method returns details on a service, such as the components and instances and their status. When there are open tasks regarding this service, information on these is also returned.</p>
+
+<p>To learn more about tasks, please read <a href="#taskmethods">the according section</a> in the API v2 reference.</p>
+
+<p>To get a service&rsquo;s status for a given service, call the <code>GET</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/status</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/status
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/status \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;name&quot;: &quot;helloworld&quot;,
+    &quot;status&quot;: &quot;up&quot;,
+    &quot;components&quot;: [
+      {
+        &quot;instances&quot;: [
+          {
+            &quot;create_date&quot;: &quot;2015-08-08T01:39:57.560880568Z&quot;,
+            &quot;id&quot;: &quot;mtgz5g1hs7jo&quot;,
+            &quot;image&quot;: &quot;registry.giantswarm.io/bant/helloworld:latest&quot;,
+            &quot;image_hash&quot;: &quot;8905373bdf9e074debdbbb40b4e2ca3f2e667365&quot;,
+            &quot;status&quot;: &quot;up&quot;
+          }
+        ],
+        &quot;max&quot;: 10,
+        &quot;min&quot;: 1,
+        &quot;name&quot;: &quot;webserver&quot;,
+        &quot;status&quot;: &quot;up&quot;
+      }
+    ],
+    &quot;version&quot;: &quot;V2GiantSwarm&quot;
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-10">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The resource data was returned.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The service was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="DefinitionService">Get a Service&rsquo;s Definition</h3>
+
+<p>To get an existing service&rsquo;s definition for a given organization and environment, call the <code>GET</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/definition</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/definition
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/definition \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;components&quot;: {
+      &quot;webserver&quot;: {
+        &quot;domains&quot;: {
+          &quot;5000/tcp&quot;: [
+            &quot;apidocsdemo.gigantic.io&quot;
+          ]
+        },
+        &quot;image&quot;: &quot;registry.giantswarm.io/bant/helloworld&quot;,
+        &quot;ports&quot;: [
+          5000
+        ]
+      }
+    },
+    &quot;name&quot;: &quot;helloworld&quot;
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<h3 id="UpdateService">Update a Service Definition</h3>
+
+<p>This method allows you to modify a service definition after the service has been created.</p>
+
+<p>Call <code>/v1/org/{org}/env/{env}/service/{service}/update</code> using the POST method, just like you would when <a href="#CreateService">creating a new service</a>.</p>
+
+<h3 id="ServiceUpdatePlan">Get a Service Definition Update Plan</h3>
+
+<p>This method allows to fetch an update plan for a service. An update plan is created by comparing the currently effective service definition of a service with a new service definition. This allows to find out which changes will be made to a service when applying a new definition, as described above in <a href="#UpdateService">Update a Service Definition</a>.</p>
+
+<p>Call <code>/v1/org/{org}/env/{env}/service/{service}/update/plan</code> using the POST method.</p>
+
+<p>TODO: Add example including output</p>
+
+<h2 id="component">Component Methods</h2>
+
+<p>The component methods live under the <code>/v1/org/{org}/env/{env}/service/{service}/component/</code> endpoint. The following table lists the available and occassionally un-RESTful methods for operating on a service&rsquo;s components:</p>
+
+<table>
+<thead>
+<tr>
+<th>Resource Path</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/component/start</td>
+<td><a href="#StartComponent">POST</a></td>
+<td>Start instances of an existing component.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/component/stop</td>
+<td><a href="#StopComponent">POST</a></td>
+<td>Stop instances of an existing component.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/<br/>component/status</td>
+<td><a href="#StatusComponent">POST</a></td>
+<td>Query the status of an existing component.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/<br/>component/scaleup</td>
+<td><a href="#ScaleUpComponent">POST</a></td>
+<td>Add instances of an existing component.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/<br/>component/scaledown</td>
+<td><a href="#ScaleDownComponent">POST</a></td>
+<td>Remove instances of an existing component.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/env/{env}/service/{service}/<br/>component/update</td>
+<td><a href="#UpdateComponent">POST</a></td>
+<td>Update the docker image version of an existing component.</td>
+</tr>
+</tbody>
+</table>
+
+<p>In addition to the path parameters shown above, the following parameters are used inside the JSON <code>POST</code> on various methods:</p>
+
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value Type</th>
+<th>Description</th>
+<th>Required by related methods?</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>component</td>
+<td>string</td>
+<td>The component&rsquo;s name.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>scale</td>
+<td>integer</td>
+<td>The number of instances to scale up or down.</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>strategy</td>
+<td>string</td>
+<td>The upgrade strategy.</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="StartComponent">Start an Existing Component</h3>
+
+<p>To start an existing service component, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/component/start</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/component/start
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/start \
+    | python -mjson.tool
+
+{
+    &quot;status_code&quot;: 10004,
+    &quot;status_text&quot;: &quot;resource started&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-11">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10004</td>
+<td>The resource was started.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The resource was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="StopComponent">Stop an Existing Component</h3>
+
+<p>To stop an existing service component, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/component/stop</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/component/stop
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/stop \
+    | python -mjson.tool
+
+{
+    &quot;status_code&quot;: 10005,
+    &quot;status_text&quot;: &quot;resource stopped&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-12">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10005</td>
+<td>The resource was stopped.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The resource was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="StatusComponent">Query the Status of an Existing Component</h3>
+
+<p>To get the status a given component for a service, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/component/status</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/component/status
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/status \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;components&quot;: [
+      {
+        &quot;instances&quot;: [
+          {
+            &quot;create_date&quot;: &quot;2015-08-08T01:39:57.560880568Z&quot;,
+            &quot;id&quot;: &quot;mtgz5g1hs7jo&quot;,
+            &quot;image&quot;: &quot;registry.giantswarm.io\/kord\/helloworld:latest&quot;,
+            &quot;image_hash&quot;: &quot;8905373bdf9e074de258adb5545f4c364f2e667365&quot;,
+            &quot;status&quot;: &quot;up&quot;
+          }
+        ],
+        &quot;max&quot;: 10,
+        &quot;min&quot;: 1,
+        &quot;name&quot;: &quot;webserver&quot;,
+        &quot;status&quot;: &quot;up&quot;
+      }
+    ]
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-13">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The resource data was returned.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The service was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="ScaleUpComponent">Add an Instance to a Component</h3>
+
+<p>To add instances to a service component, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/component/scaleup</code> endpoint.  The <code>scale</code> parameter is used as the number of additional instances to start for the service component:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;{component}&quot;,&quot;scale&quot;:{scale}}' \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/component/scaleup
+</code></pre>
+
+<p><strong>Note:</strong> If you have set <code>placement</code> to <code>one-per-machine</code> as a <a href="/reference/swarm-json/#scaling_policy">scaling policy in your swarm.json</a> there will be an uppper scaling limit equal to the number of machines in the cluster. You will get an error if you try scaling a component above said limit. In case you don&rsquo;t know the number of machines in your cluster, you can enquire this number with support.</p>
+
+<p><strong>Note</strong>: While in alpha testing, Giant Swarm accounts support up to 10 instances per component.</p>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<p>This example starts an additional <code>3</code> instances for the <code>webserver</code> component for the <code>helloworld</code> service:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;,&quot;scale&quot;:3}' \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/scaleup \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-14">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The component was updated.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The component was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="ScaleDownComponent">Remove Instances from a Component</h3>
+
+<p>To remove instances from a service component, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/component/scaledown</code> endpoint. The <code>{scale}</code> parameter is used as the number of instances to remove from the service component:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;{component}&quot;,&quot;scale&quot;:{scale}}' \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/component/scaledown
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<p>This example removes <code>1</code> instance from the <code>webserver</code> component for the <code>helloworld</code> service:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;,&quot;scale&quot;:1}' \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/scaledown \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-15">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The component was updated.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The component was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="UpdateComponent">Update an Existing Component</h3>
+
+<p>To update a service component&rsquo;s image, call the <code>POST</code> method on the <code>/v1/org/{org}/env/{env}/service/{service}/update</code> endpoint.
+You can optionally choose among three different rolling update strategies that will change the way this update operation is triggered over your component.</p>
+
+<p>These strategies are:</p>
+
+<ul>
+<li><code>one-by-one</code>(default) updates all the instances of your component one after the other.</li>
+<li><code>all-at-once</code> updates all the instances of your component at once.</li>
+<li><code>hot-swap</code> replaces all current instances by new ones with the desired version with zero downtime.</li>
+</ul>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;{component}&quot;,strategy&quot;:&quot;one-by-one|all-at-once|hot-swap&quot;,&quot;version&quot;:&quot;{version}&quot;}' \
+    https://api.giantswarm.io/v1/org/{org}/env/{env}/service/{service}/component/update
+</code></pre>
+
+<p><strong>Note</strong>: Updating a component&rsquo;s image is limited to changing the tagged version of the image. You may not change the image name with an update.</p>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<p>This example updates the current service component to use the <a href="https://hub.docker.com/_/python/">3.3.6 version of the Python image</a> in the Docker Index:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;,&quot;version&quot;:&quot;3.3.6&quot;}' \
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/update \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-16">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The component was updated.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10008</td>
+<td>The component was not found.</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>n/a</td>
+<td>Access to the resource is forbidden.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="instance">Instance Methods</h2>
+
+<p>The instance methods live under the /v1/org/{org}/instance/{instance} endpoint. The following table lists the available methods for operating on a component&rsquo;s instances:</p>
+
+<table>
+<thead>
+<tr>
+<th>Resource Path</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/v1/org/{org}/instance/{instance}/logs</td>
+<td><a href="#LogInstance">GET</a></td>
+<td>Get logs of an instance.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/instance/{instance}/stats</td>
+<td><a href="#StatInstance">GET</a></td>
+<td>Get statistics of an instance.</td>
+</tr>
+
+<tr>
+<td>/v1/org/{org}/instance/{instance}/exec</td>
+<td><a href="#ExecInstance">POST</a></td>
+<td>Execute a command inside an instance or opens a shell for remote access.</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Note</strong>: The <code>{instance}</code> path parameter should use an instance&rsquo;s ID, which is obtained via the  <a href="#StatusComponent">component status method</a>.</p>
+
+<h4 id="retrieving-an-instance-id-with-curl-and-jq">Retrieving an Instance ID with curl and jq</h4>
+
+<p>If you have the <code>jq</code> tool installed, instance IDs may be returned directly by querying the component status method:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    --data '{&quot;component&quot;:&quot;webserver&quot;}' \a
+    https://api.giantswarm.io/v1/org/bantic/env/dev/service/helloworld/component/status \
+    | jq .data.instances[0].id
+
+&quot;by3we1wr77b7&quot;
+</code></pre>
+
+<h3 id="LogInstance">Get an Instance&rsquo;s Logs</h3>
+
+<p>To get an instance&rsquo;s logs, call the <code>GET</code> method on the <code>/v1/org/{org}/instance/{instance}/logs</code> endpoint.</p>
+
+<pre><code class="language-nohighlight">    curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/instance/{instance}/logs
+</code></pre>
+
+<p><strong>Example with TEXT Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/instance/by3we1wr77b7/logs
+
+2015-05-16 01:01:59.326 +0000 UTC    - docker  - * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2015-05-16 01:03:03.839 +0000 UTC    - docker  - 172.17.42.1 - - [16/May/2015 01:03:03] &quot;GET / HTTP/1.1&quot; 200 -
+2015-05-16 01:03:04.223 +0000 UTC    - docker  - 172.17.42.1 - - [16/May/2015 01:03:04] &quot;GET /favicon.ico HTTP/1.1&quot; 404 -
+2015-05-16 01:03:04.393 +0000 UTC    - docker  - 172.17.42.1 - - [16/May/2015 01:03:04] &quot;GET /favicon.ico HTTP/1.1&quot; 404 -
+2015-05-16 01:03:12.283 +0000 UTC    - docker  - 172.17.42.1 - - [16/May/2015 01:03:12] &quot;GET /hello/kord HTTP/1.1&quot; 200 -
+</code></pre>
+
+<p><strong>Note</strong>: The response from the <code>logs</code> method is TEXT formatted.</p>
+
+<h3 id="StatInstance">Get an Instance&rsquo;s Statistics</h3>
+
+<p>To get an instance&rsquo;s stats, call the <code>GET</code> method on the <code>/v1/org/{org}/instance/{instance}/stats</code> endpoint.</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    https://api.giantswarm.io/v1/org/{org}/instance/{instance}/stats
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    https://api.giantswarm.io/v1/org/bantic/instance/by3we1wr77b7/stats \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;ComponentName&quot;: &quot;helloworld/webserver/flask&quot;,
+    &quot;MemoryUsageMb&quot;: 25.21875,
+    &quot;MemoryCapacityMb&quot;: 512,
+    &quot;MemoryUsagePercent&quot;: 4.925537109375,
+    &quot;CpuUsagePercent&quot;: 0.0120874
+  }
+}
+</code></pre>
+
+<h3 id="ExecInstance">Execute a Remote Command on an Instance</h3>
+
+<p>To execute a command on a given instance, call the <code>POST</code> method on the <code>/v1/org/{org}/instance/{instance}/exec</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;cmd&quot;:[&quot;&lt;command&gt;&quot;],&quot;detach&quot;:true}' \
+    https://api.giantswarm.io/v1/org/bantic/instance/{instance}/exec
+</code></pre>
+
+<p>In addition to the path parameters above, the following parameters are used with the <code>exec</code> method:</p>
+
+<p><strong>Example with TEXT Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: text/plain&quot; \
+    -H &quot;Connection: Upgrade&quot; \
+    -H &quot;Upgrade: tcp&quot; \
+    --data '{&quot;cmd&quot;:[&quot;ps&quot;,&quot;-ax&quot;],&quot;detach&quot;:false,&quot;attach-stdout&quot;:true,&quot;attach-stdin&quot;:true,&quot;raw&quot;:true}' \
+    https://api.giantswarm.io/v1/org/bantic/instance/by3we1wr77b7/exec
+
+  PID TTY      STAT   TIME COMMAND
+    1 ?        Ss     0:00 sh -c echo &quot;Hello from Giant Swarm. \o/&quot; &gt; index.html
+    8 ?        S      0:02 python -m http.server
+   92 ?        S+     0:00 /bin/sh
+  130 ?        R+     0:00 ps -ax
+</code></pre>
+
+<h4 id="upgrading-the-connection-with-your-language-of-choice">Upgrading the Connection with Your Language of Choice</h4>
+
+<p>For full interactive <code>exec</code> mode, you must have set these HTTP header fields within your <code>POST</code>:</p>
+
+<ul>
+<li><code>Content-Type: text/plain</code></li>
+<li><code>Connection: upgrade</code></li>
+<li><code>Upgrade: tcp</code></li>
+</ul>
+
+<p>You must also pass in the following parameters via JSON:</p>
+
+<table>
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Field Type</th>
+<th>Value Required for Streaming</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>attach-stderr</td>
+<td>bool</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>attach-stdin</td>
+<td>bool</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>attach-stdout</td>
+<td>bool</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>cmd</td>
+<td>array</td>
+<td>[&ldquo;{command}&rdquo;,&hellip;]</td>
+</tr>
+
+<tr>
+<td>detach</td>
+<td>bool</td>
+<td>false</td>
+</tr>
+
+<tr>
+<td>raw</td>
+<td>bool</td>
+<td>true</td>
+</tr>
+
+<tr>
+<td>tty</td>
+<td>bool</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+
+<p>When the <code>POST</code> arrives, the server will do a normal HTTP response and then hijack the stream.  If the <code>detach</code> parameter is set to <code>true</code>, the server will return a normal status response and disconnect the session immediately.</p>
+
+<p>In case of hijacking, the server will copy all bytes from the HTTP request into stdin (of the executed process) and multiplex stdout/stderr onto the HTTP response. This multiplexing uses the same protocol that is used by <code>docker exec</code>.</p>
+
+<h2 id="connection">Connection Methods</h2>
+
+<p>The following method tests connections to the API. It will respond with OK when the API is up and essential infrastructure components are reachable. It will return FAILED if the API is up, but not all essential infrastructure components are reachable.</p>
+
+<table>
+<thead>
+<tr>
+<th>Resource Path</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/v1/ping</td>
+<td><a href="#Ping">GET</a></td>
+<td>Ping Giant Swarm&rsquo;s API</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="Ping">Ping the API Connection</h3>
+
+<p>To ping the API connection, call the <code>GET</code> method on the <code>/v1/ping</code> endpoint.</p>
+
+<pre><code class="language-nohighlight">curl -sS https://api.giantswarm.io/v1/ping
+</code></pre>
+
+<p><strong>Example with TEXT Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS https://api.giantswarm.io/v1/ping
+
+&quot;OK&quot;
+</code></pre>
+
+<h4 id="response-status-codes-17">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Type</th>
+<th>Message</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>string</td>
+<td>&lsquo;OK&rsquo;.</td>
+</tr>
+
+<tr>
+<td>500</td>
+<td>string</td>
+<td>&lsquo;FAILED&rsquo;.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="user">User Methods</h2>
+
+<p>The user methods live under the <code>/v1/user/</code> endpoint. Where required, the <code>{user}</code> parameter indicates the value of the user&rsquo;s <code>username</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Resource Path</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/v1/user/{user}/login</td>
+<td><a href="#LoginUser">POST</a></td>
+<td>Login as an existing user.</td>
+</tr>
+
+<tr>
+<td>/v1/token/logout</td>
+<td><a href="#LogoutUser">POST</a></td>
+<td>Logout. This will invalidate the token of the current request.</td>
+</tr>
+
+<tr>
+<td>/v1/user/me/email/update</td>
+<td><a href="#UpdateEmail">POST</a></td>
+<td>Update the email address of the currently logged in user.</td>
+</tr>
+
+<tr>
+<td>/v1/user/me/password/update</td>
+<td><a href="#UpdatePassword">POST</a></td>
+<td>Update the password of the currently logged in user.</td>
+</tr>
+
+<tr>
+<td>/v1/user/me</td>
+<td><a href="#GetMe">GET</a></td>
+<td>Get information about the currently logged in user.</td>
+</tr>
+
+<tr>
+<td>/v1/user/me/memberships</td>
+<td><a href="#GetMemberships">GET</a></td>
+<td>Get the names of the organizations the currently logged in user is a member of.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="LoginUser">Generate Token</h3>
+
+<p>To generate a new authentication token, do a <code>POST</code> to the <code>/v1/user/{user}/login</code> endpoint with a JSON object containing the user&rsquo;s password:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;password&quot;:&quot;'&quot;$(echo -n &lt;password&gt; | base64)&quot;'&quot;}' \
+    https://api.giantswarm.io/v1/user/{user}/login
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;password&quot;:&quot;'&quot;$(echo -n f00bar | base64)&quot;'&quot;}' \
+    https://api.giantswarm.io/v1/user/terminal/login \
+    | python -mjson.tool
+
+{
+  &quot;data&quot;: {
+    &quot;Id&quot;: &quot;e5239484-2299-41df-b901-d0568db7e3f9&quot;,
+  },
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-18">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The resource data was returned.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10010</td>
+<td>The request was not authenticated.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="LogoutUser">Expire Token</h3>
+
+<p>To expire an authentication token, do a <code>POST</code> to the <code>/v1/token/logout</code> endpoint with a JSON object containing the user&rsquo;s password:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    https://api.giantswarm.io/v1/token/logout
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    https://api.giantswarm.io/v1/token/logout \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10007,
+  &quot;status_text&quot;: &quot;resource deleted&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-19">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10007</td>
+<td>The token was deleted.</td>
+</tr>
+
+<tr>
+<td>401</td>
+<td>n/a</td>
+<td>The request was unauthorized.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="UpdateEmail">Update User&rsquo;s Email Address</h3>
+
+<p>To update a user&rsquo;s email address, do a <code>POST</code> to the <code>/v1/user/me/email/update/</code> endpoint with a JSON payload containing the old and new email address:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;old_email&quot;:&quot;{old_email}&quot;,&quot;new_email&quot;:&quot;{new_email}&quot;}' \
+    https://api.giantswarm.io/v1/user/me/email/update
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;old_email&quot;:&quot;terminal@giantswarm.io&quot;,&quot;new_email&quot;:&quot;aee@giantswarm.io&quot;}' \
+    https://api.giantswarm.io/v1/user/me/email/update \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-20">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The email was updated.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10010</td>
+<td>The old email address did not match the address on record.</td>
+</tr>
+
+<tr>
+<td>401</td>
+<td>n/a</td>
+<td>The request was unauthorized.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="UpdatePassword">Update User&rsquo;s Password</h3>
+
+<p>To update a user&rsquo;s password, do a <code>POST</code> to the <code>/v1/user/me/password/update/</code> endpoint with a JSON payload containing the old and new password:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;old_password&quot;:&quot;{old_password}&quot;,&quot;new_password&quot;:&quot;{new_password}&quot;}' \
+    https://api.giantswarm.io/v1/user/me/password/update
+</code></pre>
+
+<p><strong>Note</strong>: Changing a user&rsquo;s password will expire all tokens from the user&rsquo;s account.</p>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<p>This example uses the <code>echo</code> command with a <code>-n</code> piped through <code>base64</code> to generated the strings necessary for setting a new password:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X POST \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    --data '{&quot;old_password&quot;:&quot;'&quot;$(echo -n f00bar | base64)&quot;'&quot;,&quot;new_password&quot;:&quot;'&quot;$(echo -n bazf00 | base64)&quot;'&quot;}' \
+    https://api.giantswarm.io/v1/user/me/password/update \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10006,
+  &quot;status_text&quot;: &quot;resource updated&quot;
+}
+</code></pre>
+
+<h4 id="response-status-codes-21">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10006</td>
+<td>The password was updated.</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>10010</td>
+<td>The hash of the old password did not match the hash on record.</td>
+</tr>
+
+<tr>
+<td>401</td>
+<td>n/a</td>
+<td>The request was unauthorized.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="GetMe">Show User&rsquo;s Status</h3>
+
+<p>To show a user&rsquo;s status, do a <code>GET</code> to the <code>/v1/user/me/</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    https://api.giantswarm.io/v1/user/me
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    https://api.giantswarm.io/v1/user/me \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;username&quot;: &quot;terminal&quot;,
+    &quot;email&quot;: &quot;terminal@giantswarm.io&quot;
+  }
+}
+</code></pre>
+
+<h4 id="response-status-codes-22">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The resource data was returned.</td>
+</tr>
+
+<tr>
+<td>401</td>
+<td>n/a</td>
+<td>The request was unauthorized.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="GetMemberships">Show User&rsquo;s Memberships</h3>
+
+<p>To show a user&rsquo;s organization memberships, do a <code>GET</code> to the <code>/v1/user/me/memberships</code> endpoint:</p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm {token}&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    https://api.giantswarm.io/v1/user/me/memberships
+</code></pre>
+
+<p><strong>Example with JSON Response</strong></p>
+
+<pre><code class="language-nohighlight">curl -sS \
+    -X GET \
+    -H &quot;Authorization: giantswarm e5239484-2299-41df-b901-d0568db7e3f9&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    https://api.giantswarm.io/v1/user/me/memberships \
+    | python -mjson.tool
+
+{
+  &quot;status_code&quot;: 10000,
+  &quot;status_text&quot;: &quot;success&quot;,
+  &quot;data&quot;: [
+    &quot;terminal&quot;,
+    &quot;giantswarm&quot;,
+    &quot;bantic&quot;
+  ]
+}
+</code></pre>
+
+<h4 id="response-status-codes-23">Response Status Codes</h4>
+
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Response Code</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>200</td>
+<td>10000</td>
+<td>The resource data was returned.</td>
+</tr>
+
+<tr>
+<td>401</td>
+<td>n/a</td>
+<td>The request was unauthorized.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="the-end">The End.</h3>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<div id="modal-helper" class="modal fade">
+  <div class="modal-dialog">
+    <form id="form-helper" action="#helper">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Example Helper</h4>
+        </div>
+        <div class="modal-body">
+          <p>You may use this form to update the examples on this page with your username, organization name, and active tokens for your account. Remember, you may retrieve an account token by using the <a id="link-auth" href="#passwordauth">password authentication method</a>.</p>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-xs-12  form-padding" id="token-field">
+                  <label class="control-label" for="token">API Token</label>
+                  <input class="form-control required" id="token" name="token" placeholder="e5239484-2299-41df-b901-d0568db7e3f9" type="text" value="">
+                </div>
+                <div class="col-xs-8  form-padding" id="username-field">
+                  <label class="control-label" for="gorg">Username</label>
+                  <input class="form-control required" id="username" name="username" placeholder="terminal" type="text" value="">
+                </div>
+                <div class="col-xs-8  form-padding" id="org-field">
+                  <label class="control-label" for="org">Organization Name</label>
+                  <input class="form-control required" id="org" name="org" placeholder="bantic" type="text" value="">
+                </div>
+                <div class="col-xs-8  form-padding" id="instance-field">
+                  <label class="control-label" for="org">Instance ID</label>
+                  <input class="form-control required" id="instanceid" name="instanceid" placeholder="by3we1wr77b7" type="text" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal-close-button" class="btn btn-default" data-dismiss="modal">Reset and Reload Page</button>
+          <button type="button" id="modal-update-button" class="btn btn-success">Update Examples</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Service Definition (swarm.json) Reference &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Reference for Giant Swarm&#39;s service definition format, also known as &#39;swarm.json&#39;.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/swarm-json/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_swarm-json_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#service-definition-swarm-json-reference">Service Definition (<code>swarm.json</code>) Reference</a>
+<ul>
+<li><a href="#basic-structure">Basic Structure</a></li>
+<li><a href="#simple-example">Simple Example</a></li>
+<li><a href="#complex-example">Complex example</a></li>
+<li><a href="#service-level">Service level keys</a>
+<ul>
+<li><a href="#name"><code>name</code></a></li>
+<li><a href="#components"><code>components</code></a></li>
+</ul></li>
+<li><a href="#component-level">Component Level Keys</a>
+<ul>
+<li><a href="#image"><code>image</code></a></li>
+<li><a href="#entrypoint"><code>entrypoint</code></a></li>
+<li><a href="#args"><code>args</code></a></li>
+<li><a href="#links"><code>links</code></a></li>
+<li><a href="#domains"><code>domains</code></a>
+<ul>
+<li><a href="#giganticio-domain">Using the gigantic.io domain</a></li>
+<li><a href="#own-domain-name">Using your own domain name</a></li>
+</ul></li>
+<li><a href="#env"><code>env</code></a></li>
+<li><a href="#ports"><code>ports</code></a></li>
+<li><a href="#scale"><code>scale</code></a>
+<ul>
+<li><a href="#placement"><code>placement</code></a></li>
+</ul></li>
+<li><a href="#pod"><code>pod</code></a>
+<ul>
+<li><a href="#creating-a-pod">Creating a pod</a></li>
+<li><a href="#scaling-pods">Scaling pods</a></li>
+<li><a href="#excluding-a-component-from-a-pod">Excluding a component from a pod</a></li>
+</ul></li>
+<li><a href="#volumes"><code>volumes</code></a>
+<ul>
+<li><a href="#defining-a-volume">Defining a volume</a></li>
+<li><a href="#reusing-all-volumes-from-a-component-within-the-same-pod">Reusing all volumes from a component within the same pod</a></li>
+<li><a href="#reusing-a-specific-volume-from-a-component-within-the-same-pod">Reusing a specific volume from a component within the same pod</a></li>
+</ul></li>
+<li><a href="#expose"><code>expose</code></a>
+<ul>
+<li><a href="#linking-services">Linking between services</a></li>
+</ul></li>
+<li><a href="#signal-ready">Manually signal readiness</a></li>
+<li><a href="#memory-limit">Memory Limit</a></li>
+</ul></li>
+<li><a href="#giant-swarm-context-variables">Giant Swarm context variables</a></li>
+<li><a href="#making-use-of-additional-configuration-variables">Making use of additional configuration variables</a></li>
+<li><a href="#further-reading">Further reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified March 31, 2016</p>
+
+      
+
+<h1 id="service-definition-swarm-json-reference">Service Definition (<code>swarm.json</code>) Reference</h1>
+
+<p>Giant Swarm services are defined using a JSON file format. Files containing Giant Swarm service definition are commonly called <code>swarm.json</code>.</p>
+
+<p>To get a basic understanding of how Giant Swarm services are built, we recommend that you have looked at our <a href="/fundamentals/introduction/">Introduction</a>, especially at the section called <a href="/fundamentals/introduction/#anatomy">The Anatomy of a Giant Swarm Service</a>.</p>
+
+<h2 id="basic-structure">Basic Structure</h2>
+
+<p>The basic structure of the service definition file is:</p>
+
+<ul>
+<li>A service name (optional, but recommended)</li>
+<li>A set of components</li>
+</ul>
+
+<h2 id="simple-example">Simple Example</h2>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;simple_service&quot;,
+  &quot;components&quot;: {
+    &quot;webserver&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/myorg/webserver&quot;,
+      &quot;ports&quot;: 80,
+      &quot;domains&quot;: {
+        &quot;80&quot;: &quot;mysite.example.com&quot;
+      },
+      &quot;links&quot;: [
+        {
+          &quot;component&quot;: &quot;database&quot;,
+          &quot;target_port&quot;: 3306
+        }
+      ]
+    },
+    &quot;database&quot;: {
+      &quot;image&quot;: &quot;mysql&quot;,
+      &quot;ports&quot;: 3306
+    }
+  }
+}
+</code></pre>
+
+<p>The example above illustrates the basic structure by defining a service called <code>simple_service</code>. This service consists of two components called <code>webserver</code> and <code>database</code>. The <code>webserver</code> component uses a custom Docker image that has been deployed on Giant Swarm&rsquo;s registry. Port 80 is exposed and made publicly accessible by mapping a <code>domains</code> entry to it. It links to the <code>database</code> component, which uses the official MySQL image, on TCP port 3306.</p>
+
+<h2 id="complex-example">Complex example</h2>
+
+<p>This example makes use of all possible keys to illustrate their use.</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;complex_service&quot;,
+  &quot;components&quot;: {
+    &quot;appserver&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/myorg/appserver:latest&quot;,
+      &quot;entrypoint&quot;: &quot;/opt/bin/myprogram&quot;,
+      &quot;args&quot;: [&quot;--some-args&quot;, &quot;hello world&quot;],
+      &quot;volumes&quot;: [
+        {
+          &quot;path&quot;: &quot;/var/data&quot;,
+          &quot;size&quot;: &quot;2 GB&quot;
+        }
+      ],
+      &quot;env&quot;: {
+        &quot;MODE&quot;: &quot;development&quot;
+      },
+      &quot;links&quot;: [
+        {
+          &quot;component&quot;: &quot;datastore&quot;,
+          &quot;target_port&quot;: 6379,
+          &quot;alias&quot;: &quot;redis&quot;
+        }
+      ],
+      &quot;scale&quot;: {
+        &quot;min&quot;: 2,
+        &quot;max&quot;: 5,
+        &quot;placement&quot;: &quot;one-per-machine&quot;
+      },
+      &quot;ports&quot;: [8000, 8080],
+      &quot;domains&quot;: {
+        &quot;8000&quot;: &quot;www.$GIANTSWARM_LOGIN_NAME.gigantic.io&quot;,
+        &quot;8080&quot;: &quot;admin.$GIANTSWARM_LOGIN_NAME.gigantic.io&quot;
+      },
+      &quot;signal-ready&quot;: true
+    },
+    &quot;datastore&quot;: {
+      &quot;pod&quot;: &quot;children&quot;,
+      &quot;expose&quot;: [
+        {
+          &quot;component&quot;: &quot;datastore/redis&quot;,
+          &quot;target_port&quot;: &quot;6379&quot;,
+          &quot;port&quot;: &quot;6379&quot;
+        }
+      ]
+    },
+    &quot;datastore/redis&quot;: {
+      &quot;image&quot;: &quot;redis&quot;,
+      &quot;ports&quot;: 6379,
+      &quot;volumes&quot;: [
+        {
+          &quot;path&quot;: &quot;/var/data&quot;,
+          &quot;size&quot;: &quot;2 GB&quot;
+        }
+      ]
+    },
+    &quot;datastore/redisbackup&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/myorg/redis-backup:latest&quot;,
+      &quot;volumes&quot;: [
+        {
+          &quot;volumes-from&quot;: &quot;datastore/redis&quot;
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+
+<p>All configuration directives shown in the examples are explained below, starting with those on the <em>service</em> level, then those for the <em>component</em> level.</p>
+
+<h2 id="service-level">Service level keys</h2>
+
+<p>On the uppermost level of the service definition, only two keys can be used: <code>name</code> and <code>components</code>.</p>
+
+<h3 id="name"><code>name</code></h3>
+
+<p>The name of the service as you want to refer to it internally. Naming the service via the definition file is optional. Alternatively it can be named when creating the service, e. g. using <a href="/reference/cli/create/"><code>swarm create</code></a>, or an automatically generated name will be assigned.</p>
+
+<p>The service name has to be unique within the <a href="/reference/cli/env/">environment</a> you&rsquo;re deploying it to. An attempt to create a service with the same name twice within one environment will result in an error message.</p>
+
+<h3 id="components"><code>components</code></h3>
+
+<p>This key holds an object containing component definitions. Component definitions are key-value-pairs, where the key is the name of the component and the value holds configuration details as described next under <a href="#component-level">Component Level Keys</a>.</p>
+
+<p>A component usually references a Docker image to be run using the <code>image</code> key. In contrast, there can be components without an <code>image</code> key, which are then pure configuration components. In the <a href="#complex-example">complex example</a> above, the components named <code>appserver</code>, <code>datastore/redis</code> and <code>datastore/redisbackup</code> reference images to be run, while the component <code>datastore</code> is a configuration component.</p>
+
+<p>Here is the structure of the complex example again, reduced to only display component names:</p>
+
+<pre><code class="language-json">{
+  &quot;components&quot;: {
+    &quot;appserver&quot;: {…},
+    &quot;datastore&quot;: {…},
+    &quot;datastore/redis&quot;: {…},
+    &quot;datastore/redisbackup&quot;: {…}
+  }
+}
+</code></pre>
+
+<p>The example shows how components can have a <em>hierarchical naming structure</em>, pretty much like file system folders and sub-folders. The forward slash <code>/</code> is used as a seperator.</p>
+
+<p>This allows you to create a tree-like structure for the internals of your services. This structure can be used for several purposes:</p>
+
+<ul>
+<li>Creating a logical ordering that groups components which belong together under a common parent.</li>
+<li>Controlling parts of services in a recursive manner, e. g. stopping or starting a certain component with all its descendent components.</li>
+<li>Forming &ldquo;Pods&rdquo;, which allow for the sharing of system resources between components. See the <a href="#pod"><code>pod</code></a> key description below.</li>
+</ul>
+
+<h2 id="component-level">Component Level Keys</h2>
+
+<h3 id="image"><code>image</code></h3>
+
+<p>The name of a docker image. Images can be referenced from either Giant Swarm&rsquo;s private registry or the public Docker Registry. Some examples:</p>
+
+<ul>
+<li><code>redis:latest</code>: The latest <a href="https://hub.docker.com/_/redis/">official Redis image</a>.</li>
+<li><code>redis</code>: Same as above. When there is no version tag, <code>:latest</code> is assumed.</li>
+<li><code>giantswarm/helloworld</code>: A public GiantSwarm <a href="https://hub.docker.com/r/giantswarm/helloworld/">helloworld image</a></li>
+<li><code>registry.giantswarm.io/orgnamespace/webserver:4.2.3</code>: Some image from the private Giant Swarm registry.</li>
+</ul>
+
+<p>In order to address images from the Giant Swarm registry, a fully qualified image name in the form <code>registry.giantswarm.io/&lt;organization_namespace&gt;/&lt;image_name&gt;[:&lt;tag&gt;]</code> is required.</p>
+
+<p>Find out more on working with Giant Swarm&rsquo;s registry in the <a href="/reference/registry/">registry reference</a>.</p>
+
+<h3 id="entrypoint"><code>entrypoint</code></h3>
+
+<p>The <code>entrypoint</code> key is optional. It can be used to overwrite the default <code>ENTRYPOINT</code> configured in the Docker image. You can provide the path to an executable here, e.g. <code>/opt/app/bin/myapp</code>.</p>
+
+<h3 id="args"><code>args</code></h3>
+
+<p>The <code>args</code> key is optional and, if present, expects as value an array of strings. These strings will be passed as arguments when your container is started, just like the arguments you can pass to <code>docker run</code>. The effect of these arguments depends on how the container is set up. Please refer to the <a href="https://docs.docker.com/reference/builder/">Dockerfile documentation</a>, especially on the <code>CMD</code> and <code>ENTRYPOINT</code> directives.</p>
+
+<p>This example shows how <code>entrypoint</code> and <code>args</code> can be used together to call an executable with arguments:</p>
+
+<pre><code class="language-json">&quot;image&quot;: &quot;busybox:ubuntu-14.04&quot;,
+&quot;entrypoint&quot;: &quot;/sbin/find&quot;,
+&quot;args&quot;: [&quot;/&quot;, &quot;-type&quot;, &quot;d&quot;]
+</code></pre>
+
+<p>This provides for some convenience, since it potentially allows you to use images in a flexible way for more than a single purpose. So it might save you from building and pushing multiple almost identical images.</p>
+
+<h3 id="links"><code>links</code></h3>
+
+<p>The <code>links</code> key allows to define network connections from one component to another, which work very much like <a href="https://docs.docker.com/userguide/dockerlinks/">Docker links</a>. Since links also form dependencies between components, they influence the order in which components are started and stopped.</p>
+
+<p>Example: Component A has a link to component B, thus A depends on B to run. So when the service is started, component B is started first. Component A is started once B is up.</p>
+
+<p>The description in this section explains how links within a service work. To learn more about creating links between services, please refer to the section <a href="#linking-services">Linking between services</a>.</p>
+
+<p>Syntax-wise, the value of the <code>links</code> key is an array of objects, each allowing the following keys:</p>
+
+<ul>
+<li><code>component</code>: name of the target component to be linked to. This key is required, a string is expected as value.</li>
+<li><code>target_port</code>: TCP port of the target component to connect to. This port has to be defined using the <code>ports</code> key in the target component definition. This key is required, an integer or string is expected as a value.</li>
+<li><code>alias</code>: An optional alias name to be used instead of the actual component name for the link. This influences the names of automatically generated environment variables for host and port of the required component. Read on for more information on that.</li>
+</ul>
+
+<p>Let&rsquo;s review the link defined in our simple example above, which points from the <code>webserver</code> component to the <code>database</code> component:</p>
+
+<pre><code class="language-json">&quot;links&quot;: [
+  {
+    &quot;component&quot;: &quot;database&quot;,
+    &quot;target_port&quot;: 3306
+  }
+]
+</code></pre>
+
+<p>The <code>component</code> key here refers to the name of the target component to connect to. The <code>target_port</code> is one of the port defined in the target component.</p>
+
+<p>This link ensures that the database component will be started before the webserver component can start.</p>
+
+<p>In addition, this link definition allows for the creation of a network link (TCP) between the <code>webserver</code> component and port 3306 of the target component <code>database</code>. The connection to the target can be made in different ways:</p>
+
+<ul>
+<li>Via the hostname defined by the link&rsquo;s <code>component</code> or <code>alias</code> value. In the example above, the host name available will be <code>database</code>. This host name will resolve to the target component&rsquo;s current IP address.</li>
+<li>Via the IP address obtained via an environment variable. The schema of the name for this variable is <code>&lt;NAME_or_ALIAS&gt;_PORT_&lt;PORT&gt;_ADDR</code>. For the example above, this creates an environment variable <code>DATABASE_PORT_3306_TCP_ADDR</code>. The value of this variable will be the IP address assigned to the target component.</li>
+</ul>
+
+<p>The purpose of the optional <code>alias</code> key in a link definition is to influence the hostname generated for the target component and the environment variable name according to specific requirements. If the <code>alias</code> key is used, it takes precedence over the <code>name</code> and defines how the environment variable and host name for linking will be called.</p>
+
+<p>Suppose we would change the link definition above to this instead:</p>
+
+<pre><code class="language-json">&quot;links&quot;: [
+  {
+    &quot;component&quot;: &quot;database&quot;,
+    &quot;target_port&quot;: 3306,
+    &quot;alias&quot;: &quot;db&quot;
+  }
+]
+</code></pre>
+
+<p>As a result, our component would now provide an environment variable with the name <code>DB_PORT_3306_TCP_ADDR</code>. The according host name would now be <code>db</code>.</p>
+
+<p>A special rule applies when using component names containing the hierarchy seperator <code>/</code>. Let&rsquo;s consider the following example:</p>
+
+<pre><code class="language-json">&quot;links&quot;: [
+  {
+    &quot;name&quot;: &quot;datastore/redis&quot;,
+    &quot;port&quot;: 6379
+  }
+]
+</code></pre>
+
+<p>In this case, only the last part of the component name is used. Our linking component would provide the environment variable <code>REDIS_PORT_6379_TCP_ADDR</code> and the hostname <code>REDIS</code> to connect to. In order to make the naming more explicit, you could of course set an alias as explained above.</p>
+
+<h3 id="domains"><code>domains</code></h3>
+
+<p>The <code>domains</code> key allows you to make components of your service accessible under one or several domain names.</p>
+
+<p><strong>Note:</strong> Currently it&rsquo;s only possible to expose components which support the HTTP protocol.</p>
+
+<p>The example below maps the given component&rsquo;s port 8080 to the public port 80 using the domain name <code>myexample.gigantic.io</code>:</p>
+
+<pre><code class="language-json">&quot;domains&quot;: {
+  &quot;8080&quot;: &quot;myexample.gigantic.io&quot;
+}
+</code></pre>
+
+<p>One port can be made available under more than one domain, if needed. Here is an example:</p>
+
+<pre><code class="language-json">&quot;domains&quot;: {
+  &quot;8080&quot;: [
+    &quot;www.example.com&quot;,
+    &quot;www.example.co.uk&quot;,
+    &quot;www.example.org&quot;
+  ]
+}
+</code></pre>
+
+<p>A component can make more than one port available:</p>
+
+<pre><code class="language-json">&quot;domains&quot;: {
+  &quot;8000&quot;: &quot;www.example.com&quot;,
+  &quot;9000&quot;: &quot;admin.example.com&quot;
+}
+</code></pre>
+
+<p>The <code>domains</code> key can be used in any number of components.</p>
+
+<p>When deciding on what domain name to use, you have two general options available:</p>
+
+<ul>
+<li>Use a subdomain of the <code>gigantic.io</code> domain</li>
+<li>Use your own domain name</li>
+</ul>
+
+<p>Both options are explained in detail below.</p>
+
+<h4 id="giganticio-domain">Using the gigantic.io domain</h4>
+
+<p>This option is the easiest, especially for services in their early stage.</p>
+
+<p>If you want to make your service available as <code>my-super-app.gigantic.io</code>, fine. Simply enter that string as a key in the <code>domains</code> setting and make it point to the correct port. There is nothing else you have to take care of. (You might want to test before if that subdomain is already in use by someone.)</p>
+
+<p><i class="fa fa-exclamation-triangle"></i> As of now we do not yet have checks in place to ensure a <code>gigantic.io</code> subdomain is used only by one service. This could theoretically result in another user&rsquo;s service grabbing a name you want for yourself. This is clearly to be solved and we will come up with a solution sooner rather than later.</p>
+
+<h4 id="own-domain-name">Using your own domain name</h4>
+
+<p>If you plan to use your own domain name in your configuration, there is one configuration step to take care of on your side: please set up a CNAME entry for the desired subdomain pointing to <code>loadbalancer.giantswarm.io</code>. This can usually be done wherever the DNS settings for that domain are administered.</p>
+
+<h3 id="env"><code>env</code></h3>
+
+<p>This key allows you to define environment variables which will be available within the running component instances. The key expects an object as value. Values <em>must</em> be of type string. Example:</p>
+
+<pre><code class="language-json">&quot;env&quot;: {
+  &quot;STRING_VARIABLE&quot;: &quot;foo&quot;,
+  &quot;NUMERIC_VARIABLE&quot;: &quot;123&quot;
+}
+</code></pre>
+
+<h3 id="ports"><code>ports</code></h3>
+
+<p>This key to make TCP ports of a component accessible, as required when a component should be accessible via a link or domain. The value of this key can either be a number or an array.</p>
+
+<p>If, for example, a component should expose TCP port 80, the according value would be:</p>
+
+<pre><code class="language-json">&quot;ports&quot;: 80
+</code></pre>
+
+<p>Multiple ports can be configured in this way:</p>
+
+<pre><code class="language-json">&quot;ports&quot;: [80, 81]
+</code></pre>
+
+<h3 id="scale"><code>scale</code></h3>
+
+<p>The <code>scale</code> key can be used to set details on how a component should be scaled to multiple instances. Without specific definition, exactly one instance per component is started during service startup and scaling up is only limited by <a href="https://giantswarm.io/limits/">system-wide limitations</a>.</p>
+
+<p>The Object given with this key can contain the following keys, all of which are optional:</p>
+
+<ul>
+<li><code>min</code>: The minimum number of instances to run for this component</li>
+<li><code>max</code>: The maximum number of instances to run for this component</li>
+<li><code>placement</code>: Specifying the placement of the instances (see below for details)</li>
+</ul>
+
+<p>The following example will enforce the launch of three instances on startup of the service:</p>
+
+<pre><code class="language-json">&quot;scale&quot;: {&quot;min&quot;: 3}
+</code></pre>
+
+<h4 id="placement"><code>placement</code></h4>
+
+<p><code>scale</code> can optionally contain a <code>placement</code> key, which specifies the placement of scaled instances of this component on different machines.</p>
+
+<p>The default value for this key is <code>simple</code>. This leaves the placement of instances for a component up to the scheduler, which does not give any guarantees as to placement on different machines. E.g. 3 instances of a scaled component could in cases be scheduled on the same machine.</p>
+
+<p>By setting <code>placement</code> to <code>one-per-machine</code>, you can force the scheduler to schedule each instance of a component on a different machines, which enables actual high availabilty setups.</p>
+
+<p><strong>Note:</strong> With <code>one-per-machine</code> no two instances of a component will be started on the same machine. Thus, the upper scaling limit of your component will be automatically set to the number of machines in the cluster. You will get an error if you try scaling above said limit. In case you don&rsquo;t know the number of machines in your cluster, you can enquire this number with support.</p>
+
+<p>The following example will enforce the launch of three instances on startup of the service, which will all be placed on different machines:</p>
+
+<pre><code class="language-json">&quot;scale&quot;: {&quot;min&quot;: 3, &quot;placement&quot;: &quot;one-per-machine&quot;}
+</code></pre>
+
+<h3 id="pod"><code>pod</code></h3>
+
+<p>With the <code>pod</code> key you can define that several components of the same service should be grouped into a <em>pod</em>. This grouping has several effects. All component instances in a pod</p>
+
+<ul>
+<li>run on the same machine,</li>
+<li>share the same IP address,</li>
+<li>share the same TCP/UDP port space,</li>
+<li>can communicate via IPC,</li>
+<li>and can share volumes.</li>
+</ul>
+
+<p>Additionally, if one of the instances in a pod fails, all others instances within this pod will be restarted as well.</p>
+
+<h4 id="creating-a-pod">Creating a pod</h4>
+
+<p>To form a pod, components have to be organized in a hierarchical manner. Then, a component with descendants has to carry the <code>pod</code> key with a string value of either <code>inherit</code> or <code>children</code>.</p>
+
+<p>Our <a href="#complex-example">complex example</a> above uses the <code>&quot;pod&quot;: &quot;children&quot;</code> definition on the <code>datastore</code> component to group the components <code>datastore/redis</code> and <code>datastore/redisbackup</code> within the same pod. Here is the according excerpt of the definition:</p>
+
+<pre><code class="language-json">&quot;datastore&quot;: {
+  &quot;pod&quot;: &quot;children&quot;,
+  ...
+},
+&quot;datastore/redis&quot;: {
+  ...
+},
+&quot;datastore/redisbackup&quot;: {
+  ...
+}
+</code></pre>
+
+<p>The <code>children</code> setting creates a pod containing only the direct descendants of a component (but not the component itself!). The <code>inherit</code> setting, in contrast, would also include all descendants deeper in the hierarchy into the pod.</p>
+
+<h4 id="scaling-pods">Scaling pods</h4>
+
+<p>If you scale a component in a pod, the entire pod containing the component will be multiplied. This means that all components belonging to this pod will be scaled to the according number of instances.</p>
+
+<p><strong>Note:</strong> The scaling policy (incl. <code>min</code>,<code>max</code>,<code>placement</code>) of each component in a pod needs to be the same for all components within the pod. If you set the scaling policy in one component of a pod it automatically applies to all components within the pod. There&rsquo;s no need to repeat the scaling policy in each component.</p>
+
+<p><img src="/img/scaling_pods.png" alt="Scaling Pods Illustration" />
+</p>
+
+<p>The illustration above shows the effect of scaling a pod. After scaling, two identical pods with distinct identifiers exist. Both contain distinct instances of the same components. Sharing of resources only works within the boundaries of each pod. Instances within one pod do not share any resources with the other pod. Likely, the instances within one pod are not running on the same machine as those of the other pod.</p>
+
+<h4 id="excluding-a-component-from-a-pod">Excluding a component from a pod</h4>
+
+<p>It is possible to exclude a component from being a part of a pod by defining the <code>pod</code> key with the string value <code>none</code> on that component. If, for example, a component (a/b/c) is a descendant of a component (a) that defines a pod with the <code>inherit</code> setting, this would allow to prevent (a/b/c) from being part of the pod.</p>
+
+<h3 id="volumes"><code>volumes</code></h3>
+
+<p>When a process running in your component instance writes data into the container, this data is not persisted throughout restarts of the instances. So in case of an update, a failure or a manual restart, the data will be lost.</p>
+
+<p>With volumes you can preserve data throughout instance restarts. The volumes you define will be created when the owning instance is created and will be deleted upon instance deletion.</p>
+
+<p>With a normal volume, when scaling a component to more than one instance, each instance will have it&rsquo;s own distinct volume. This behaviour can be changed by the use of the <code>shared</code> option, described below.</p>
+
+<p>When working with pods, volumes can also be shared between different components. Refer to the <a href="#pod"><code>pod</code></a> section further below to learn more.</p>
+
+<p>You can find more details about volumes in the <a href="/reference/storage/">Storage and Volumes</a> reference.</p>
+
+<h4 id="defining-a-volume">Defining a volume</h4>
+
+<p>The <code>volumes</code> key expects an array of simple objects as value, one object for each volume you want to define. Each of these objects must have the following keys:</p>
+
+<ul>
+<li><code>path</code>: The path, in which the volume will be mounted, as a string</li>
+<li><code>size</code>: A string defining the volume size in gigabytes in a format like <code>&lt;n&gt; GB</code>.</li>
+</ul>
+
+<p>The complex example above contains volume definitions in several coponents. Here is one excerpt:</p>
+
+<pre><code class="language-json">&quot;volumes&quot;: [
+  {
+    &quot;path&quot;: &quot;/var/data&quot;,
+    &quot;size&quot;: &quot;2 GB&quot;
+  }
+]
+</code></pre>
+
+<p>In addition to the mandatory keys, the volume object supports the <code>shared</code> key which expects a boolean value. If the key is ommitted, the value <code>false</code> is assumed. Here is an example:</p>
+
+<pre><code class="language-json">&quot;volumes&quot;: [
+  {
+    &quot;path&quot;: &quot;/var/data&quot;,
+    &quot;size&quot;: &quot;2 GB&quot;,
+    &quot;shared&quot;: true
+  }
+]
+</code></pre>
+
+<p>With a shared volume, multiple instances of one component have access to the same file system. Be aware that this can lead to race conditions, where multiple processes try to write to the same file concurrently. As the application developer, you have to take precautions like introducing locking mechanisms to prevent failures.</p>
+
+<h4 id="reusing-all-volumes-from-a-component-within-the-same-pod">Reusing all volumes from a component within the same pod</h4>
+
+<p>A component can reuse all volumes defined by another component in the same pod by using the <code>volumes-from</code> key together with the component name as a value in the volumes definition.</p>
+
+<p>The example below shows how component <code>main/sub_b</code> reuses all volumes defined in component <code>main/sub_a</code>.</p>
+
+<pre><code class="language-json">&quot;main&quot;: {
+  &quot;pod&quot;: &quot;children&quot;
+},
+&quot;main/sub_a&quot;: {
+  &quot;volumes&quot;: [
+    {
+      &quot;path&quot;: &quot;/var/first_dir&quot;,
+      &quot;size&quot;: &quot;2 GB&quot;
+    },
+    {
+      &quot;path&quot;: &quot;/var/second_dir&quot;,
+      &quot;size&quot;: &quot;2 GB&quot;
+    }
+  ],
+  ...
+}
+&quot;main/sub_b&quot;: {
+  &quot;volumes&quot;: [{&quot;volumes-from&quot;: &quot;main/sub_a&quot;}],
+  ...
+}
+</code></pre>
+
+<h4 id="reusing-a-specific-volume-from-a-component-within-the-same-pod">Reusing a specific volume from a component within the same pod</h4>
+
+<p>Instead of reusing all volumes from another component in the pod, components can also reference specific volumes defined by other components. The following keys are supported in this case:</p>
+
+<ul>
+<li><code>volume-from</code>: The name the component in the same pod providing the volume.</li>
+<li><code>volume-path</code>: The <code>path</code> of the volume as defined in the component providing the volume.</li>
+<li><code>path</code> (optional): If specified, this will be used as mounting point of the volume from the referenced component. If this key is not set, the path as configured in the component defining the volume is used.</li>
+</ul>
+
+<p>The following excerpt of an example definition shows how a volume can be re-used.</p>
+
+<pre><code class="language-json">&quot;main&quot;: {
+  &quot;pod&quot;: &quot;children&quot;
+},
+&quot;main/sub_a&quot;: {
+  &quot;volumes&quot;: [
+    {
+      &quot;path&quot;: &quot;/var/first_dir&quot;,
+      &quot;size&quot;: &quot;2 GB&quot;
+    },
+    {
+      &quot;path&quot;: &quot;/var/second_dir&quot;,
+      &quot;size&quot;: &quot;2 GB&quot;
+    }
+  ],
+  ...
+}
+&quot;main/sub_b&quot;: {
+  &quot;volumes&quot;: [
+    {
+      &quot;volumes-from&quot;: &quot;main/sub_a&quot;,
+      &quot;volume-path&quot;
+      &quot;size&quot;: &quot;2 GB&quot;
+    }
+  ],
+  ...
+}
+</code></pre>
+
+<h3 id="expose"><code>expose</code></h3>
+
+<p>The <code>expose</code> key allows to publish ports, which are actually offered by descendant components for linking within and between services (more about the latter further below).</p>
+
+<p>Within a service, the [link] concept allows to connect components, but certain restrictions apply. A component (A) can only link to a component (B)</p>
+
+<ul>
+<li>if (B) has the same parent component as (A) <em>or</em></li>
+<li>when they are both top-level components.</li>
+</ul>
+
+<p>The <code>expose</code> key can only be used on top-level components, i. e. components which don&rsquo;t have a forward slash (<code>/</code>) in their names.</p>
+
+<p>Our <a href="#complex-example">complex example</a> shows this. The <code>appserver</code> component is not allowed to link directly to the <code>datastore/redis</code> component, since they are not both top-level components and they also don&rsquo;t share a parent component. So to enable the connection, the <code>datastore</code> component has an <code>expose</code> definition that points to the port offered by the <code>datastore/redis</code> component. Here is an excerpt again:</p>
+
+<pre><code class="language-json">&quot;datastore&quot;: {
+  &quot;expose&quot;: [
+    {
+      &quot;component&quot;: &quot;datastore/redis&quot;,
+      &quot;target_port&quot;: &quot;6379&quot;,
+      &quot;port&quot;: &quot;6379&quot;
+    }
+  ],
+  …
+}
+</code></pre>
+
+<p>Now the <code>appserver</code> component can link to the <code>datastore</code> component&rsquo;s port 6379, which actually forwards to the <code>datastore/redis</code> component&rsquo;s port 6379.</p>
+
+<p>The <code>expose</code> key expects as a value an array of objects with the following keys:</p>
+
+<ul>
+<li><code>component</code>: The name of the target component offering the port to connect to</li>
+<li><code>target_port</code>: The port offered by the target component</li>
+<li><code>port</code>: The port to be exposed in the current component. Each port number can only be used once <em>within the entire service</em>.</li>
+</ul>
+
+<p><strong>Note:</strong> If you want to expose ports of a single top-level component, you need change that component to be a descendant to a new top-level component, in which you then use <code>expose</code> like explained above.</p>
+
+<h4 id="linking-services">Linking between services</h4>
+
+<p>Giant Swarm allows to define links between two otherwise independent services running within the same <a href="/reference/cli/env/">environment</a>, to allow network connections. Links between services differ from links within a service in several ways:</p>
+
+<ul>
+<li>Links between services are non-blocking and not validated. If Service (S1) links to a service (S2), the current status of (S2) does not affect the startup of (S1). (S1) will be started even if (S2) is down or doesn&rsquo;t exist at all. This means that as the developer making use of the connection, you&rsquo;ll have to implement checks accordingly.</li>
+<li>Links between services can by cyclic. Service (S1) can point to (S2) and vice versa.</li>
+</ul>
+
+<p>As an example, we show the definition for another service here that has a link to the service defined by our <a href="#complex-example">complex example</a>:</p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;redis_monitor&quot;,
+  &quot;components&quot;: {
+    &quot;monitor&quot;: {
+      &quot;image&quot;: &quot;registry.giantswarm.io/myorg/redis-monitor&quot;,
+      &quot;links&quot;: [
+        {
+          &quot;service&quot;: &quot;complex_service&quot;,
+          &quot;target_port&quot;: 6379
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+
+<p>Here, the <code>service</code> key has the name of the target service to link to as a value. The <code>target_port</code> refers to the port offered by the <a href="#expose"><code>expose</code></a> object in that target service.</p>
+
+<p><strong>Note:</strong>  If you want to expose ports for linking to another service, <code>expose</code> needs to be used in top-level components that are parent to the components that you want to linked to from the other service.</p>
+
+<h3 id="signal-ready">Manually signal readiness</h3>
+
+<p>The component level key <code>signal-ready</code> allows you to change the default assumptions of Giant Swarm&rsquo;s platform on when a component has started and is considered running. The default setting for this key is <code>false</code>, which results in our platform detecting the start of the process and then conisdering the component running. This is in some cases, e.g. with processes that have a very long initialization time, too early and can result in unexpected behaviour of your service.</p>
+
+<p>By setting <code>signal-ready</code> to <code>true</code> you set a component to manual readiness notification. In this case you have to use the environment variable <code>GIANTSWARM_INSTANCE_API</code>, which contains a URL endpoint as a value, to set the status to ready with a simple HTTP POST request in your component.</p>
+
+<p>In the <a href="#complex-example">complex example</a> above, our <code>appserver</code> component has <code>signal-ready</code> set to <code>true</code>. That means that we need to add an HTTP POST request to <code>${GIANTSWARM_INSTANCE_API}/v1/ready</code> to the code of our component.</p>
+
+<p><strong>Note:</strong> Using manual readiness signalling will occupy a single network port inside your container. This port is choosen by the Giant Swarm platform and falls in the range between port 2080 and 3000 (in rare cases the upper range may increase if you have a shared pod with lots of components in them).</p>
+
+<p><strong>Note:</strong> Due to a current issue in our infrastructure, containers that are taking a long time starting might cause EOF errors in the CLI or API. This might be more likely to happen with <code>signal-ready</code> set to <code>true</code>. However, the actual actions, e.g. <code>swarm update</code> will still be running through. We are working on fixing this issue soon.</p>
+
+<h3 id="memory-limit">Memory Limit</h3>
+
+<p>Each container has a memory limit that is configured per cluster. Our shared cluster for example has a limit of <a href="https://giantswarm.io/limits/">512 MB</a>. For certain dedicated clusters and on-premise installations, you can also configure a limit yourself, by using the <code>memory-limit</code> field. Please note that there is still an upper and lower boundary, which depends on your cluster installation.</p>
+
+<pre><code class="language-json">&quot;my-component&quot;: {
+  &quot;image&quot;: &quot;registry.giantswarm.io/myorg/webserver&quot;,
+  &quot;memory-limit&quot;: &quot;2 GB&quot;,
+  …
+}
+</code></pre>
+
+<p>The format for memory limit is easy: An integer plus a unit. Whitespaces are ignored. Allowed units are <code>KB</code> (1000 Byte), <code>MB</code> (1000 KB), and <code>GB</code> (1000 MB). The units are case-insensitive. Geeky extra: If you are so inclined, you can even use <a href="https://en.wikipedia.org/wiki/Kibibyte">kibi units</a>, e.g. <code>512 KiB</code>.</p>
+
+<h2 id="giant-swarm-context-variables">Giant Swarm context variables</h2>
+
+<p>There are four Giant Swarm context variables available for use in your <code>swarm.json</code>. The respective values of these varialbes are set based on your login and current selected environment. Note that you cannot change the values of these variables unless you change your actual login or environment through CLI or API.</p>
+
+<ul>
+<li><code>GIANTSWARM_ORGANIZATION</code>: Your current selected organization, e.g. &ldquo;giantswarm&rdquo;</li>
+<li><code>GIANTSWARM_ENVIRONMENT</code>: Your current selected environment, e.g. &ldquo;dev&rdquo;</li>
+<li><code>GIANTSWARM_ENV</code>: Your current selected organization and environment, e.g. &ldquo;giantswarm/dev&rdquo;</li>
+<li><code>GIANTSWARM_LOGIN_NAME</code>: Your username that you logged in with into Giant Swarm, e.g. &ldquo;yourusername&rdquo;</li>
+</ul>
+
+<p>You can use these anywhere in your <code>swarm.json</code>. E.g. in our <a href="#complex-example">complex example</a> above, we use the <code>$GIANTSWARM_LOGIN_NAME</code> variable to customize the domain entries of the service based on the current user&rsquo;s Giant Swarm username.</p>
+
+<h2 id="making-use-of-additional-configuration-variables">Making use of additional configuration variables</h2>
+
+<p>Imagine you would like to run an almost identical service in two different <a href="/reference/cli/env/">environments</a>, say each one with only a different version of an image.</p>
+
+<p>To prevent you from having to copy your entire servcie definition file and make those tiny changes, our service definition supports the use of variables.</p>
+
+<p>The use of variables is explained in more detail in the documentation of the <a href="/reference/cli/create/"><code>swarm create</code></a> command.</p>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+<li>More service definition examples can be found in our <a href="/guides/">Guides</a></li>
+<li><a href="/reference/storage/">Storage and Volumes</a></li>
+<li><a href="/reference/cli/create/">CLI Reference: Creating a Service</a> - the <code>swarm create</code> reference page</li>
+<li><a href="/reference/cli/env/">CLI Reference: Handling Environments</a> - the <code>swarm env</code> reference page</li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Using the Registry &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This is the reference page on how to use the Giant Swarm registry with Docker">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/reference/registry/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_reference_registry_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#using-the-registry">Using the Registry</a>
+<ul>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#url-and-image-name-format">URL and Image Name Format</a></li>
+<li><a href="#organization-namespaces">Organization Namespaces</a></li>
+<li><a href="#logging-in">Logging In</a></li>
+<li><a href="#naming-and-tagging-an-image">Naming and Tagging an Image</a>
+<ul>
+<li><a href="#tag-use-in-the-service-definition-and-updates">Tag use in the service definition and updates</a></li>
+</ul></li>
+<li><a href="#pushing-an-image">Pushing an Image</a></li>
+<li><a href="#referencing-your-image-in-a-service">Referencing Your Image in a Service</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified December 2, 2015</p>
+
+      
+
+<h1 id="using-the-registry">Using the Registry</h1>
+
+<h2 id="synopsis">Synopsis</h2>
+
+<p>Login to the Giant Swarm registry:</p>
+
+<pre><code class="language-nohighlight">$ docker login https://registry.giantswarm.io
+</code></pre>
+
+<p>Build your image with the right name (assuming your service runs in an environment of organization <code>acmecorp</code>):</p>
+
+<pre><code class="language-nohighlight">$ docker build -t registry.giantswarm.io/acmecorp/exampleimage:1.4.2 .
+</code></pre>
+
+<p>Upload the image to the registry:</p>
+
+<pre><code class="language-nohighlight">$ docker push registry.giantswarm.io/acmecorp/exampleimage:1.4.2
+</code></pre>
+
+<p>Reference the image in your service definition:</p>
+
+<pre><code class="language-json">{
+    &quot;image&quot;: &quot;registry.giantswarm.io/acmecorp/exampleimage:1.4.2&quot;,
+    ...
+}
+</code></pre>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Giant Swarm provides you a protected registry to deposit and deploy your Docker images. Here we give you the information you need to login and push images to our registry and use these images within your services.</p>
+
+<p>The registry uses software provided by Docker and is accessed via standard Docker tools. If you are familiar with the concept of registries and know how to deal with images there, you can easily transfer that knowledge to our protected registry. In this case, please make sure that you read and understand how we use organization names as namespaces, as explained in the section <a href="#organization-namespaces"><em>organization namespaces</em></a> below.</p>
+
+<p>In addition to using the Giant Swarm registry, you have the option to use any publicly accessible Docker registry, including the <a href="https://hub.docker.com/">Docker Hub</a> with lots of readily available Open Source software packages.</p>
+
+<h2 id="url-and-image-name-format">URL and Image Name Format</h2>
+
+<p>The URL of our registry is <code>https://registry.giantswarm.io</code>.</p>
+
+<p>The full image name format is</p>
+
+<pre><code class="language-nohighlight">registry.giantswarm.io/&lt;organization_namespace&gt;/&lt;image_name&gt;:&lt;tag&gt;
+</code></pre>
+
+<p>Note that the URL scheme (<code>https://</code>) is omitted here.</p>
+
+<p>Example of a full image name:</p>
+
+<pre><code class="language-nohighlight">registry.giantswarm.io/acmecorp/webserver:1.4.2
+</code></pre>
+
+<h2 id="organization-namespaces">Organization Namespaces</h2>
+
+<p>In our systems, users are associated with <a href="/reference/cli/org/">organizations</a> to allow for shared resources between multiple users. Docker images are an example of these shared resources.</p>
+
+<p>In fact, even if you don&rsquo;t collaborate with other users, you are part of an organization. The default organization you belong to has the same name as your username. This is relevant for the registry, because:</p>
+
+<blockquote>
+<p>Every image you push to the registry has to belong to a certain organization. This is expressed by using the organization name as the image&rsquo;s namespace.</p>
+</blockquote>
+
+<p>If, for example, you belong to the organization called <code>acmecorp</code> and want to create an image, which can be used by all users of that organization, the name <code>acmecorp</code> has to be used as the name space field within the image name, like here:</p>
+
+<pre><code class="language-nohighlight">registry.giantswarm.io/acmecorp/exampleimage:1.4.2
+</code></pre>
+
+<p>We will be using the organization name <code>acmecorp</code> throughout this page as a placeholder for your respective organization name.</p>
+
+<p>If you aren&rsquo;t planning to share your images with other users, you can of course use your default organization name, which is identical with your user name.</p>
+
+<h2 id="logging-in">Logging In</h2>
+
+<p>Before you can do anything like uploading or downloading images to/from our registry, you first have to log in.</p>
+
+<p><strong>Note:</strong> When using Docker 1.7 or newer and a recent <code>swarm</code> CLI, it is no longer required to log in via the <code>docker</code> CLI in an extra step. This is taken care of via the <a href="/reference/cli/login/"><code>swarm login</code></a> command.</p>
+
+<p>Have your Giant Swarm user name and password ready for that purpose. The actual login is performed interactively using the <code>docker login</code> command:</p>
+
+<pre><code class="language-nohighlight">$ docker login https://registry.giantswarm.io
+</code></pre>
+
+<p>You will be prompted to input your username, then your password, and finally your email address.</p>
+
+<p>As a side note, you can currently enter any email address here. We don&rsquo;t use this piece of information, however the <code>docker login</code> command prompts for it, which we cannot influence.</p>
+
+<p>Once you have successfully logged in, you can proceed to the next section.</p>
+
+<h2 id="naming-and-tagging-an-image">Naming and Tagging an Image</h2>
+
+<p>Before uploading (&ldquo;pushing&rdquo;) a Docker image to any registry, it has to be given the name it will finally have within the registry.</p>
+
+<p>You have several choices on when to name the image with its final name:</p>
+
+<ul>
+<li>At image creation, using the <code>docker build</code> command with the <code>-t</code> or <code>--tag</code> flag</li>
+<li>After building, using the <code>docker tag</code> command</li>
+</ul>
+
+<p>Naming the image <em>at image creation</em> saves you an extra step but also requires you to plan ahead. When in the directory containing the <code>Dockerfile</code> for your <code>exampleimage</code> image, any of the following commands would create a named image:</p>
+
+<pre><code class="language-nohighlight">$ docker build -t registry.giantswarm.io/acmecorp/exampleimage .
+$ docker build -t registry.giantswarm.io/acmecorp/exampleimage:1.4.2 .
+</code></pre>
+
+<p>As for naming <em>after the build</em>: If, for example, you have locally created a little image with the simple name <code>exampleimage</code>, there are several alternatives how you can give it a name that is valid for the registry:</p>
+
+<pre><code class="language-nohighlight">$ docker tag exampleimage registry.giantswarm.io/acmecorp/exampleimage
+$ docker tag exampleimage registry.giantswarm.io/acmecorp/exampleimage:1.4.2
+</code></pre>
+
+<p>You might have wondered what the <code>:1.4.2</code> suffix is about. This is called the <em>tag</em> in the Docker terminology. The tag is a distinct indicator for different variants of an image. Pushing different incarnations of an image with different tags to the registry allows you to specifically address these distinct image incarnations.</p>
+
+<p>Here are some common use cases for tagging:</p>
+
+<ul>
+<li>Give each version of an image a distinct tag. This can be done for example through an increasing version number, semantic versioning or a date/timestamp.</li>
+<li>Distinguish different sub-types of an image, like e. g. <code>development</code> and <code>production</code>.</li>
+<li>Combine any of the above, e. g. <code>dev-20150826-1000</code> for the development version of an image created on August 26th, 2015 at 10:00 o&rsquo;clock.</li>
+</ul>
+
+<h3 id="tag-use-in-the-service-definition-and-updates">Tag use in the service definition and updates</h3>
+
+<p>If you made yourself familiar with the <a href="/reference/swarm-json/">Service Definition</a>, you learned that components reference Docker images using the <code>image</code> directive. Note that with this directive you only set the image used when the service/component is created.</p>
+
+<p>After a service is created, you can change the image tag used by a component to a different tag using the <a href="/reference/cli/update/"><code>swarm update</code></a> command.</p>
+
+<p>So when defining a component with an image key like this</p>
+
+<pre><code class="language-nohighlight">&quot;mycomponent&quot;: {
+    &quot;image&quot;: &quot;registry.giantswarm.io/acmecorp/exampleimage:1.0.0&quot;
+    ...
+}
+</code></pre>
+
+<p>then you can update the component any time to use a different image tagged <code>1.0.1</code> like this:</p>
+
+<pre><code class="language-nohighlight">$ swarm update &lt;service-name&gt;/mycomponent update 1.0.1
+</code></pre>
+
+<p>Note: While Docker also supports overwriting tags, which in practice is frequently done for the tag <code>latest</code>, we recommend <strong>not to re-use</strong> the same image tag in this way. In our experience it has proven more robust to give each image build a unique tag instead and use this for an update.</p>
+
+<h2 id="pushing-an-image">Pushing an Image</h2>
+
+<p>To make use of your images within your Giant Swarm services, you have to upload or &ldquo;push&rdquo; them to our registry. This is done using the <code>docker push</code> command.</p>
+
+<p>Above, you learnt that you have to name an image with the appropriate name <em>before</em> pushing it. Now you can use the full image name to push that same image. This is the general command syntax:</p>
+
+<pre><code class="language-nohighlight">$ docker push registry.giantswarm.io/&lt;organization_namespace&gt;/&lt;image_name&gt;:&lt;tag&gt;
+</code></pre>
+
+<p>There are cases where the <code>:&lt;tag&gt;</code> part would be optional. Going into depth here would make this reference a lot longer. For now, we simply recommend to explicitly name the tag. If you like, you can read more about this topic in the Docker documentation (link given <a href="#related-reading">below</a>).</p>
+
+<p>So to push our example image to the registry, the command we would use might be:</p>
+
+<pre><code class="language-nohighlight">$ docker push registry.giantswarm.io/acmecorp/exampleimage:1.4.2
+</code></pre>
+
+<p>After issuing the push command, you will see some progress information until all layers of your image are completely pushed to the registry.</p>
+
+<p>Once you create newer versions of your images and push them again, you will likely notice the great benefit of the layered nature of docker images: Unchanged layers won&rsquo;t have to be uploaded again, only modified or new layers are transferred over the network.</p>
+
+<h2 id="referencing-your-image-in-a-service">Referencing Your Image in a Service</h2>
+
+<p>Once an image is pushed to our registry, you can use it in your (or your organization&rsquo;s) services. For general information on this topic, have a look at the <a href="/reference/swarm-json/">swarm.json reference page</a>.</p>
+
+<p>Your service is potentially built of several components with one <code>&quot;image&quot;</code> definition each. This is where we expect the full name of your image in our registry.</p>
+
+<pre><code class="language-json">{
+    &quot;component_name&quot;: &quot;upstream&quot;,
+    &quot;image&quot;: &quot;registry.giantswarm.io/acmecorp/exampleimage:1.4.2&quot;,
+    ...
+}
+</code></pre>
+
+<p>We <em>explicitly recommend</em> to use the full name including a specific tag here. Do not use the <code>:latest</code> alias here, otherwise it will be up to the registry endpoint to resolve this to the actual image version.</p>
+
+<p>Be aware that you can use variables in your <code>swarm.json</code> file, which can be defined either in another JSON file or as command line parameters. Read more about this on the reference page for <a href="/reference/cli/create/">creating services</a>.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+<li><a href="/reference/swarm-json/">Service Definition (<code>swarm.json</code>) Reference</a></li>
+<li><a href="/reference/cli/create/">Creating a Service</a></li>
+<li><a href="/guides/introduction-to-docker/">Introduction to Docker</a></li>
+</ul>
+
+<p>External Resources:</p>
+
+<ul>
+<li><a href="https://docs.docker.com/terms/image/">Introduction to Docker Images</a></li>
+<li><a href="https://docs.docker.com/userguide/dockerimages/">Working with Docker Images</a></li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Collaborating as a team &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This guide gives an introduction on how to collaborate as a team when bringing services to Giant Swarm.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/team-collaboration/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_team-collaboration_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#collaborating-as-a-team">Collaborating as a team</a>
+<ul>
+<li><a href="#organizations-and-environments">Organizations and environments</a></li>
+<li><a href="#creating-an-organization-for-your-team">Creating an organization for your team</a></li>
+<li><a href="#adding-team-members-to-the-organization">Adding team members to the organization</a></li>
+<li><a href="#naming-images-for-team-access">Naming images for team access</a></li>
+<li><a href="#deploying-services-for-team-access">Deploying services for team access</a>
+<ul>
+<li><a href="#creating-an-environment-and-selecting-it">Creating an environment and selecting it</a></li>
+<li><a href="#deploying-services">Deploying services</a></li>
+</ul></li>
+<li><a href="#wrapping-it-up">Wrapping it up</a></li>
+<li><a href="#further-reading">Further reading</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified August 10, 2015</p>
+
+      
+
+<h1 id="collaborating-as-a-team">Collaborating as a team</h1>
+
+<p>Giant Swarm provides the means to collaborate on services as a team. This guide gives an introduction to the most important aspects to take care of when deploying and controlling services in a multi-user work group.</p>
+
+<h2 id="organizations-and-environments">Organizations and environments</h2>
+
+<p>An <a href="/reference/cli/org/">organization</a> on Giant Swarm is a simply a named group of users. An <a href="/reference/cli/env/">environment</a> is a named context in which to deploy services. Each environment belongs to an organization. This is visible in the environment name, which is always prefixed with an organization name: <code>&lt;organization_name&gt;/&lt;environment_suffix&gt;</code>.</p>
+
+<p>Whenever you&rsquo;re logged in with the <code>swarm</code> CLI and interact with our infrastructure, an environment is selected as your context. This even happens without you knowing about these concepts. With your first login, an organization named after your username is created and an environment with the name pattern <code>&lt;organization_name&gt;/dev</code> is created and selected. This is called the default environment.</p>
+
+<p>However, for collaboration in a team, there should be a dedicated organization for any team you work with. You can create as many organizations as you like, and each organization can have as many environments as needed.</p>
+
+<h2 id="creating-an-organization-for-your-team">Creating an organization for your team</h2>
+
+<p>The basis for team collaboration is to have an organization that every team member belongs to. So the first step when starting to work as a team is to create the appropriate organization using the <code>swarm CLI</code>.</p>
+
+<p>Probably the hardest part here is to come up with a good organization name. Organization names are between 4 and 30 characters long and only consist of the characters a-z, 0-9 and the underscore (_). Also, the name has to be unique for the entire Giant Swarm platform.</p>
+
+<p>Say you want to create a new organization called <code>ateam</code>, this is how you would do it:</p>
+
+<pre><code class="language-nohighlight">$ swarm org create ateam
+</code></pre>
+
+<p>As the creator of the organization, you are automatically a member. Find proof for that by listing all members of the newly created organization:</p>
+
+<pre><code class="language-nohighlight">$ swarm org show ateam
+Organization ateam
+
+Username:
+hannibal
+</code></pre>
+
+<h2 id="adding-team-members-to-the-organization">Adding team members to the organization</h2>
+
+<p>To add a user to an organization, you need to know the Giant Swarm username of the user to add. To add a user called <code>murdoch</code> to the organization <code>ateam</code>, use this command:</p>
+
+<pre><code class="language-nohighlight">$ swarm org add-user ateam murdoch
+</code></pre>
+
+<h2 id="naming-images-for-team-access">Naming images for team access</h2>
+
+<p>The building blocks of your Giant Swarm services are components, which usually translate to Docker containers, which can be created from images on any public registry or the <a href="/reference/registry/">private registry</a> Giant Swarm provides. This section assumes that you want to make use of our private registry.</p>
+
+<p>When working only on your own, you can simply tag images for your components using your username as a namespace identifier. The schema is:</p>
+
+<pre><code class="language-nohighlight">registry.giantswarm.io/&lt;yourusername&gt;/&lt;imagename&gt;:&lt;tag&gt;
+</code></pre>
+
+<p>When your services are supposed to belong to a team, all team members should be able to push new image versions to the registry. This can be accomplished by using the organization name (instead of a username) as namespace identifier. The image schema then has to be:</p>
+
+<pre><code class="language-nohighlight">registry.giantswarm.io/&lt;organization_name&gt;/&lt;image_name&gt;:&lt;tag&gt;
+</code></pre>
+
+<p>You can set the appropriate image name either immediately when creating an image using <code>docker build</code>, or in a separate step after creating the image, using <code>docker tag</code>.</p>
+
+<p>For our organization called <code>ateam</code>, an image with the name <code>myimage</code> and some tag could look like this:</p>
+
+<pre><code class="language-nohighlight">registry.giantswarm.io/ateam/myimage:latest
+</code></pre>
+
+<p>To push this image to the registry, use the <code>docker push</code> command with the entire image name, including tag, as argument:</p>
+
+<pre><code class="language-nohighlight">$ docker push registry.giantswarm.io/ateam/myimage:latest
+</code></pre>
+
+<h2 id="deploying-services-for-team-access">Deploying services for team access</h2>
+
+<p>Now that it&rsquo;s set that the team has access to our images, we can deploy the according service.</p>
+
+<p>As said in the introduction, whenever you work on the Giant Swarm infrastructure, you act in a distinct environment. To make your service accessible to your team (organization), the environment running the service has to be owned by the according organization.</p>
+
+<p>When you just created a new organization as explained above, you will now have to create a new environment belonging to that organization.</p>
+
+<h3 id="creating-an-environment-and-selecting-it">Creating an environment and selecting it</h3>
+
+<p>Again, you&rsquo;ll have to come up with a name for the environment. It only has to be unique within the context of the organization, so it can be nice and short. Common environment names tell something about their purpose, e. g. <code>&lt;somecompena&gt;/dev</code> or <code>&lt;somecompena&gt;/production</code>.</p>
+
+<p>Creating a new environment <code>ateam/dev</code>, for example, could be done using this command:</p>
+
+<pre><code>$ swarm env ateam/dev
+</code></pre>
+
+<p>Not only does this create the environment, it also selects it as the current one. You can verify this using either the <code>swarm env</code> command (without argument) or the <code>swarm info</code> command (here noting the &ldquo;Current environment&rdquo;).</p>
+
+<p>So, regardless if the environment existed before or not, <code>swarm env ateam/dev</code> will select the according environment for the current user. Every team member has to do this in order to conveniently control services running in this environment.</p>
+
+<p>As you might have guessed, only members of the organization <code>ateam</code> are allowed to select its environments.</p>
+
+<h3 id="deploying-services">Deploying services</h3>
+
+<p>Once the team environment is selected, all deployments (using <code>swarm up</code> or <code>swarm create</code>) will automatically happen within this environment, unless specified otherwise.</p>
+
+<p>Your <a href="/reference/swarm-json/">service definition</a> has to make use of the appropriate image namespace identifiers, as explained above in <a href="#naming-images-for-team-access">naming images for team access</a>. This means: If your current environment is <code>ateam/dev</code>, your image names should start with <code>registry.giantswarm.io/ateam/</code>.</p>
+
+<h2 id="wrapping-it-up">Wrapping it up</h2>
+
+<p>This is all there is to it. You have just learned how to create an organization for your team and add members to it, creating environments for the team, and tagging images to be accessed by the team.</p>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+<li><a href="/reference/cli/org/">Reference: Managing organizations</a></li>
+<li><a href="/reference/cli/env/">Reference: Managing Environments</a></li>
+<li><a href="/reference/registry/">Reference: Using the Registry</a></li>
+<li><a href="/reference/swarm-json/">Reference: Service Definition (swarm.json) Reference</a></li>
+</ul>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

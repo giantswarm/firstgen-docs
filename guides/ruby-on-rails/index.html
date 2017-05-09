@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Swarmify Ruby on Rails &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This guide shows you how to create, deploy, and run a simple Ruby on Rails project on Giant Swarm">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/ruby-on-rails/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_ruby-on-rails_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#swarmify-ruby-on-rails">Swarmify Ruby on Rails</a>
+<ul>
+<li><a href="#tl-dr-with-docker-compose">TL;DR with docker-compose</a></li>
+<li><a href="#get-up-and-running-with-docker-on-localhost">Get up and running with Docker on localhost</a></li>
+<li><a href="#adding-mysql">Adding MySQL</a></li>
+<li><a href="#swarmifying">Swarmifying</a>
+<ul>
+<li><a href="#the-swarm-json">The swarm.json</a></li>
+<li><a href="#run">Run</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified August 5, 2015</p>
+
+      
+
+<h1 id="swarmify-ruby-on-rails">Swarmify Ruby on Rails</h1>
+
+<p>The following guide will explain how to configure the <a href="https://github.com/railstutorial/sample_app_rails_4/">RailsTutorials Sample App</a> to GiantSwarm. We will run one container for MySQL and one for your Rails application. You should have a basic understanding of Docker and Rails.</p>
+
+<h2 id="tl-dr-with-docker-compose">TL;DR with docker-compose</h2>
+
+<p>Before we get into the details, let us first run the setup locally with <a href="https://docs.docker.com/compose/">docker-compose</a>. For this, we clone our repository, switch to the <a href="https://github.com/giantswarm/sample_app_rails_4/tree/dockerize">dockerize branch</a> and start the setup with <code>docker-compose up</code>:</p>
+
+<pre><code>$ git clone https://github.com/giantswarm/sample_app_rails_4
+$ cd sample_app_rails_4/
+$ git checkout dockerize
+$ docker-compose up
+</code></pre>
+
+<p>That&rsquo;s it. Two containers are up, linked, and running. You can now access your app on <a href="http://localhost:3000/">port 3000</a> of your localhost.</p>
+
+<h2 id="get-up-and-running-with-docker-on-localhost">Get up and running with Docker on localhost</h2>
+
+<p>Now let&rsquo;s see what needs to get done to manually dockerize the Sample Rails app.</p>
+
+<pre><code>$ git clone https://github.com/railstutorial/sample_app_rails_4
+$ cd sample_app_rails_4/
+</code></pre>
+
+<p>The team behind <a href="https://hub.docker.com/_/rails/">Docker-Library</a> (<a href="https://github.com/docker-library/rails">GitHub repository</a>) already provides a base image for Ruby on Rails. We are using the &ldquo;onbuild&rdquo; version, which makes it easy to write our own Dockerfile. At the root of the sample rails app, create a new file called <code>Dockerfile</code> with the following statement:</p>
+
+<pre><code>FROM rails:onbuild
+</code></pre>
+
+<p>Before you can build the Rails app we need to fix the <code>Gemfile</code>. At first we remove the Ruby version since this is given by the chosen Docker image:</p>
+
+<pre><code>source 'https://rubygems.org'
+#ruby '2.0.0'
+#ruby-gemset=railstutorial_rails_4_0
+
+gem 'rails', '4.0.8'
+gem 'bootstrap-sass', '2.3.2.0'
+....
+</code></pre>
+
+<p>Then we have to change the desired version of the <code>sqlite3</code> gem. The given version fails in our environment, but <code>1.3.10</code> works fine:</p>
+
+<pre><code>....
+group :development, :test do
+  gem 'sqlite3', '1.3.10'
+  gem 'rspec-rails', '2.13.1'
+....
+</code></pre>
+
+<p>After this change we have to update our Gemfile.lock since it has to be in sync with the Gemfile. The following command deals with this:</p>
+
+<pre><code class="language-bash">docker run -v $PWD:$PWD -w $PWD ruby bundle update sqlite3
+</code></pre>
+
+<p>Upon <code>docker build -t sample_rails_4 .</code> our patched Rails Gemfile is added and the dependencies are installed. Then the Rails sample app is added and Node.JS is installed. See the <a href="https://github.com/docker-library/rails/blob/7bb6ade7f97129cc58967d7d0ae17f4b62ae52eb/onbuild/Dockerfile">Rails Dockerfile</a> for details.</p>
+
+<p>If you now run your container with <code>docker run -p 3000:3000 sample_rails_4</code> you should get a runtime error message informing you that no database is configured. So let&rsquo;s do that now.</p>
+
+<h2 id="adding-mysql">Adding MySQL</h2>
+
+<p>As a database we chose MySQL, which should run in its own container. Fortunately we can use the predefined <a href="https://hub.docker.com/_/mysql/">MySQL docker image</a>, which automatically creates a <code>root</code> user. It also supports reading the initial password from the <code>MYSQL_ROOT_PASSWORD</code> environment variable. So to start our database we run this:</p>
+
+<pre><code class="language-bash">$ PASS=somesecretpassword
+$ docker run -d --name database -e MYSQL_ROOT_PASSWORD=${PASS} -p 3306 mysql
+</code></pre>
+
+<p>To hook our Rails app to the database we are using <a href="https://docs.docker.com/userguide/dockerlinks/">Docker links</a>. When linking containers, Docker injects certain environment variables, which can be used to discover the IP and port of the linked container. We need to modify our Rails app to use these variables for connecting to the database:</p>
+
+<pre><code class="language-yaml"># File config/database.yml - only the production environment is shown
+production:
+  adapter: mysql2
+  pool: 5
+  timeout: 5000
+
+  database: app
+  username: &lt;%=ENV['MYSQL_USER'] %&gt;
+  password: &lt;%=ENV['MYSQL_PASS'] %&gt;
+  host: &lt;%=ENV['DATABASE_PORT_3306_TCP_ADDR'] %&gt;
+  port: &lt;%=ENV['DATABASE_PORT_3306_TCP_PORT'] %&gt;
+</code></pre>
+
+<p>Since we now use the <code>mysql2</code> driver, we also need to add it to our Gemfile for the <code>production</code> group (you can also drop <code>pg</code> if you want):</p>
+
+<pre><code class="language-ruby"># File Gemfile
++  gem 'mysql2'
+</code></pre>
+
+<p>Since we have changed the Gemfile, we would normally need to build our application image again. But before we do that, let&rsquo;s fix the next problem. If we start our app and it connects to the database, it encounters two problems:</p>
+
+<ol>
+<li>There is no database <code>app</code> in the MySQL container</li>
+<li>Without a database, all the tables are missing, too - we need to execute <code>rake db:migrate</code></li>
+</ol>
+
+<p>We can fix this by writing a custom start script which ensures both points are fixed:</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+set -e
+
+cd /usr/src/app
+
+MYSQL_HOST=$DATABASE_PORT_3306_TCP_ADDR
+MYSQL_PORT=$DATABASE_PORT_3306_TCP_PORT
+
+MYSQL=&quot;mysql -h$MYSQL_HOST -P$MYSQL_PORT -u$MYSQL_USER -p$MYSQL_PASS&quot;
+
+if [ ! $($MYSQL -e 'show databases;'| grep ^app$) ]; then
+  $MYSQL -e &quot;create database app;&quot;
+fi
+
+rake db:migrate
+
+exec rails s $*
+</code></pre>
+
+<p>To get this running we need to install a MySQL client and register our start script in our <code>Dockerfile</code>:</p>
+
+<pre><code>FROM rails:onbuild
+
+RUN apt-get update &amp;&amp; apt-get install -y mysql-client
+RUN chmod +x start
+
+CMD [&quot;./start&quot;]
+</code></pre>
+
+<p><strong>NOTE</strong>: We realize that this is a non-optimal solution for now, so this will likely change in the future.</p>
+
+<p>One last step: As as we currently do not yet support SSL, we need to disable it for the production environment:</p>
+
+<pre><code># File config/environments/production.rb
+-  config.force_ssl = true
++  config.force_ssl = false
+</code></pre>
+
+<p>Calling <code>docker build -t sample_rails_4 .</code> to build the new image, we can now run everything on the local Docker daemon:</p>
+
+<pre><code class="language-bash">PASS=somesecretpassword
+SECRET_KEY=somesecretkeyforrails
+
+# Start the MySQL database
+docker run -d --name database -e MYSQL_ROOT_PASSWORD=${PASS} -p 3306 mysql
+
+# Now the Rails app - linked to MySQL
+docker run -e RAILS_ENV=production -e SECRET_KEY_BASE=${SECRET_KEY} \
+	-e MYSQL_PASS=${PASS} -e MYSQL_USER=root --link database:database \
+	-p 3000:3000 sample_rails_4
+</code></pre>
+
+<p>You can now access your app on <a href="http://localhost:3000">port 3000</a> of localhost again.</p>
+
+<h2 id="swarmifying">Swarmifying</h2>
+
+<p>Now lets port all this to Giant Swarm.</p>
+
+<p>Since Giant Swarm has no access to the images on your host, we also need to push them to a <a href="https://docs.docker.com/userguide/dockerrepos/#contributing-to-docker-hub">registry</a>. Before that we have to <a href="https://docs.docker.com/reference/commandline/build/">tag</a> them accordingly:</p>
+
+<pre><code class="language-bash">$ docker build -t &lt;username&gt;/sample_rails_4 .
+$ docker push &lt;username&gt;/sample_rails_4
+</code></pre>
+
+<h3 id="the-swarm-json">The swarm.json</h3>
+
+<p>Now, we just need to create the file <code>swarm.json</code> containing our service definition:</p>
+
+<pre><code class="language-json">{
+  &quot;components&quot;: {
+    &quot;rails-example/webserver&quot;: {
+      &quot;image&quot;: &quot;$GIANTSWARM_LOGIN_NAME/sample_rails_4&quot;,
+      &quot;ports&quot;: [3000],
+      &quot;env&quot;: {
+        &quot;SECRET_KEY_BASE&quot;: &quot;somesecretkeyforrails&quot;,
+        &quot;RAILS_ENV&quot;: &quot;production&quot;,
+        &quot;MYSQL_PASS&quot;: &quot;somesecretpassword&quot;,
+        &quot;MYSQL_USER&quot;: &quot;root&quot;
+      },
+      &quot;links&quot;: [ { &quot;component&quot;: &quot;rails-example/database&quot;, &quot;target_port&quot;: 3306 } ],
+      &quot;domains&quot;: { &quot;3000&quot;: &quot;rails-example-$GIANTSWARM_LOGIN_NAME.gigantic.io&quot; }
+    },
+    &quot;rails-example/database&quot;: {
+      &quot;image&quot;: &quot;mysql&quot;,
+      &quot;ports&quot;: [3306],
+      &quot;env&quot;: {
+        &quot;MYSQL_ROOT_PASSWORD&quot;: &quot;somesecretpassword&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>Here, we define a swarm service with the two components <code>rails-example/webserver</code> and <code>rails-example/database</code>. We configure each through environment variables. The ports define the accessible interface which can be accessed by two ways:</p>
+
+<ol>
+<li>With a <code>link</code> to access it from another container</li>
+<li>By adding a <code>domains</code> definition, so our load balancer can forward public requests to your container.</li>
+</ol>
+
+<p>You can either use your own domains (which you have to configure to forward to us) or use a subdomain of the cluster you are using. In this example we are using <code>gigantic.io</code> - modify this to match your needs.</p>
+
+<h3 id="run">Run</h3>
+
+<p>That&rsquo;s it. With the <code>swarm</code> command line tool we can now create and start our containers on the Giant Swarm cluster:</p>
+
+<pre><code>$ swarm create
+$ swarm start rails-sample-1
+$ swarm status rails-sample-1
+</code></pre>
+
+<p>Now open your browser and head to <code>http://rails-example-$GIANTSWARM_LOGIN_NAME.gigantic.io</code>.</p>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

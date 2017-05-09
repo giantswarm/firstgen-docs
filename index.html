@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Giant Swarm Documentation &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div id="home">
+
+  <div class="row welcome-alert" style="display: none">
+    <div class="col-sm-12">
+      <div class="alert alert-success" role="alert"><strong>Congratulations <span class="username">yourusername</span> for making the sign-up!</strong> How about taking the Quick Start now? It takes only 3 minutes.</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-5 home-introbox">
+
+      <hr/>
+      <h2>Introduction to Giant Swarm</h2>
+      <p>With Giant Swarm you can build, deploy and manage your containerized server applications. <a href="/fundamentals/introduction/">Read More <i class="fa fa-arrow-circle-right"></i></a></p>
+      <hr/>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Getting started</h2>
+          <ul class="notype bigbullets">
+            <li><a href="#video"><i class="fa fa-arrow-circle-right"></i> Watch the Video Introduction</a></li>
+            <li><a href="/reference/installation/"><i class="fa fa-arrow-circle-right"></i> Install the CLI</a></li>
+            <li><a href="/guides/annotated-helloworld/"><i class="fa fa-arrow-circle-right"></i> Run the Hello World Example</a></li>
+            <li><a href="/reference/cli/"><i class="fa fa-arrow-circle-right"></i> View the CLI reference</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h2>More Guides</h2>
+          <ul class="notype bigbullets">
+            <li><a href="/guides/introduction-to-docker/"><i class="fa fa-arrow-circle-right"></i> Introduction to Docker</a></li>
+            <li><a href="/guides/mysql-backup/"><i class="fa fa-arrow-circle-right"></i> MySQL with Backups</a></li>
+            <li><a href="/guides/ruby-on-rails/"><i class="fa fa-arrow-circle-right"></i> Ruby on Rails</a></li>
+            <li><a href="/guides/continuous-deployment/"><i class="fa fa-arrow-circle-right"></i> Continuous Deployment</a></li>
+            <li><a href="/guides/team-collaboration/"><i class="fa fa-arrow-circle-right"></i> Team Collaboration</a></li>
+          </ul>
+          
+        </div>
+      </div>
+
+      <div class="home-yourfirstapp">
+        <div class="centered-text">
+          <hr>
+          <h2>Your First Service</h2>
+          <p>Pick your language and learn by creating an example service:</p>
+          <a class="btn btn-default btn-firstapp" href="/guides/your-first-service/nodejs/">NodeJS</a>
+          <a class="btn btn-default btn-firstapp" href="/guides/your-first-service/python/">Python</a>
+          <a class="btn btn-default btn-firstapp" href="/guides/your-first-service/golang/">Go</a>
+          <a class="btn btn-default btn-firstapp" href="/guides/your-first-service/java/">Java</a>
+          <a class="btn btn-default btn-firstapp" href="/guides/your-first-service/php/">PHP</a>
+          <a class="btn btn-default btn-firstapp" href="/guides/your-first-service/ruby/">Ruby</a>
+        </div>
+      </div>
+
+      <hr/>
+      <h2>Reference</h2>
+      <div class="row">
+
+        <div class="col-sm-6">
+          <h3>The swarm CLI</h3>
+          <ul class="notype bigbullets">
+            <li><strong><a href="/reference/cli/"><i class="fa fa-arrow-circle-right"></i> CLI Reference Overview</a></strong></li>
+            <li><a href="/reference/cli/installation/"><i class="fa fa-arrow-circle-right"></i> Installation and Configuration</a></li>
+            <li><a href="/reference/cli/global-options/"><i class="fa fa-arrow-circle-right"></i> Global Options</a></li>
+            <li><a href="/reference/cli/release-notes/"><i class="fa fa-arrow-circle-right"></i> Release Notes</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6">
+          <h3>The API</h3>
+          <ul class="notype bigbullets">
+            <li><strong><a href="/reference/api/"><i class="fa fa-arrow-circle-right"></i> API Reference Overview</a></strong></li>
+          <li><a href="/reference/api/v1/#auth"><i class="fa fa-arrow-circle-right"></i> Authentication</a></li>
+          <li><a href="/reference/api/v1/#user"><i class="fa fa-arrow-circle-right"></i> User Settings and Tokens</a></li>
+            <li><a href="/reference/api/changelog/"><i class="fa fa-arrow-circle-right"></i> Changelog</a></li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="row">
+
+        <div class="col-sm-6">
+          <h3>Basic Concepts</h3>
+          <ul class="notype bigbullets">
+            <li><a href="/reference/cli/org/"><i class="fa fa-arrow-circle-right"></i> Organizations</a></li>
+            <li><a href="/reference/cli/env/"><i class="fa fa-arrow-circle-right"></i> Environments</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6">
+          <h3>Practical Knowledge</h3>
+          <ul class="notype bigbullets">
+            <li><a href="/reference/swarm-json/"><i class="fa fa-arrow-circle-right"></i> Service Defitinion (<code>swarm.json</code>) Reference</a></li>
+            <li><a href="/reference/registry/"><i class="fa fa-arrow-circle-right"></i> Using the Registry</a></li>
+            <li><a href="/reference/storage/"><i class="fa fa-arrow-circle-right"></i> Storage and Volumes</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="col-md-7">
+
+      <div class="quickstart home-quickstart">
+        <h3>Quick Start</h3>
+        <p>Your easy way to get going with your new Giant Swarm account</p>
+        <div role="tabpanel">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#mac" aria-controls="mac" role="tab" data-toggle="tab">Mac + Homebrew</a></li>
+            <li role="presentation"><a href="#linux" aria-controls="linux" role="tab" data-toggle="tab">Linux</a></li>
+            <li class="other-link"><a href="/reference/cli/installation/"><span class="hidden-xs">Installation instructions for all platforms</span><span class="visible-xs-inline">Other platforms</span> <i class="fa fa-arrow-circle-right"></i></a></li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="mac">
+              <pre><code class="nohighlight"><b>$</b> brew tap giantswarm/swarm
+<b>$</b> brew install swarm-client
+<b>$</b> git clone https://github.com/giantswarm/helloworld.git
+<b>$</b> cd helloworld
+<b>$</b> swarm login <b class="username">yourusername</b></code></pre>
+              <p>Now enter your Giant Swarm credentials.</p>
+
+              <pre><code class="nohighlight"><b>$</b> swarm up --var=domain=helloworld-<b class="username">yourusername</b>.gigantic.io</code></pre>
+
+              <p class="helloworldlink">Then access your running service at <a href="http://helloworld-yourusername.gigantic.io/" target="_blank">helloworld-yourusername.gigantic.io</a></p>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="linux">
+              <pre><code class="nohighlight"><b>$</b> curl -O https://downloads.giantswarm.io/swarm/clients/0.27.0/swarm-0.27.0-linux-amd64.tar.gz
+<b>$</b> sudo tar xzf swarm-0.27.0-linux-amd64.tar.gz -C /usr/local/bin
+<b>$</b> git clone https://github.com/giantswarm/helloworld.git
+<b>$</b> cd helloworld
+<b>$</b> swarm login <b class="username">yourusername</b></code></pre>
+              <p>Now enter your Giant Swarm credentials.</p>
+
+              <pre><code class="nohighlight">swarm up --var=domain=helloworld-<b class="username">yourusername</b>.gigantic.io</code></pre>
+
+              <p class="helloworldlink">Then access your running service at <a href="http://helloworld-yourusername.gigantic.io/" target="_blank">helloworld-yourusername.gigantic.io</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-video" id="video">
+        <h3>Video Introduction</h3>
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/6HAAMeKN0rY" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+
+
+    </div>
+  </div> 
+
+
+  <div class="row search-cta">
+  <div class="col-xs-12">
+    <hr />
+    <div class="row">
+      <div class="col-xs-12 col-md-8 col-md-offset-2 text-center search-cta-inner">
+        <form action="/search/" method="GET">
+          <div class="search-cta-header">I am looking for <br class="visible-xs-inline"/><input type="text" name="q" size="5" onkeypress="this.style.width = (((this.value.length + 1) * 11) + 7) + 'px';"/><br class="visible-xs-inline"/> and can't find it. <button class="btn btn-default" type="submit">Search!</button></div>
+          <div class="search-cta-text">Really can't find it? Found a bug instead? Please let us know at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a>, via mail to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a> or by creating an <a href="https://github.com/giantswarm/docs-content" target="_blank">issue or pull request</a>.</div>
+        </form>
+      </div>
+    </div>
+    <hr />
+  </div>
+</div>
+
+
+
+</div>
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+

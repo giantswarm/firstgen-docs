@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Implementing Continuous Deployment &#8211; Giant Swarm Documentation</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="This guide provides a way to implement continuous deployment for a Giant Swarm service">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://giantswarm.io/static/img/favicon32.ico">
+    <link rel="icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://giantswarm.io/static/img/icon_152x152.png">
+    <link rel="canonical" href="https://firstgen-docs.giantswarm.io/guides/continuous-deployment/">
+    <meta name="twitter:site" content="@giantswarm">
+    <meta name="twitter:creator" content="@giantswarm">
+    <meta name="twitter:domain" content="giantswarm.io">
+    
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Slab:300,700|Roboto:100,300,700,300italic|Inconsolata:400,700">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/giantswarmio/0.10.18/1/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.0.3.css">
+    <link rel="stylesheet" type="text/css" href="https://s.giantswarm.io/highlightjs/8.4.0/1/solarized_dark.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css?201609281716">
+  </head>
+  <body data-spy="scroll" data-target="#TableOfContents" class="_guides_continuous-deployment_">
+    <header>
+  <nav>
+    <div class="branding">
+      <a href="https://giantswarm.io/" id="logo"><img alt="Giant Swarm" height="30" src=
+      "https://giantswarm.io/static/img/logo_simplified.svg"
+      width="160"><span>Home</span></a>
+    </div>
+    
+  </nav>
+</header>
+
+
+    <section id="legacy-notify">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <strong>Note:</strong> You are looking at documentation for an outdated Giant Swarm product. Visit <a href="https://docs.giantswarm.io/">docs.giantswarm.io</a> for up-to-date documentation of our current products.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container">
+        <div class="row docsnav">
+  <div class="col-xs-12">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav nav-pills">
+          <li role="presentation" id="homelink"><a href="/">Docs Home</a>
+          
+          <li role="presentation"><a href="/fundamentals/">Fundamentals</a></li>
+          
+          <li role="presentation"><a href="/guides/">Guides</a></li>
+          
+          <li role="presentation"><a href="/reference/">Reference</a></li>
+          
+        </ul>
+        <form class="navbar-form navbar-left hidden-xs" method="GET" action="/search/" role="search">
+          <div class="form-group">
+            <input type="search" name="q" class="form-control" placeholder="Search the Docs" />
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="col-xs-12 visible-xs-block">
+    <form class="form-inline" id="mobileSearchForm" method="GET" action="/search/" role="search">
+      <div class="form-group">
+        <label class="sr-only" for="searchInputMobile">Search term</label>
+        <input type="search" name="q" class="form-control" placeholder="Search the Docs" id="searchInputMobile"/>
+      </div>
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 col-lg-3 hidden-sm hidden-xs toc-sidebar">
+    
+    <div>
+      <div class="toc">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#continuous-deployment">Continuous Deployment</a>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#video-walk-through">Video Walk-through</a></li>
+<li><a href="#getting-started">Getting Started</a>
+<ul>
+<li><a href="#fork-the-repo">Fork the Repo</a></li>
+<li><a href="#log-in-to-wercker-and-add-the-project">Log In to Wercker and Add the Project</a></li>
+<li><a href="#create-a-deploy-target">Create a Deploy Target</a></li>
+<li><a href="#build-and-deploy-the-project">Build and Deploy the Project</a></li>
+</ul></li>
+<li><a href="#accessing-the-service">Accessing the Service</a></li>
+<li><a href="#use-the-giant-swarm-cli-to-manage-your-service">Use the Giant Swarm CLI to Manage Your Service</a></li>
+<li><a href="#local-development-with-wercker">Local Development with Wercker</a></li>
+</ul></li>
+</ul>
+</nav>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-8 col-lg-8 col-lg-offset-1">
+    <div class="content">
+      <p class="lastmod">Last modified August 10, 2015</p>
+
+      
+
+<h1 id="continuous-deployment">Continuous Deployment</h1>
+
+<p>Continuous deployment allows an service to be deployed automatically when its code base is updated. This guide introduces one possible method for implementing continuous deployment using Giant Swarm and <a href="http://wercker.com/">Wercker</a>, a continous integration and deployment service.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>At a minimum you will need the following to complete the guide:</p>
+
+<ul>
+<li>A Github <a href="https://github.com">account</a>.</li>
+<li>A Giant Swarm <a href="https://giantswarm.io/request-invite/">account</a>.</li>
+<li>A Wercker <a href="https://app.wercker.com/users/new/">account</a>.</li>
+</ul>
+
+<p>If you want to do local development, testing, and deploys you should have the following installed:</p>
+
+<ul>
+<li>A functional install of <a href="https://docs.docker.com/installation/">Docker</a>.</li>
+<li>The <code>swarm</code> command line client <a href="/reference/installation/">installed</a>.</li>
+<li>The <code>wercker</code> command line client <a href="http://devcenter.wercker.com/docs/using-the-cli/installing.html">installed</a>.</li>
+<li>The <code>git</code> command line client <a href="https://git-scm.com/downloads">installed</a>.</li>
+</ul>
+
+<h2 id="video-walk-through">Video Walk-through</h2>
+
+<p>The following video guide demonstrates a continuous deployment workflow for a simple Giant Swarm service:</p>
+
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/dNIFClWScSg" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>You should be able to do all these steps from a web browser, including editing a few configuration files.</p>
+
+<h3 id="fork-the-repo">Fork the Repo</h3>
+
+<p>Start by forking <a href="https://github.com/giantswarm/swarm-wercker">this repository</a> by clicking on the <code>Fork</code> button at the top right of the repository page on Github. Fork the repo into a publicly accessible organization or your default organization on GitHub.</p>
+
+<h3 id="log-in-to-wercker-and-add-the-project">Log In to Wercker and Add the Project</h3>
+
+<p>Next, head on over to <a href="https://app.wercker.com/sessions/new">Wercker&rsquo;s login page</a> and click on the <code>Log in with Github</code> button at the bottom. You&rsquo;ll want to allow Wercker to have access to your public and private repos:</p>
+
+<p><img src="https://raw.githubusercontent.com/giantswarm/swarm-wercker/master/static/wercker.png" alt="all your base" />
+</p>
+
+<p>After you allow access to your Github account, Wercker will prompt you to finish signing up for their service.</p>
+
+<p>After you are done setting up your Wercker account and are logged in, click on the <em><a href="https://app.wercker.com/#applications/create">create new application</a></em> pulldown at the top of the page to create a new application. You&rsquo;ll click on the <code>Use Github</code> option in step #1 and then in step #2, select the repo named <code>swarm-wercker</code>:</p>
+
+<p><img src="https://raw.githubusercontent.com/giantswarm/swarm-wercker/master/static/repo.png" alt="repo'd" />
+</p>
+
+<p>Under step #3, <code>select owner</code>, choose the default self-organization. Under step #4, <code>configure access</code>, choose <code>wercker will checkout the code without using an SSH key</code> and then click the <code>next step</code> button. Regardless of whether Wercker finds a valid <code>wercker.yml</code> file in step #5 or not, click the <code>next step</code> button and then click the <code>finish</code> button.</p>
+
+<p>You should be taken to the <code>project overview</code> page for the <code>swarm-wercker</code> project.</p>
+
+<h3 id="create-a-deploy-target">Create a Deploy Target</h3>
+
+<p>At the top right of the <code>swarm-wercker</code> project, click on the <code>gear icon</code> to view the application&rsquo;s settings. Click on the <code>deploy targets</code> tab to the left, and then click on the <code>add deploy target</code> pulldown. Select <code>custom deploy</code> and then enter <code>prod</code> for your deploy target name. Check the <code>auto deploy successful builds to branch</code> checkbox and enter <code>master</code> in the branch field:</p>
+
+<p><img src="https://raw.githubusercontent.com/giantswarm/swarm-wercker/master/static/deploy.png" alt="deploy" />
+</p>
+
+<p>Click on the <code>add new variable</code> button. You will need to create three variables, one named <code>user</code>, one named <code>pass</code>, and one name <code>env</code>, all of which you can reference in the image above.</p>
+
+<p>These values will be, respectively, your Giant Swarm username, password and <a href="/reference/cli/env/">desired environment</a> (which usually defaults to <code>&lt;username&gt;/dev</code>). Be sure to check the <code>protected</code> checkbox before clicking on <code>ok</code> when adding the password variable!</p>
+
+<p>Click on the <code>save</code> button to save the deploy target settings.</p>
+
+<h3 id="build-and-deploy-the-project">Build and Deploy the Project</h3>
+
+<p>Builds and deploys for the project occur when you do code pushes to the <code>master</code> branch of your newly forked <code>swarm-wercker</code> repo. To trigger the build, navigate back to the project&rsquo;s repo in your Github account and edit the <code>index.html</code> file in the <code>static</code> directory to look something like this:</p>
+
+<pre><code class="language-nohighlight">&lt;h2&gt;Lamas love CI!&lt;/h2&gt;
+&lt;img src=&quot;/lama.jpg&quot; \&gt;
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/giantswarm/swarm-wercker/master/static/update.png" alt="lama lama ding dong" />
+</p>
+
+<p>When you are done editing the file, click on the <code>commit changes</code> button at the bottom. Wercker will start building your project and deploy it within a few minutes.</p>
+
+<h2 id="accessing-the-service">Accessing the Service</h2>
+
+<p>When Wercker gets done with deploying your application, you should have a simple website up and running at the following URL:</p>
+
+<pre><code class="language-nohighlight">http://swacker-&lt;username&gt;.gigantic.io/
+</code></pre>
+
+<p>Obviously, you&rsquo;ll need to substitute your Giant Swarm username for the <code>&lt;username&gt;</code> placeholder in the URL above!</p>
+
+<h2 id="use-the-giant-swarm-cli-to-manage-your-service">Use the Giant Swarm CLI to Manage Your Service</h2>
+
+<p>You can manage your service on Giant Swarm by using the <a href="/reference/cli/installation/">swarm CLI</a>.</p>
+
+<p>Start out by cloning the repository to your local machine using your Github username:</p>
+
+<pre><code class="language-nohighlight">$ git clone https://github.com/&lt;github_username&gt;/swarm-wercker.git
+Cloning into 'swarm-wercker'...
+</code></pre>
+
+<p>Next, copy the <code>swarmvars.json.example</code> to <code>swarmvars.json</code>:</p>
+
+<pre><code class="language-nohighlight">$ cd swarm-wercker
+$ cp swarmvars.json.example swarmvars.json
+</code></pre>
+
+<p>Edit the <code>swarmvars.json</code> file to suit your Giant Swarm account setup, substituting your username for <code>&lt;username&gt;</code> as shown in the example below:</p>
+
+<pre><code class="language-nohighlight">{
+  &quot;&lt;username&gt;/prod&quot;: {
+    &quot;user&quot;: &quot;&lt;username&gt;&quot;
+  }
+}
+</code></pre>
+
+<p>Finally, we&rsquo;ll scale the <code>flask</code> component of your sevice up by one instance to keep it highly available during Wercker pushes by using the <code>swarm scaleup</code> command:</p>
+
+<pre><code class="language-nohighlight">$ swarm scaleup swacker/swacker-service/flask
+$ swarm status
+Service swacker is starting
+
+component  image                 instanceid    created              status
+flask      /bant/swacker:latest  122j16cp7tsx  2015-07-18 19:24:38  starting
+flask      /bant/swacker:latest  g0s2o5hn1in8  2015-07-18 18:40:05  up
+</code></pre>
+
+<p>More information about using the <code>swarm</code> CLI is available in the <a href="/reference/cli/">CLI reference</a>.</p>
+
+<h2 id="local-development-with-wercker">Local Development with Wercker</h2>
+
+<p>You can do local development on this project by using Wercker&rsquo;s CLI. To start the development server, use the <code>wercker</code> command:</p>
+
+<pre><code class="language-nohighlight">$ wercker dev
+</code></pre>
+
+<p>You can access the develop server by using the following URL:</p>
+
+<pre><code class="language-nohighlight">http://0.0.0.0:5000
+</code></pre>
+
+<p>More information about using the <code>wercker</code> CLI is available in the <a href="http://devcenter.wercker.com/docs/using-the-cli/index.html">Wercker Devcenter</a>.</p>
+
+
+      <div class="feedback well">
+  <h5><i class="fa fa-question-circle"></i> Need help, got feedback?</h5>
+  <p>Join us at <a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on IRC</a> or send us an email to <a href="mailto:support@giantswarm.io">support@giantswarm.io</a>. And of course, we welcome your <a href="https://github.com/giantswarm/docs-content" target="_blank">pull requests</a>!</p>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+      </div>
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="footer-navigation-a">
+          <li>
+            <a href="https://giantswarm.io/">Home</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/services/">Services</a>
+          </li>
+          <li>
+          <a href="https://giantswarm.io/products/">Products</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/company/">Company</a>
+          </li>
+          <li>
+            <a href="https://blog.giantswarm.io">Blog</a>
+          </li>
+          <li aria-hidden="true">&nbsp;</li>
+          <li>
+            <a href="https://giantswarm.io/privacypolicy/">Privacy Policy</a> <a href="https://giantswarm.io/terms/">Terms of
+            Service</a>
+          </li>
+        </ul>
+        <ul class="footer-navigation-b">
+          <li>
+            <a href="https://docs.giantswarm.io/">Documentation</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/events/">Events</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/microservices/">About Microservices</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/press/">Press Room</a>
+          </li>
+          <li>
+            <a href="https://giantswarm.io/contact/">Contact Us</a>
+          </li>
+        </ul>
+        <div id="social-media-links">
+          <ul>
+            <li>
+              <a href="http://www.twitter.com/giantswarm" target="_blank">
+              <div class="icon-twitter"></div>Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/giantswarm/" target="_blank">
+              <div class="icon-github"></div>GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/giant-swarm" target=
+              "_blank">
+              <div class="icon-linkedin-square"></div>LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://angel.co/giant-swarm" target="_blank">
+              <div class="icon-angellist"></div>Angelist</a>
+            </li>
+            <li>
+              <a href="https://plus.google.com/117315999979228308375" target=
+              "_blank">
+              <div class="icon-google-plus"></div>Google+</a>
+            </li>
+            <li>
+              <a href="http://www.facebook.com/giantswarm" target="_blank">
+              <div class="icon-facebook-square"></div>Facebook</a>
+            </li>
+          </ul><a href="irc://irc.freenode.org:6667/#giantswarm">#giantswarm on
+          IRC</a>
+        </div>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/giantswarmio/0.10.18/1/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://s.giantswarm.io/highlightjs/8.4.0/1/highlight.min.js"></script>
+    <script type="text/javascript" src="/js/base.js?201609281716"></script>
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-52901087-7', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+    
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/430224.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+
+    
+    $( document ).ready(function() {
+      $("#navigation_toggle").click(function(event){
+        $("header").toggleClass('open');
+        event.preventDefault();
+      });
+    });
+    </script>
+</body>
+</html>
+
