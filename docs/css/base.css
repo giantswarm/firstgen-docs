@@ -564,6 +564,7 @@ a code {
   padding: 6px 9px; }
 
 .docsnav form {
+  display: none;
   margin: 0;
   font-size: 14px; }
 
